@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Version;
 import com.tsg.tot.data.remote.ApiService;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         mApiService = ApiUtils.getAPIService();
         getVersion();
         getStudent();
+        getLessons();
     }
 
     private void getVersion() {
@@ -63,6 +65,25 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Student>> call, Throwable t) {
+                Log.d("onFailure getStudent", t.toString());
+            }
+        });
+    }
+
+    private void getLessons() {
+        mApiService.getLessons().enqueue(new Callback<List<Lessons>>() {
+            @Override
+            public void onResponse(Call<List<Lessons>> call, Response<List<Lessons>> response) {
+                if (response.isSuccessful()) {
+                    List<Lessons> lessons = response.body();
+                    Log.d("Debug lessons id ", lessons.get(0).getId().toString());
+                    Log.d("Debug lessons name ", lessons.get(0).getNombre());
+                    Log.d("Debug lessons theme ", lessons.get(0).getTema());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Lessons>> call, Throwable t) {
                 Log.d("onFailure getStudent", t.toString());
             }
         });

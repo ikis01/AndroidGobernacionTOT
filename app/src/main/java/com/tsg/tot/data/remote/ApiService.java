@@ -1,5 +1,6 @@
 package com.tsg.tot.data.remote;
 
+import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Version;
 
@@ -15,4 +16,7 @@ public interface ApiService {
 
     @GET("estudiantes.json")
     Call<List<Student>> getStudent();
+
+    @GET("clases.json")
+    Call<List<Lessons>> getLessons();
 }
