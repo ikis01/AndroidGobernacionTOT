@@ -1,5 +1,6 @@
 package com.tsg.tot.repository;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.tsg.tot.data.model.Blob;
@@ -28,11 +29,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MemoryRepository implements Repository {
+public class ApiRepository implements Repository {
+
     private ApiService mApiService = ApiUtils.getAPIService();
+    public float apiVersion;
+
+    //GET
 
     @Override
-    public void getVersion(MainMVP.Model.OnFinishedListener onFinishedListener) {
+    public float getVersion(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
         mApiService.getVersion().enqueue(new Callback<List<Version>>() {
             @Override
             public void onResponse(Call<List<Version>> call, Response<List<Version>> response) {
@@ -40,12 +45,13 @@ public class MemoryRepository implements Repository {
                     List<Version> versionList = response.body();
 
                     if (versionList != null) {
+
                         for (Version version : versionList) {
                             Log.d("Debug version id ", version.getId().toString());
                             Log.d("Debug version No ", version.getNumero().toString());
-                        }
 
-                        onFinishedListener.onFinished(versionList);
+                            apiVersion = version.getNumero().floatValue();
+                        }
                     } else {
                         Log.d("Debug ", "versionList is null");
                     }
@@ -58,6 +64,8 @@ public class MemoryRepository implements Repository {
                 onFinishedListener.onFailure(t);
             }
         });
+
+        return apiVersion;
     }
 
     @Override
@@ -436,6 +444,83 @@ public class MemoryRepository implements Repository {
         });
     }
 
+    //UPDATE
+
+    @Override
+    public void updateVersion(List<Version> versionList, Context context) {
+
+    }
+
+    @Override
+    public void updateStudent() {
+
+    }
+
+    @Override
+    public void updateGrade() {
+
+    }
+
+    @Override
+    public void updateDevice() {
+
+    }
+
+    @Override
+    public void updateExercises() {
+
+    }
+
+    @Override
+    public void updateSubmissions() {
+
+    }
+
+    @Override
+    public void updateEvaluations() {
+
+    }
+
+    @Override
+    public void updateLessons() {
+
+    }
+
+    @Override
+    public void updateStudyMaterial() {
+
+    }
+
+    @Override
+    public void updateSubjects() {
+
+    }
+
+    @Override
+    public void updatePlanning() {
+
+    }
+
+    @Override
+    public void updateTeachers() {
+
+    }
+
+    @Override
+    public void updateUploads() {
+
+    }
+
+    @Override
+    public void updateTasks() {
+
+    }
+
+    @Override
+    public void updateBlobs() {
+
+    }
+
     @Override
     public void uploadBlob(RequestBody body, MainMVP.Model.OnFinishedListener onFinishedListener) {
         mApiService.uploadBlob(body).enqueue(new Callback<Blob>() {
@@ -452,4 +537,5 @@ public class MemoryRepository implements Repository {
             }
         });
     }
+
 }

@@ -1,12 +1,9 @@
 package com.tsg.tot.main;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
-
-import com.tsg.tot.data.model.Version;
-
-import java.util.List;
 
 public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishedListener {
 
@@ -24,9 +21,18 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
     }
 
     @Override
-    public void mainButtonClicked() {
+    public void checkVersions(Context context) {
+        MainMVP.Model.OnFinishedListener onFinishedListener = this;
         if (view != null) {
-            model.checkInfo(this);
+            new Thread(() -> {
+                while (true) {
+                    if (model.checkAPIVersion(onFinishedListener, context) == model.checkDbVersion(onFinishedListener, context)) {
+                        Log.d("Debug", "Same version");
+                    } else {
+                        //TODO: Update tables.
+                    }
+                }
+            }).start();
         }
     }
 
@@ -38,8 +44,13 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
     }
 
     @Override
-    public void onFinished(List<Version> versionList) {
-        view.setContent(versionList);
+    public void createDB(Context context) {
+        model.createDb(context);
+    }
+
+    @Override
+    public void onFinished(float version, Context context) {
+        view.setContent(version);
     }
 
     @Override

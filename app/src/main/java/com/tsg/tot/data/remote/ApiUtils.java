@@ -2,7 +2,6 @@ package com.tsg.tot.data.remote;
 
 public class ApiUtils {
 
-
     private ApiUtils() {
     }
 

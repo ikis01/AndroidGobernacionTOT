@@ -1,6 +1,7 @@
 package com.tsg.tot.main;
 
-import com.tsg.tot.repository.MemoryRepository;
+import com.tsg.tot.repository.ApiRepository;
+import com.tsg.tot.repository.DatabaseRepository;
 import com.tsg.tot.repository.Repository;
 
 import dagger.Module;
@@ -15,12 +16,17 @@ public class MainModule {
     }
 
     @Provides
-    public MainMVP.Model provideMainModel(Repository repository) {
-        return new MainModel(repository);
+    public MainMVP.Model provideMainModel(Repository repository, DatabaseRepository databaseRepository) {
+        return new MainModel(repository, databaseRepository);
     }
 
     @Provides
     public Repository provideRepository() {
-        return new MemoryRepository();
+        return new ApiRepository();
+    }
+
+    @Provides
+    public DatabaseRepository provideDatabaseRepository(){
+        return new DatabaseRepository();
     }
 }

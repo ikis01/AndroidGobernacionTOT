@@ -1,5 +1,7 @@
 package com.tsg.tot.main;
 
+import android.content.Context;
+
 import com.tsg.tot.data.model.Version;
 
 import java.util.List;
@@ -10,44 +12,51 @@ public interface MainMVP {
         /**
          * Show list of info
          *
-         * @param versionList version
+         * @param version version
          */
-        void setContent(List<Version> versionList);
+        void setContent(float version);
     }
 
     interface Presenter {
-        /**
-         * Swet view of presenter
-         *
-         * @param view view
-         */
+
         void setView(MainMVP.View view);
 
-        /**
-         * Notify that the button was pressed
-         */
-        void mainButtonClicked();
+        void checkVersions(Context context);
 
         void sendBlob();
+
+        void createDB(Context context);
     }
 
     interface Model {
 
         interface OnFinishedListener {
-            void onFinished(List<Version> versionList);
+            void onFinished(float version, Context context);
 
             void onFailure(Throwable t);
         }
 
         /**
-         * Check API info
+         * Check API version
          */
-        void checkInfo(OnFinishedListener onFinishedListener);
+        float checkAPIVersion(OnFinishedListener onFinishedListener, Context context);
+
+        /**
+         * Check DB version
+         */
+        float checkDbVersion(OnFinishedListener onFinishedListener, Context context);
 
         /**
          * Send Blob info
          */
         void sendBlob(OnFinishedListener onFinishedListener);
+
+        /**
+         * Create db on start aplication
+         */
+        void createDb(Context context);
+
+        void setDbVersion(List<Version> versionList, Context context);
     }
 
 }

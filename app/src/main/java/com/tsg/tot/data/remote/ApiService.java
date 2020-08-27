@@ -70,4 +70,16 @@ public interface ApiService {
 
     @POST("upload/")
     Call<Blob> uploadBlob(@Body RequestBody body);
+
+    /*
+    TODO POST EVALUATIONS
+     */
+
+    /*
+    TODO POST TASK
+     */
+
+    /*
+    TODO POST EXERCISES
+     */
 }

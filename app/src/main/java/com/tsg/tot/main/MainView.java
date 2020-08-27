@@ -10,10 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.tsg.tot.R;
-import com.tsg.tot.data.model.Version;
 import com.tsg.tot.root.App;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -38,7 +35,8 @@ public class MainView extends AppCompatActivity implements MainMVP.View {
         Button btn_info = findViewById(R.id.btn_info);
         Button btn_blob = findViewById(R.id.btn_blob);
 
-        btn_info.setOnClickListener(view -> presenter.mainButtonClicked());
+        presenter.createDB(this);
+        btn_info.setOnClickListener(view -> presenter.checkVersions(this));
         btn_blob.setOnClickListener(view -> presenter.sendBlob());
 
         requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
@@ -61,7 +59,7 @@ public class MainView extends AppCompatActivity implements MainMVP.View {
     }
 
     @Override
-    public void setContent(List<Version> versionList) {
-        this.tv_content.setText(versionList.get(0).getNumero().toString());
+    public void setContent(float version) {
+        this.tv_content.setText(String.valueOf(version));
     }
 }

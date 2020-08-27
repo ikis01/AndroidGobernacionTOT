@@ -1,8 +1,16 @@
 package com.tsg.tot.main;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import com.tsg.tot.data.model.Version;
+import com.tsg.tot.repository.DatabaseRepository;
 import com.tsg.tot.repository.Repository;
+import com.tsg.tot.sqlite.DbOpenHelper;
 
 import java.io.File;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -10,15 +18,23 @@ import okhttp3.RequestBody;
 
 public class MainModel implements MainMVP.Model {
 
+    DbOpenHelper dbHelper;
     private Repository repository;
+    private DatabaseRepository databaseRepository;
 
-    public MainModel(Repository repository) {
+    public MainModel(Repository repository, DatabaseRepository databaseRepository) {
         this.repository = repository;
+        this.databaseRepository = databaseRepository;
     }
 
     @Override
-    public void checkInfo(OnFinishedListener onFinishedListener) {
-        repository.getVersion(onFinishedListener);
+    public float checkAPIVersion(OnFinishedListener onFinishedListener, Context context) {
+        return repository.getVersion(onFinishedListener, context);
+    }
+
+    @Override
+    public float checkDbVersion(OnFinishedListener onFinishedListener, Context context) {
+        return databaseRepository.getVersion(onFinishedListener, context);
     }
 
     @Override
@@ -32,5 +48,19 @@ public class MainModel implements MainMVP.Model {
                 .addFormDataPart("entrega_id", "13")
                 .build();
         repository.uploadBlob(body, onFinishedListener);
+    }
+
+    @Override
+    public void createDb(Context context) {
+        dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        if (db != null) {
+            Log.d("Debug", "Database created");
+        }
+    }
+
+    @Override
+    public void setDbVersion(List<Version> versionList, Context context) {
+        databaseRepository.updateVersion(versionList, context);
     }
 }
