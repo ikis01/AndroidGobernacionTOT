@@ -21,36 +21,45 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
     }
 
     @Override
-    public void checkVersions(Context context) {
-        MainMVP.Model.OnFinishedListener onFinishedListener = this;
-        if (view != null) {
-            new Thread(() -> {
-                while (true) {
-                    if (model.checkAPIVersion(onFinishedListener, context) == model.checkDbVersion(onFinishedListener, context)) {
-                        Log.d("Debug", "Same version");
-                    } else {
-                        //TODO: Update tables.
-                    }
-                }
-            }).start();
-        }
-    }
-
-    @Override
-    public void sendBlob() {
-        if (view != null) {
-            model.sendBlob(this);
-        }
-    }
-
-    @Override
     public void createDB(Context context) {
         model.createDb(context);
     }
 
     @Override
-    public void onFinished(float version, Context context) {
-        view.setContent(version);
+    public void checkVersions(Context context) {
+        MainMVP.Model.OnFinishedListener onFinishedListener = this;
+        Log.d("Debug", "checkVersions");
+        if (view != null) {
+            new Thread(() -> {
+                Log.d("Debug", "Thread");
+                //Thread for checking versions
+                while (model.checkAPIVersion(onFinishedListener, context) == model.checkDbVersion(onFinishedListener, context)) {
+                    Log.d("Debug", "Same version");
+                }
+
+                Log.d("Debug", "Diferent version");
+                model.updateAllDb(model.checkAPIVersion(onFinishedListener, context),
+                        model.checkTasks(onFinishedListener, context),
+                        model.checkUploads(onFinishedListener, context),
+                        model.checkTeachers(onFinishedListener, context),
+                        model.checkSubjects(onFinishedListener, context),
+                        model.checkStudyMaterials(onFinishedListener, context),
+                        model.checkEvaluations(onFinishedListener, context),
+                        model.checkStudents(onFinishedListener, context),
+                        model.checkSubmissions(onFinishedListener, context),
+                        model.checkExercises(onFinishedListener, context),
+                        model.checkLessons(onFinishedListener, context),
+                        onFinishedListener, context);
+            }).start();
+        }
+    }
+
+    @Override
+    public void onCheckVersionFinished(float version, Context context) {
+        if (view != null) {
+            view.setTextVersion(version);
+        }
+
     }
 
     @Override

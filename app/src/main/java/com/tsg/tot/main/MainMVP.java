@@ -2,61 +2,97 @@ package com.tsg.tot.main;
 
 import android.content.Context;
 
-import com.tsg.tot.data.model.Version;
+import com.tsg.tot.data.model.Device;
+import com.tsg.tot.data.model.Evaluations;
+import com.tsg.tot.data.model.Exercises;
+import com.tsg.tot.data.model.Grade;
+import com.tsg.tot.data.model.Lessons;
+import com.tsg.tot.data.model.Planning;
+import com.tsg.tot.data.model.Student;
+import com.tsg.tot.data.model.StudyMaterial;
+import com.tsg.tot.data.model.Subjects;
+import com.tsg.tot.data.model.Submissions;
+import com.tsg.tot.data.model.Task;
+import com.tsg.tot.data.model.Teacher;
+import com.tsg.tot.data.model.Upload;
 
 import java.util.List;
 
 public interface MainMVP {
 
     interface View {
-        /**
-         * Show list of info
-         *
-         * @param version version
-         */
-        void setContent(float version);
+
+        void setTextVersion(float version);
+
     }
 
     interface Presenter {
 
         void setView(MainMVP.View view);
 
+        void createDB(Context context);
+
         void checkVersions(Context context);
 
-        void sendBlob();
-
-        void createDB(Context context);
     }
 
     interface Model {
 
         interface OnFinishedListener {
-            void onFinished(float version, Context context);
+            void onCheckVersionFinished(float version, Context context);
 
             void onFailure(Throwable t);
         }
 
-        /**
-         * Check API version
-         */
-        float checkAPIVersion(OnFinishedListener onFinishedListener, Context context);
-
-        /**
-         * Check DB version
-         */
-        float checkDbVersion(OnFinishedListener onFinishedListener, Context context);
-
-        /**
-         * Send Blob info
-         */
-        void sendBlob(OnFinishedListener onFinishedListener);
-
-        /**
-         * Create db on start aplication
-         */
         void createDb(Context context);
 
-        void setDbVersion(List<Version> versionList, Context context);
+        float checkAPIVersion(OnFinishedListener onFinishedListener, Context context);
+
+        float checkDbVersion(OnFinishedListener onFinishedListener, Context context);
+
+        void updateAllDb(float versionList,
+                         List<Task> taskList,
+                         List<Upload> uploadList,
+                         List<Teacher> teacherList,
+                         List<Subjects> subjectsList,
+                         List<StudyMaterial> studyMaterialList,
+                         List<Evaluations> evaluationsList,
+                         List<Student> studentList,
+                         List<Submissions> submissionsList,
+                         List<Exercises> exercisesList,
+                         List<Lessons> lessonsList,
+                         OnFinishedListener onFinishedListener,
+                         Context context);
+
+        //Methods for downloading data from Endpoints
+
+        List<Device> checkDevices(OnFinishedListener onFinishedListener, Context context);
+
+        List<Lessons> checkLessons(OnFinishedListener onFinishedListener, Context context);
+
+        List<Grade> checkGrades(OnFinishedListener onFinishedListener, Context context);
+
+        List<Exercises> checkExercises(OnFinishedListener onFinishedListener, Context context);
+
+        List<Submissions> checkSubmissions(OnFinishedListener onFinishedListener, Context context);
+
+        List<Student> checkStudents(OnFinishedListener onFinishedListener, Context context);
+
+        List<Evaluations> checkEvaluations(OnFinishedListener onFinishedListener, Context context);
+
+        List<StudyMaterial> checkStudyMaterials(OnFinishedListener onFinishedListener, Context context);
+
+        List<Subjects> checkSubjects(OnFinishedListener onFinishedListener, Context context);
+
+        List<Planning> checkPlanning(OnFinishedListener onFinishedListener, Context context);
+
+        List<Teacher> checkTeachers(OnFinishedListener onFinishedListener, Context context);
+
+        List<Upload> checkUploads(OnFinishedListener onFinishedListener, Context context);
+
+        List<Task> checkTasks(OnFinishedListener onFinishedListener, Context context);
+
+        void sendBlob(OnFinishedListener onFinishedListener);
     }
 
 }

@@ -2,7 +2,6 @@ package com.tsg.tot.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,20 +31,16 @@ public class MainView extends AppCompatActivity implements MainMVP.View {
         ((App) getApplication()).getComponent().inject(this);
 
         tv_content = findViewById(R.id.tv_content);
-        Button btn_info = findViewById(R.id.btn_info);
-        Button btn_blob = findViewById(R.id.btn_blob);
-
-        presenter.createDB(this);
-        btn_info.setOnClickListener(view -> presenter.checkVersions(this));
-        btn_blob.setOnClickListener(view -> presenter.sendBlob());
 
         requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
+        presenter.createDB(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         presenter.setView(this);
+        presenter.checkVersions(this);
     }
 
     @Override
@@ -59,7 +54,7 @@ public class MainView extends AppCompatActivity implements MainMVP.View {
     }
 
     @Override
-    public void setContent(float version) {
-        this.tv_content.setText(String.valueOf(version));
+    public void setTextVersion(float version) {
+        this.runOnUiThread(() -> tv_content.setText(String.valueOf(version)));
     }
 }

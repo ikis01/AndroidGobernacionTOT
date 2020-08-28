@@ -2,7 +2,20 @@ package com.tsg.tot.repository;
 
 import android.content.Context;
 
-import com.tsg.tot.data.model.Version;
+import com.tsg.tot.data.model.Blob;
+import com.tsg.tot.data.model.Device;
+import com.tsg.tot.data.model.Evaluations;
+import com.tsg.tot.data.model.Exercises;
+import com.tsg.tot.data.model.Grade;
+import com.tsg.tot.data.model.Lessons;
+import com.tsg.tot.data.model.Planning;
+import com.tsg.tot.data.model.Student;
+import com.tsg.tot.data.model.StudyMaterial;
+import com.tsg.tot.data.model.Subjects;
+import com.tsg.tot.data.model.Submissions;
+import com.tsg.tot.data.model.Task;
+import com.tsg.tot.data.model.Teacher;
+import com.tsg.tot.data.model.Upload;
 import com.tsg.tot.main.MainMVP;
 
 import java.util.List;
@@ -15,63 +28,65 @@ public interface Repository {
 
     float getVersion(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
 
-    void getStudent(MainMVP.Model.OnFinishedListener onFinishedListener);
+    List<Device> getDevice(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
 
-    void getLessons(MainMVP.Model.OnFinishedListener onFinishedListener);
+    List<Lessons> getLessons(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
 
-    void getDevice(MainMVP.Model.OnFinishedListener onFinishedListener);
+    List<Grade> getGrade(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
 
-    void getGrade(MainMVP.Model.OnFinishedListener onFinishedListener);
+    List<Exercises> getExercises(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
 
-    void getExercises(MainMVP.Model.OnFinishedListener onFinishedListener);
+    List<Submissions> getSubmissions(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
 
-    void getSubmissions(MainMVP.Model.OnFinishedListener onFinishedListener);
+    List<Student> getStudent(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
 
-    void getEvaluations(MainMVP.Model.OnFinishedListener onFinishedListener);
+    List<Evaluations> getEvaluations(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
 
-    void getStudyMaterial(MainMVP.Model.OnFinishedListener onFinishedListener);
+    String getIPEND(Context context);
 
-    void getSubjects(MainMVP.Model.OnFinishedListener onFinishedListener);
+    List<StudyMaterial> getStudyMaterial(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
 
-    void getPlanning(MainMVP.Model.OnFinishedListener onFinishedListener);
+    List<Subjects> getSubjects(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
 
-    void getTeachers(MainMVP.Model.OnFinishedListener onFinishedListener);
+    List<Planning> getPlanning(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
 
-    void getUploads(MainMVP.Model.OnFinishedListener onFinishedListener);
+    List<Teacher> getTeachers(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
 
-    void getTasks(MainMVP.Model.OnFinishedListener onFinishedListener);
+    List<Upload> getUploads(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
 
-    //UPDATE
+    List<Task> getTasks(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
+
+    //UPDATE - POST
+
+    void updateVersion(float version, Context context);
+
+    void updateDevice(List<Device> devicesList, Context context);
+
+    void updateLessons(List<Lessons> lessonsList, Context context);
+
+    void updateGrade(List<Grade> gradesList, Context context);
+
+    void updateExercises(List<Exercises> exercisesList, Context context);
+
+    void updateSubmissions(List<Submissions> submissionsList, Context context);
+
+    void updateStudent(List<Student> studentList, Context context);
+
+    void updateEvaluations(List<Evaluations> evaluationsList, Context context);
+
+    void updateStudyMaterial(List<StudyMaterial> studyMaterialList, Context context);
+
+    void updateSubjects(List<Subjects> subjectsList, Context context);
+
+    void updatePlanning(List<Planning> planningList, Context context);
+
+    void updateTeachers(List<Teacher> teacherList, Context context);
+
+    void updateUploads(List<Upload> uploadList, Context context);
+
+    void updateTasks(List<Task> taskList, Context context);
+
+    void updateBlobs(List<Blob> blobList, Context context);
 
     void uploadBlob(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener);
-
-    void updateVersion(List<Version> versionList, Context context);
-
-    void updateStudent();
-
-    void updateLessons();
-
-    void updateDevice();
-
-    void updateGrade();
-
-    void updateExercises();
-
-    void updateSubmissions();
-
-    void updateEvaluations();
-
-    void updateStudyMaterial();
-
-    void updateSubjects();
-
-    void updatePlanning();
-
-    void updateTeachers();
-
-    void updateUploads();
-
-    void updateTasks();
-
-    void updateBlobs();
 }

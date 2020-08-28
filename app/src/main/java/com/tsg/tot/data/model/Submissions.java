@@ -16,13 +16,13 @@ public class Submissions {
     private Integer upp;
     @SerializedName("ejercios")
     @Expose
-    private Object ejercios;
+    private Integer ejercios;
     @SerializedName("tarea")
     @Expose
     private Integer tarea;
     @SerializedName("evaluacion")
     @Expose
-    private Object evaluacion;
+    private Integer evaluacion;
     @SerializedName("subida")
     @Expose
     private Integer subida;
@@ -54,11 +54,11 @@ public class Submissions {
         this.upp = upp;
     }
 
-    public Object getEjercios() {
+    public Integer getEjercios() {
         return ejercios;
     }
 
-    public void setEjercios(Object ejercios) {
+    public void setEjercios(Integer ejercios) {
         this.ejercios = ejercios;
     }
 
@@ -70,11 +70,11 @@ public class Submissions {
         this.tarea = tarea;
     }
 
-    public Object getEvaluacion() {
+    public Integer getEvaluacion() {
         return evaluacion;
     }
 
-    public void setEvaluacion(Object evaluacion) {
+    public void setEvaluacion(Integer evaluacion) {
         this.evaluacion = evaluacion;
     }
 
