@@ -33,23 +33,30 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
             new Thread(() -> {
                 Log.d("Debug", "Thread");
                 //Thread for checking versions
-                while (model.checkAPIVersion(onFinishedListener, context) == model.checkDbVersion(onFinishedListener, context)) {
-                    Log.d("Debug", "Same version");
+                while (true) {
+                    if (model.checkAPIVersion(onFinishedListener, context) == model.checkDbVersion(onFinishedListener, context)) {
+                        Log.d("Debug", "Same version");
+                        try {
+                            Thread.sleep(20 * 1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Log.d("Debug", "Diferent version");
+                        model.updateAllDb(model.checkAPIVersion(onFinishedListener, context),
+                                model.checkTasks(onFinishedListener, context),
+                                model.checkUploads(onFinishedListener, context),
+                                model.checkTeachers(onFinishedListener, context),
+                                model.checkSubjects(onFinishedListener, context),
+                                model.checkStudyMaterials(onFinishedListener, context),
+                                model.checkEvaluations(onFinishedListener, context),
+                                model.checkStudents(onFinishedListener, context),
+                                model.checkSubmissions(onFinishedListener, context),
+                                model.checkExercises(onFinishedListener, context),
+                                model.checkLessons(onFinishedListener, context),
+                                onFinishedListener, context);
+                    }
                 }
-
-                Log.d("Debug", "Diferent version");
-                model.updateAllDb(model.checkAPIVersion(onFinishedListener, context),
-                        model.checkTasks(onFinishedListener, context),
-                        model.checkUploads(onFinishedListener, context),
-                        model.checkTeachers(onFinishedListener, context),
-                        model.checkSubjects(onFinishedListener, context),
-                        model.checkStudyMaterials(onFinishedListener, context),
-                        model.checkEvaluations(onFinishedListener, context),
-                        model.checkStudents(onFinishedListener, context),
-                        model.checkSubmissions(onFinishedListener, context),
-                        model.checkExercises(onFinishedListener, context),
-                        model.checkLessons(onFinishedListener, context),
-                        onFinishedListener, context);
             }).start();
         }
     }
@@ -59,11 +66,15 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
         if (view != null) {
             view.setTextVersion(version);
         }
-
     }
 
     @Override
     public void onFailure(Throwable t) {
-        Log.d("Debug", t.toString());
+        Log.d("onFailure", t.toString());
+    }
+
+    @Override
+    public void testPOST(Context context) {
+        model.postSubmissions(this, "", "3", "224", "2", "269", "1");
     }
 }

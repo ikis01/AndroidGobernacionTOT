@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TOT</string>
+    <string name="db_version">Version: </string>
 </resources>

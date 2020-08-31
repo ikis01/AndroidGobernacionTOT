@@ -88,5 +88,13 @@ public interface Repository {
 
     void updateBlobs(List<Blob> blobList, Context context);
 
-    void uploadBlob(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener);
+    void postTask(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener);
+
+    void postEvaluations(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener);
+
+    void postExercises(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener);
+
+    void postSubmissions(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener);
+
+    void postBlob(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener);
 }

@@ -95,18 +95,21 @@ public class DatabaseRepository implements Repository {
 
     @Override
     public float getVersion(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+        float version;
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String query = "SELECT NUMERO FROM VERSION";
         Cursor c = db.rawQuery(query, null);
         c.moveToFirst();
 
-        onFinishedListener.onCheckVersionFinished(c.getFloat(0), context);
+        version = c.getFloat(0);
+
+        onFinishedListener.onCheckVersionFinished(version, context);
 
         db.close();
         dbHelper.close();
 
-        return c.getFloat(0);
+        return version;
     }
 
     @Override
@@ -207,13 +210,15 @@ public class DatabaseRepository implements Repository {
         ContentValues cv = new ContentValues();
         if (lessonsList != null) {
             for (Lessons lessons : lessonsList) {
-                cv.put(LESSONS_ID, lessons.getId());
-                cv.put(LESSONS_THEME, lessons.getTema());
-                cv.put(LESSONS_SUBJECT_ID, lessons.getMaterias());
-                cv.put(LESSONS_TEACHER_ID, lessons.getProfesor());
-                cv.put(LESSONS_NAME, lessons.getNombre());
-                cv.put(LESSONS_INIT_DATE, lessons.getFechaInicio());
-                db.insert(LESSONS_TABLE_NAME, null, cv);
+                if (checkId(db, LESSONS_TABLE_NAME, LESSONS_ID, lessons.getId().toString()) == 0) {
+                    cv.put(LESSONS_ID, lessons.getId());
+                    cv.put(LESSONS_THEME, lessons.getTema());
+                    cv.put(LESSONS_SUBJECT_ID, lessons.getMaterias());
+                    cv.put(LESSONS_TEACHER_ID, lessons.getProfesor());
+                    cv.put(LESSONS_NAME, lessons.getNombre());
+                    cv.put(LESSONS_INIT_DATE, lessons.getFechaInicio());
+                    db.insert(LESSONS_TABLE_NAME, null, cv);
+                }
             }
         }
 
@@ -233,11 +238,13 @@ public class DatabaseRepository implements Repository {
         ContentValues cv = new ContentValues();
         if (exercisesList != null) {
             for (Exercises exercises : exercisesList) {
-                cv.put(EXERCISES_ID, exercises.getId());
-                cv.put(EXERCISES_NAME, exercises.getNombre());
-                cv.put(EXERCISES_CLASSES_ID, exercises.getClases());
-                cv.put(EXERCISES_UPLOAD_ID, exercises.getSubida().getId());
-                db.insert(EXERCISES_TABLE_NAME, null, cv);
+                if (checkId(db, EXERCISES_TABLE_NAME, EXERCISES_ID, exercises.getId().toString()) == 0) {
+                    cv.put(EXERCISES_ID, exercises.getId());
+                    cv.put(EXERCISES_NAME, exercises.getNombre());
+                    cv.put(EXERCISES_CLASSES_ID, exercises.getClases());
+                    cv.put(EXERCISES_UPLOAD_ID, exercises.getSubida().getId());
+                    db.insert(EXERCISES_TABLE_NAME, null, cv);
+                }
             }
         }
 
@@ -252,14 +259,16 @@ public class DatabaseRepository implements Repository {
         ContentValues cv = new ContentValues();
         if (submissionsList != null) {
             for (Submissions submissions : submissionsList) {
-                cv.put(SUBMISSIONS_ID, submissions.getId());
-                cv.put(SUBMISSIONS_EXERCISES_ID, submissions.getEjercios());
-                cv.put(SUBMISSIONS_TASK_ID, submissions.getTarea());
-                cv.put(SUBMISSIONS_EVALUATION_ID, submissions.getEvaluacion());
-                cv.put(SUBMISSIONS_UPLOAD_ID, submissions.getSubida());
-                cv.put(SUBMISSIONS_UPP, submissions.getUpp());
-                cv.put(SUBMISSIONS_CREATED, submissions.getCreado());
-                db.insert(SUBMISSIONS_TABLE_NAME, null, cv);
+                if (checkId(db, SUBMISSIONS_TABLE_NAME, SUBMISSIONS_ID, submissions.getId().toString()) == 0) {
+                    cv.put(SUBMISSIONS_ID, submissions.getId());
+                    cv.put(SUBMISSIONS_EXERCISES_ID, submissions.getEjercios());
+                    cv.put(SUBMISSIONS_TASK_ID, submissions.getTarea());
+                    cv.put(SUBMISSIONS_EVALUATION_ID, submissions.getEvaluacion());
+                    cv.put(SUBMISSIONS_UPLOAD_ID, submissions.getSubida());
+                    cv.put(SUBMISSIONS_UPP, submissions.getUpp());
+                    cv.put(SUBMISSIONS_CREATED, submissions.getCreado());
+                    db.insert(SUBMISSIONS_TABLE_NAME, null, cv);
+                }
             }
         }
 
@@ -274,11 +283,13 @@ public class DatabaseRepository implements Repository {
         ContentValues cv = new ContentValues();
         if (studentList != null) {
             for (Student student : studentList) {
-                cv.put(STUDENTS_ID, student.getId());
-                cv.put(STUDENTS_NAME, student.getNombres() + " " + student.getApellidos());
-                cv.put(STUDENTS_CURSE_ID, student.getCurso().getId());
-                cv.put(STUDENTS_CODE, student.getCodigo());
-                db.insert(STUDENTS_TABLE_NAME, null, cv);
+                if (checkId(db, STUDENTS_TABLE_NAME, STUDENTS_ID, student.getId().toString()) == 0) {
+                    cv.put(STUDENTS_ID, student.getId());
+                    cv.put(STUDENTS_NAME, student.getNombres() + " " + student.getApellidos());
+                    cv.put(STUDENTS_CURSE_ID, student.getCurso().getId());
+                    cv.put(STUDENTS_CODE, student.getCodigo());
+                    db.insert(STUDENTS_TABLE_NAME, null, cv);
+                }
             }
         }
 
@@ -293,11 +304,13 @@ public class DatabaseRepository implements Repository {
         ContentValues cv = new ContentValues();
         if (evaluationsList != null) {
             for (Evaluations evaluations : evaluationsList) {
-                cv.put(EVALUATION_ID, evaluations.getId());
-                cv.put(EVALUATION_NAME, evaluations.getNombre());
-                cv.put(EVALUATION_SUBJECT_ID, evaluations.getMaterias());
-                cv.put(EVALUATION_UPLOAD_ID, evaluations.getSubida().getId());
-                db.insert(EVALUATION_TABLE_NAME, null, cv);
+                if (checkId(db, EVALUATION_TABLE_NAME, EVALUATION_ID, evaluations.getId().toString()) == 0) {
+                    cv.put(EVALUATION_ID, evaluations.getId());
+                    cv.put(EVALUATION_NAME, evaluations.getNombre());
+                    cv.put(EVALUATION_SUBJECT_ID, evaluations.getMaterias());
+                    cv.put(EVALUATION_UPLOAD_ID, evaluations.getSubida().getId());
+                    db.insert(EVALUATION_TABLE_NAME, null, cv);
+                }
             }
         }
 
@@ -312,12 +325,14 @@ public class DatabaseRepository implements Repository {
         ContentValues cv = new ContentValues();
         if (studyMaterialList != null) {
             for (StudyMaterial studyMaterial : studyMaterialList) {
-                cv.put(STUDYMATERIAL_ID, studyMaterial.getId());
-                cv.put(STUDYMATERIAL_CLASSES_ID, studyMaterial.getClases());
-                cv.put(STUDYMATERIAL_NAME, studyMaterial.getNombre());
-                cv.put(STUDYMATERIAL_DESCRIPTION, studyMaterial.getDescripcion());
-                cv.put(STUDYMATERIAL_BLOB_ID, studyMaterial.getBlob());
-                db.insert(STUDYMATERIAL_TABLE_NAME, null, cv);
+                if (checkId(db, STUDYMATERIAL_TABLE_NAME, STUDYMATERIAL_ID, studyMaterial.getId().toString()) == 0) {
+                    cv.put(STUDYMATERIAL_ID, studyMaterial.getId());
+                    cv.put(STUDYMATERIAL_CLASSES_ID, studyMaterial.getClases());
+                    cv.put(STUDYMATERIAL_NAME, studyMaterial.getNombre());
+                    cv.put(STUDYMATERIAL_DESCRIPTION, studyMaterial.getDescripcion());
+                    cv.put(STUDYMATERIAL_BLOB_ID, studyMaterial.getBlob());
+                    db.insert(STUDYMATERIAL_TABLE_NAME, null, cv);
+                }
             }
         }
 
@@ -332,14 +347,16 @@ public class DatabaseRepository implements Repository {
         ContentValues cv = new ContentValues();
         if (subjectsList != null) {
             for (Subjects subjects : subjectsList) {
-                cv.put(SUBJECTS_ID, subjects.getId());
-                cv.put(SUBJECTS_TITLE, subjects.getTitulo());
-                cv.put(SUBJECTS_CURSE_ID, subjects.getCurso().getId());
-                cv.put(SUBJECTS_TEACHER_ID, subjects.getProfesor().getId());
-                cv.put(SUBJECTS_SUBTITLE, subjects.getSubtitulo());
-                cv.put(SUBJECTS_DESCRIPTION, subjects.getDescripcion());
-                cv.put(SUBJECTS_IMAGE, subjects.getImagen());
-                db.insert(SUBJECTS_TABLE_NAME, null, cv);
+                if (checkId(db, SUBJECTS_TABLE_NAME, SUBJECTS_ID, subjects.getId().toString()) == 0) {
+                    cv.put(SUBJECTS_ID, subjects.getId());
+                    cv.put(SUBJECTS_TITLE, subjects.getTitulo());
+                    cv.put(SUBJECTS_CURSE_ID, subjects.getCurso().getId());
+                    cv.put(SUBJECTS_TEACHER_ID, subjects.getProfesor().getId());
+                    cv.put(SUBJECTS_SUBTITLE, subjects.getSubtitulo());
+                    cv.put(SUBJECTS_DESCRIPTION, subjects.getDescripcion());
+                    cv.put(SUBJECTS_IMAGE, subjects.getImagen());
+                    db.insert(SUBJECTS_TABLE_NAME, null, cv);
+                }
             }
         }
 
@@ -359,9 +376,11 @@ public class DatabaseRepository implements Repository {
         ContentValues cv = new ContentValues();
         if (teacherList != null) {
             for (Teacher teacher : teacherList) {
-                cv.put(TEACHER_ID, teacher.getId());
-                cv.put(TEACHER_NAME, teacher.getNombres() + " " + teacher.getApellidos());
-                db.insert(TEACHER_TABLE_NAME, null, cv);
+                if (checkId(db, TEACHER_TABLE_NAME, TEACHER_ID, teacher.getId().toString()) == 0) {
+                    cv.put(TEACHER_ID, teacher.getId());
+                    cv.put(TEACHER_NAME, teacher.getNombres() + " " + teacher.getApellidos());
+                    db.insert(TEACHER_TABLE_NAME, null, cv);
+                }
             }
         }
 
@@ -376,9 +395,11 @@ public class DatabaseRepository implements Repository {
         ContentValues cv = new ContentValues();
         if (uploadList != null) {
             for (Upload upload : uploadList) {
-                cv.put(UPLOAD_ID, upload.getId());
-                cv.put(UPLOAD_DATE, upload.getFecha());
-                db.insert(UPLOAD_TABLE_NAME, null, cv);
+                if (checkId(db, UPLOAD_TABLE_NAME, UPLOAD_ID, upload.getId().toString()) == 0) {
+                    cv.put(UPLOAD_ID, upload.getId());
+                    cv.put(UPLOAD_DATE, upload.getFecha());
+                    db.insert(UPLOAD_TABLE_NAME, null, cv);
+                }
             }
         }
 
@@ -393,11 +414,13 @@ public class DatabaseRepository implements Repository {
         ContentValues cv = new ContentValues();
         if (taskList != null) {
             for (Task task : taskList) {
-                cv.put(TASK_ID, task.getId());
-                cv.put(TASK_NAME, task.getNombre());
-                cv.put(TASK_SUBJECT_ID, task.getMaterias());
-                cv.put(TASK_UPLOAD_ID, task.getSubida().getId());
-                db.insert(TASK_TABLE_NAME, null, cv);
+                if (checkId(db, TASK_TABLE_NAME, TASK_ID, task.getId().toString()) == 0) {
+                    cv.put(TASK_ID, task.getId());
+                    cv.put(TASK_NAME, task.getNombre());
+                    cv.put(TASK_SUBJECT_ID, task.getMaterias());
+                    cv.put(TASK_UPLOAD_ID, task.getSubida().getId());
+                    db.insert(TASK_TABLE_NAME, null, cv);
+                }
             }
         }
 
@@ -412,11 +435,13 @@ public class DatabaseRepository implements Repository {
         ContentValues cv = new ContentValues();
         if (blobList != null) {
             for (Blob blob : blobList) {
-                cv.put(BLOB_CODE, blob.getCodigo());
-                cv.put(BLOB_UPLOAD_ID, blob.getSubida());
-                cv.put(BLOB_SUBMISSION_ID, blob.getEntrega());
-                cv.put(BLOB_RUTE, blob.getFile());
-                db.insert(BLOB_TABLE_NAME, null, cv);
+                if (checkId(db, BLOB_TABLE_NAME, BLOB_CODE, blob.getCodigo().toString()) == 0) {
+                    cv.put(BLOB_CODE, blob.getCodigo());
+                    cv.put(BLOB_UPLOAD_ID, blob.getSubida());
+                    cv.put(BLOB_SUBMISSION_ID, blob.getEntrega());
+                    cv.put(BLOB_RUTE, blob.getFile());
+                    db.insert(BLOB_TABLE_NAME, null, cv);
+                }
             }
         }
 
@@ -425,7 +450,48 @@ public class DatabaseRepository implements Repository {
     }
 
     @Override
-    public void uploadBlob(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener) {
+    public void postTask(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener) {
 
+    }
+
+    @Override
+    public void postEvaluations(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener) {
+
+    }
+
+    @Override
+    public void postSubmissions(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener) {
+
+    }
+
+    @Override
+    public void postExercises(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener) {
+
+    }
+
+    @Override
+    public void postBlob(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener) {
+
+    }
+
+    /**
+     * Method that traverses the column of the table
+     * and searches if the value is already in that table
+     *
+     * @param db        SQLiteDatabase
+     * @param tableName tableName
+     * @param columName columnName
+     * @param value     value
+     * @return Number of records with the same value
+     */
+    public int checkId(SQLiteDatabase db, String tableName, String columName, String value) {
+        Cursor c = null;
+        String query = "SELECT count(*) FROM " + tableName + " WHERE " + columName + " = " + value;
+        c = db.rawQuery(query, null);
+        if (c.moveToFirst()) {
+            return c.getInt(0);
+        }
+        c.close();
+        return 0;
     }
 }

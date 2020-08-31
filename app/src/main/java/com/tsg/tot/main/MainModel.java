@@ -145,15 +145,58 @@ public class MainModel implements MainMVP.Model {
     }
 
     @Override
-    public void sendBlob(OnFinishedListener onFinishedListener) {
+    public void postTask(OnFinishedListener onFinishedListener, String uploadId, String subjectId, String name, String code) {
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("codigo", "187")
-                .addFormDataPart("file", "/storage/self/primary/Download/sample.pdf",
-                        RequestBody.create(MediaType.parse("*/*"),
-                                new File("/storage/self/primary/Download/sample.pdf")))
-                .addFormDataPart("subida", "289")
-                .addFormDataPart("entrega_id", "13")
+                .addFormDataPart("subida_id", uploadId)
+                .addFormDataPart("materias_id", subjectId)
+                .addFormDataPart("nombre", name)
+                .addFormDataPart("codigo", code)
+                .addFormDataPart("materias", subjectId)
                 .build();
-        apiRepository.uploadBlob(body, onFinishedListener);
+        apiRepository.postTask(body, onFinishedListener);
+    }
+
+    @Override
+    public void postEvaluations(OnFinishedListener onFinishedListener, String uploadId, String name, String subjectId) {
+        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("subida_id", uploadId)
+                .addFormDataPart("nombre", name)
+                .addFormDataPart("materias", subjectId)
+                .build();
+        apiRepository.postEvaluations(body, onFinishedListener);
+    }
+
+    @Override
+    public void postExercises(OnFinishedListener onFinishedListener, String uploadId, String name, String lessonsId) {
+        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("subida_id", uploadId)
+                .addFormDataPart("nombre", name)
+                .addFormDataPart("clases", lessonsId)
+                .build();
+        apiRepository.postExercises(body, onFinishedListener);
+    }
+
+    @Override
+    public void postSubmissions(OnFinishedListener onFinishedListener, String upp, String exercisesId, String taskId, String evaluationId, String uploadId, String studentId) {
+        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("upp", upp)
+                .addFormDataPart("ejercicios", exercisesId)
+                .addFormDataPart("tarea", taskId)
+                .addFormDataPart("evaluacion", evaluationId)
+                .addFormDataPart("subida", uploadId)
+                .addFormDataPart("estudiante", studentId)
+                .build();
+        apiRepository.postSubmissions(body, onFinishedListener);
+    }
+
+    @Override
+    public void postBlob(OnFinishedListener onFinishedListener, String code, String file, String upload, String submissionId) {
+        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("codigo", code)
+                .addFormDataPart("file", file, RequestBody.create(MediaType.parse("*/*"), new File(file)))
+                .addFormDataPart("subida", upload)
+                .addFormDataPart("entrega_id", submissionId)
+                .build();
+        apiRepository.postBlob(body, onFinishedListener);
     }
 }

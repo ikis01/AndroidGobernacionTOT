@@ -60,12 +60,15 @@ public class ApiRepository implements Repository {
                     List<Version> versionList = response.body();
 
                     if (versionList != null) {
-
                         for (Version version : versionList) {
-                            /*Log.d("Debug version id ", version.getId().toString());
-                            Log.d("Debug version No ", version.getNumero().toString());*/
+                            try {
+                                Log.d("Debug version id ", version.getId().toString());
+                                Log.d("Debug version No ", version.getNumero().toString());
 
-                            apiVersion = version.getNumero().floatValue();
+                                apiVersion = version.getNumero().floatValue();
+                            } catch (NullPointerException e) {
+                                Log.d("Debug NullPointerException ", e.toString());
+                            }
                         }
                     } else {
                         Log.d("Debug ", "versionList is null");
@@ -93,8 +96,12 @@ public class ApiRepository implements Repository {
                     deviceListFinal = deviceList;
                     if (deviceList != null) {
                         for (Device device : deviceList) {
-                            /*Log.d("Debug device id ", device.getId().toString());
-                            Log.d("Debug device mac ", device.getMAC());*/
+                            try {
+                                Log.d("Debug device id ", device.getId().toString());
+                                Log.d("Debug device mac ", device.getMAC());
+                            } catch (NullPointerException e) {
+                                Log.d("Debug NullPointerException ", e.toString());
+                            }
                         }
                     } else {
                         Log.d("Debug ", "deviceList is null");
@@ -121,9 +128,13 @@ public class ApiRepository implements Repository {
                     lessonsListFinal = lessonsList;
                     if (lessonsList != null) {
                         for (Lessons lessons : lessonsList) {
-                            /*Log.d("Debug lessons id ", lessons.getId().toString());
-                            Log.d("Debug lessons name ", lessons.getNombre());
-                            Log.d("Debug lessons theme ", lessons.getTema());*/
+                            try {
+                                Log.d("Debug lessons id ", lessons.getId().toString());
+                                Log.d("Debug lessons name ", lessons.getNombre());
+                                Log.d("Debug lessons theme ", lessons.getTema());
+                            } catch (NullPointerException e) {
+                                Log.d("Debug NullPointerException ", e.toString());
+                            }
                         }
                     } else {
                         Log.d("Debug ", "lessonsList is null");
@@ -150,8 +161,12 @@ public class ApiRepository implements Repository {
                     gradeListFinal = gradeList;
                     if (gradeList != null) {
                         for (Grade grade : gradeList) {
-                           /*Log.d("Debug grade id ", grade.getId().toString());
-                            Log.d("Debug grade name ", grade.getNombre());*/
+                            try {
+                                Log.d("Debug grade id ", grade.getId().toString());
+                                Log.d("Debug grade name ", grade.getNombre());
+                            } catch (NullPointerException e) {
+                                Log.d("Debug NullPointerException ", e.toString());
+                            }
                         }
                     } else {
                         Log.d("Debug ", "gradeList is null");
@@ -178,9 +193,13 @@ public class ApiRepository implements Repository {
                     exercisesListFinal = exercisesList;
                     if (exercisesList != null) {
                         for (Exercises exercises : exercisesList) {
-                            /*Log.d("Debug exercise id ", exercises.getId().toString());
-                            Log.d("Debug exercise name ", exercises.getNombre());
-                            Log.d("Debug exercise date", exercises.getSubida().getFecha());*/
+                            try {
+                                Log.d("Debug exercise id ", exercises.getId().toString());
+                                Log.d("Debug exercise name ", exercises.getNombre());
+                                Log.d("Debug exercise date", exercises.getSubida().getFecha());
+                            } catch (NullPointerException e) {
+                                Log.d("Debug NullPointerException ", e.toString());
+                            }
                         }
                     } else {
                         Log.d("Debug ", "exercisesList is null");
@@ -207,14 +226,18 @@ public class ApiRepository implements Repository {
                     submissionsListFinal = submissionsList;
                     if (submissionsList != null) {
                         for (Submissions submission : submissionsList) {
-                            /*Log.d("Debug submissions id ", submission.getId().toString());
-                            Log.d("Debug submissions created at ", submission.getCreado());
-                            Log.d("Debug submissions upp", submission.getUpp().toString());
-                            Log.d("Debug submissions exercises ", submission.getEjercios().toString());
-                            Log.d("Debug submissions task ", submission.getTarea().toString());
-                            Log.d("Debug submissions evaluation", submission.getEvaluacion().toString());
-                            Log.d("Debug submissions upload ", submission.getSubida().toString());
-                            Log.d("Debug submissions student", submission.getEstudiante().toString());*/
+                            try {
+                                Log.d("Debug submissions id ", submission.getId().toString());
+                                Log.d("Debug submissions created at ", submission.getCreado());
+                                Log.d("Debug submissions upp", submission.getUpp().toString());
+                                Log.d("Debug submissions exercises ", submission.getEjercios().toString());
+                                Log.d("Debug submissions task ", submission.getTarea().toString());
+                                Log.d("Debug submissions evaluation", submission.getEvaluacion().toString());
+                                Log.d("Debug submissions upload ", submission.getSubida().toString());
+                                Log.d("Debug submissions student", submission.getEstudiante().toString());
+                            } catch (NullPointerException e) {
+                                Log.d("Debug NullPointerException ", e.toString());
+                            }
                         }
                     } else {
                         Log.d("Debug ", "submissionsList is null");
@@ -241,10 +264,14 @@ public class ApiRepository implements Repository {
                     studentListFinal = studentList;
                     if (studentList != null) {
                         for (Student student : studentList) {
-                            /*Log.d("Debug student id ", student.getId().toString());
-                            Log.d("Debug student name ", student.getNombres());
-                            Log.d("Debug student last name ", student.getApellidos());
-                            Log.d("Debug student curse ", student.getCurso().getNombre());*/
+                            try {
+                                Log.d("Debug student id ", student.getId().toString());
+                                Log.d("Debug student name ", student.getNombres());
+                                Log.d("Debug student last name ", student.getApellidos());
+                                Log.d("Debug student curse ", student.getCurso().getNombre());
+                            } catch (NullPointerException e) {
+                                Log.d("Debug NullPointerException ", e.toString());
+                            }
                         }
                     } else {
                         Log.d("Debug ", "studentList is null");
@@ -271,11 +298,16 @@ public class ApiRepository implements Repository {
                     evaluationsListFinal = evaluationsList;
                     if (evaluationsList != null) {
                         for (Evaluations evaluations : evaluationsList) {
-                            /*Log.d("Debug evaluations id ", evaluations.getId().toString());
-                            Log.d("Debug evaluations upload id ", evaluations.getSubida().getId().toString());
-                            Log.d("Debug evaluations upload date", evaluations.getSubida().getFecha());
-                            Log.d("Debug evaluations name ", evaluations.getNombre());
-                            Log.d("Debug evaluations subject ", evaluations.getMaterias().toString());*/
+                            try {
+                                Log.d("Debug evaluations id ", evaluations.getId().toString());
+                                Log.d("Debug evaluations upload id ", evaluations.getSubida().getId().toString());
+                                Log.d("Debug evaluations upload date", evaluations.getSubida().getFecha());
+                                Log.d("Debug evaluations name ", evaluations.getNombre());
+                                Log.d("Debug evaluations subject ", evaluations.getMaterias().toString());
+                            } catch (NullPointerException e) {
+                                Log.d("Debug evaluations NullPointerException ", e.toString());
+                            }
+
                         }
                     } else {
                         Log.d("Debug ", "submissionsList is null");
@@ -307,11 +339,15 @@ public class ApiRepository implements Repository {
                     studyMaterialListFinal = studyMaterialList;
                     if (studyMaterialList != null) {
                         for (StudyMaterial studyMaterial : studyMaterialList) {
-                            /*Log.d("Debug studyMaterial id ", studyMaterial.getId().toString());
-                            Log.d("Debug studyMaterial name ", studyMaterial.getNombre());
-                            Log.d("Debug studyMaterial description", studyMaterial.getDescripcion());
-                            Log.d("Debug studyMaterial class ", studyMaterial.getClases().toString());
-                            Log.d("Debug studyMaterial blob ", studyMaterial.getBlob().toString());*/
+                            try {
+                                Log.d("Debug studyMaterial id ", studyMaterial.getId().toString());
+                                Log.d("Debug studyMaterial name ", studyMaterial.getNombre());
+                                Log.d("Debug studyMaterial description", studyMaterial.getDescripcion());
+                                Log.d("Debug studyMaterial class ", studyMaterial.getClases().toString());
+                                Log.d("Debug studyMaterial blob ", studyMaterial.getBlob().toString());
+                            } catch (NullPointerException e) {
+                                Log.d("Debug NullPointerException ", e.toString());
+                            }
                         }
                     } else {
                         Log.d("Debug ", "studyMaterialList is null");
@@ -338,19 +374,23 @@ public class ApiRepository implements Repository {
                     subjectsListFinal = subjectsList;
                     if (subjectsList != null) {
                         for (Subjects subjects : subjectsList) {
-                            /*Log.d("Debug subjects id ", subjects.getId().toString());
-                            Log.d("Debug subjects curse id ", subjects.getCurso().getId().toString());
-                            Log.d("Debug subjects curse name ", subjects.getCurso().getNombre());
-                            Log.d("Debug subjects teacher id ", subjects.getProfesor().getId().toString());
-                            Log.d("Debug subjects teacher code ", subjects.getProfesor().getCodigo().toString());
-                            Log.d("Debug subjects teacher name ", subjects.getProfesor().getNombres());
-                            Log.d("Debug subjects teacher last name ", subjects.getProfesor().getApellidos());
-                            Log.d("Debug subjects teacher birth date", subjects.getProfesor().getFechaNacimiento());
-                            Log.d("Debug subjects code ", subjects.getCodigo());
-                            Log.d("Debug subjects title ", subjects.getTitulo());
-                            Log.d("Debug subjects subtitle", subjects.getSubtitulo());
-                            Log.d("Debug subjects description ", subjects.getDescripcion());
-                            Log.d("Debug subjects image ", subjects.getImagen());*/
+                            try {
+                                Log.d("Debug subjects id ", subjects.getId().toString());
+                                Log.d("Debug subjects curse id ", subjects.getCurso().getId().toString());
+                                Log.d("Debug subjects curse name ", subjects.getCurso().getNombre());
+                                Log.d("Debug subjects teacher id ", subjects.getProfesor().getId().toString());
+                                Log.d("Debug subjects teacher code ", subjects.getProfesor().getCodigo().toString());
+                                Log.d("Debug subjects teacher name ", subjects.getProfesor().getNombres());
+                                Log.d("Debug subjects teacher last name ", subjects.getProfesor().getApellidos());
+                                Log.d("Debug subjects teacher birth date", subjects.getProfesor().getFechaNacimiento());
+                                Log.d("Debug subjects code ", subjects.getCodigo());
+                                Log.d("Debug subjects title ", subjects.getTitulo());
+                                Log.d("Debug subjects subtitle", subjects.getSubtitulo());
+                                Log.d("Debug subjects description ", subjects.getDescripcion());
+                                Log.d("Debug subjects image ", subjects.getImagen());
+                            } catch (NullPointerException e) {
+                                Log.d("Debug NullPointerException ", e.toString());
+                            }
                         }
                     } else {
                         Log.d("Debug ", "subjectsList is null");
@@ -377,12 +417,16 @@ public class ApiRepository implements Repository {
                     planningListFinal = planningList;
                     if (planningList != null) {
                         for (Planning planning : planningList) {
-                            /*Log.d("Debug planning id ", planning.getId().toString());
-                            Log.d("Debug planning date ", planning.getFecha());
-                            Log.d("Debug planning task ", planning.getTarea().toString());
-                            Log.d("Debug planning exercise ", planning.getEjercicios().toString());
-                            Log.d("Debug planning class ", planning.getClase().toString());
-                            Log.d("Debug planning evaluation ", planning.getEvaluacion().toString());*/
+                            try {
+                                Log.d("Debug planning id ", planning.getId().toString());
+                                Log.d("Debug planning date ", planning.getFecha());
+                                Log.d("Debug planning task ", planning.getTarea().toString());
+                                Log.d("Debug planning exercise ", planning.getEjercicios().toString());
+                                Log.d("Debug planning class ", planning.getClase().toString());
+                                Log.d("Debug planning evaluation ", planning.getEvaluacion().toString());
+                            } catch (NullPointerException e) {
+                                Log.d("Debug NullPointerException ", e.toString());
+                            }
                         }
                     } else {
                         Log.d("Debug ", "planningList is null");
@@ -409,11 +453,15 @@ public class ApiRepository implements Repository {
                     teacherListFinal = teacherList;
                     if (teacherList != null) {
                         for (Teacher teacher : teacherList) {
-                            /*Log.d("Debug teacher id ", teacher.getId().toString());
-                            Log.d("Debug teacher code ", teacher.getCodigo().toString());
-                            Log.d("Debug teacher name ", teacher.getNombres());
-                            Log.d("Debug teacher last name ", teacher.getApellidos());
-                            Log.d("Debug teacher birth date ", teacher.getFechaNacimiento());*/
+                            try {
+                                Log.d("Debug teacher id ", teacher.getId().toString());
+                                Log.d("Debug teacher code ", teacher.getCodigo().toString());
+                                Log.d("Debug teacher name ", teacher.getNombres());
+                                Log.d("Debug teacher last name ", teacher.getApellidos());
+                                Log.d("Debug teacher birth date ", teacher.getFechaNacimiento());
+                            } catch (NullPointerException e) {
+                                Log.d("Debug NullPointerException ", e.toString());
+                            }
                         }
                     } else {
                         Log.d("Debug ", "teacherList is null");
@@ -440,8 +488,12 @@ public class ApiRepository implements Repository {
                     uploadListFinal = uploadList;
                     if (uploadList != null) {
                         for (Upload upload : uploadList) {
-                            /*Log.d("Debug upload id ", upload.getId().toString());
-                            Log.d("Debug upload date ", upload.getFecha());*/
+                            try {
+                                Log.d("Debug upload id ", upload.getId().toString());
+                                Log.d("Debug upload date ", upload.getFecha());
+                            } catch (NullPointerException e) {
+                                Log.d("Debug NullPointerException ", e.toString());
+                            }
                         }
                     } else {
                         Log.d("Debug ", "uploadList is null");
@@ -468,12 +520,16 @@ public class ApiRepository implements Repository {
                     taskListFinal = taskList;
                     if (taskList != null) {
                         for (Task task : taskList) {
-                            /*Log.d("Debug task id ", task.getId().toString());
-                            Log.d("Debug task upload id ", task.getSubida().getId().toString());
-                            Log.d("Debug task upload date ", task.getSubida().getFecha());
-                            Log.d("Debug task name ", task.getNombre());
-                            Log.d("Debug task code ", task.getCodigo());
-                            Log.d("Debug task subject ", task.getMaterias().toString());*/
+                            try {
+                                Log.d("Debug task id ", task.getId().toString());
+                                Log.d("Debug task upload id ", task.getSubida().getId().toString());
+                                Log.d("Debug task upload date ", task.getSubida().getFecha());
+                                Log.d("Debug task name ", task.getNombre());
+                                Log.d("Debug task code ", task.getCodigo());
+                                Log.d("Debug task subject ", task.getMaterias().toString());
+                            } catch (NullPointerException e) {
+                                Log.d("Debug NullPointerException ", e.toString());
+                            }
                         }
                     } else {
                         Log.d("Debug ", "taskList is null");
@@ -568,20 +624,91 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public void uploadBlob(RequestBody body, MainMVP.Model.OnFinishedListener onFinishedListener) {
-        mApiService.uploadBlob(body).enqueue(new Callback<Blob>() {
+    public void postTask(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener) {
+        mApiService.postTask(requestBody).enqueue(new Callback<Task>() {
+            @Override
+            public void onResponse(Call<Task> call, Response<Task> response) {
+                if (response.isSuccessful()) {
+                    //TODO POST Blob
+                    Log.d("POST", "post submitted to API." + response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Task> call, Throwable t) {
+                Log.d("POST", "Unable to submit post to API.");
+            }
+        });
+    }
+
+    @Override
+    public void postEvaluations(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener) {
+        mApiService.postEvaluations(requestBody).enqueue(new Callback<Evaluations>() {
+            @Override
+            public void onResponse(Call<Evaluations> call, Response<Evaluations> response) {
+                if (response.isSuccessful()) {
+                    //TODO POST Blob
+                    Log.d("POST", "post submitted to API." + response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Evaluations> call, Throwable t) {
+                Log.d("POST", "Unable to submit post to API.");
+            }
+        });
+    }
+
+    @Override
+    public void postExercises(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener) {
+        mApiService.postExercises(requestBody).enqueue(new Callback<Exercises>() {
+            @Override
+            public void onResponse(Call<Exercises> call, Response<Exercises> response) {
+                if (response.isSuccessful()) {
+                    //TODO POST Blob
+                    Log.d("POST", "post submitted to API." + response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Exercises> call, Throwable t) {
+                Log.d("POST", "Unable to submit post to API.");
+            }
+        });
+    }
+
+    @Override
+    public void postSubmissions(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener) {
+        mApiService.postSubmissions(requestBody).enqueue(new Callback<Submissions>() {
+            @Override
+            public void onResponse(Call<Submissions> call, Response<Submissions> response) {
+                if (response.isSuccessful()) {
+                    //TODO POST Blob
+                    Log.d("POST", "post submitted to API." + response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Submissions> call, Throwable t) {
+                Log.d("POST", "Unable to submit post to API.");
+            }
+        });
+    }
+
+    @Override
+    public void postBlob(RequestBody body, MainMVP.Model.OnFinishedListener onFinishedListener) {
+        mApiService.postBlob(body).enqueue(new Callback<Blob>() {
             @Override
             public void onResponse(Call<Blob> call, Response<Blob> response) {
                 if (response.isSuccessful()) {
-                    Log.d("Debug", "post submitted to API." + response.body().toString());
+                    Log.d("POST", "post submitted to API." + response.body());
                 }
             }
 
             @Override
             public void onFailure(Call<Blob> call, Throwable t) {
-                Log.d("Debug", "Unable to submit post to API.");
+                Log.d("POST", "Unable to submit post to API.");
             }
         });
     }
-
 }

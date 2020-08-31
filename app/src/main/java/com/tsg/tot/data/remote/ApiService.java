@@ -68,18 +68,18 @@ public interface ApiService {
     @GET("api/gobernacion/cursos/tareas.json")
     Call<List<Task>> getTasks();
 
+    @POST("api/gobernacion/cursos/tareas/")
+    Call<Task> postTask(@Body RequestBody body);
+
+    @POST("api/gobernacion/cursos/evaluaciones/")
+    Call<Evaluations> postEvaluations(@Body RequestBody body);
+
+    @POST("api/gobernacion/cursos/ejercicios/")
+    Call<Exercises> postExercises(@Body RequestBody body);
+
+    @POST("api/gobernacion/cursos/entregas/")
+    Call<Submissions> postSubmissions(@Body RequestBody body);
+
     @POST("upload/")
-    Call<Blob> uploadBlob(@Body RequestBody body);
-
-    /*
-    TODO POST EVALUATIONS
-     */
-
-    /*
-    TODO POST TASK
-     */
-
-    /*
-    TODO POST EXERCISES
-     */
+    Call<Blob> postBlob(@Body RequestBody body);
 }

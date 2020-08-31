@@ -34,6 +34,8 @@ public interface MainMVP {
 
         void checkVersions(Context context);
 
+        void testPOST(Context context);
+
     }
 
     interface Model {
@@ -92,7 +94,17 @@ public interface MainMVP {
 
         List<Task> checkTasks(OnFinishedListener onFinishedListener, Context context);
 
-        void sendBlob(OnFinishedListener onFinishedListener);
+        //Methods for POST data on Endpoints
+
+        void postTask(OnFinishedListener onFinishedListener, String uploadId, String subjectId, String name, String code);
+
+        void postEvaluations(OnFinishedListener onFinishedListener, String uploadId, String name, String subjectId);
+
+        void postExercises(OnFinishedListener onFinishedListener, String uploadId, String name, String lessonsId);
+
+        void postSubmissions(OnFinishedListener onFinishedListener, String upp, String exercisesId, String taskId, String evaluationId, String uploadId, String studentId);
+
+        void postBlob(OnFinishedListener onFinishedListener, String code, String file, String upload, String submissionId);
     }
 
 }

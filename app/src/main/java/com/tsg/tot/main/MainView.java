@@ -34,6 +34,9 @@ public class MainView extends AppCompatActivity implements MainMVP.View {
 
         requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
         presenter.createDB(this);
+
+        //Test POST methods
+        //presenter.testPOST(this);
     }
 
     @Override
@@ -55,6 +58,13 @@ public class MainView extends AppCompatActivity implements MainMVP.View {
 
     @Override
     public void setTextVersion(float version) {
-        this.runOnUiThread(() -> tv_content.setText(String.valueOf(version)));
+        String db_version;
+        if (version == 0) {
+            db_version = "Verificando versión...";
+        } else {
+            db_version = getResources().getText(R.string.db_version) + String.valueOf(version);
+        }
+
+        this.runOnUiThread(() -> tv_content.setText(db_version));
     }
 }
