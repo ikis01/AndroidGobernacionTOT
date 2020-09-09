@@ -60,4 +60,9 @@ public class Teacher {
     public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
+
+    public Teacher(Integer id, String nombres) {
+        this.id = id;
+        this.nombres = nombres;
+    }
 }

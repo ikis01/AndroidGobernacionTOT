@@ -19,9 +19,9 @@ import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
 import com.tsg.tot.data.model.Upload;
-import com.tsg.tot.main.MainMVP;
 import com.tsg.tot.sqlite.DbOpenHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.RequestBody;
@@ -41,6 +41,9 @@ import static com.tsg.tot.sqlite.DBConstants.EXERCISES_ID;
 import static com.tsg.tot.sqlite.DBConstants.EXERCISES_NAME;
 import static com.tsg.tot.sqlite.DBConstants.EXERCISES_TABLE_NAME;
 import static com.tsg.tot.sqlite.DBConstants.EXERCISES_UPLOAD_ID;
+import static com.tsg.tot.sqlite.DBConstants.GRADE_ID;
+import static com.tsg.tot.sqlite.DBConstants.GRADE_TABLE_NAME;
+import static com.tsg.tot.sqlite.DBConstants.GRADE_TITLE;
 import static com.tsg.tot.sqlite.DBConstants.LESSONS_ID;
 import static com.tsg.tot.sqlite.DBConstants.LESSONS_INIT_DATE;
 import static com.tsg.tot.sqlite.DBConstants.LESSONS_NAME;
@@ -59,8 +62,8 @@ import static com.tsg.tot.sqlite.DBConstants.STUDYMATERIAL_DESCRIPTION;
 import static com.tsg.tot.sqlite.DBConstants.STUDYMATERIAL_ID;
 import static com.tsg.tot.sqlite.DBConstants.STUDYMATERIAL_NAME;
 import static com.tsg.tot.sqlite.DBConstants.STUDYMATERIAL_TABLE_NAME;
-import static com.tsg.tot.sqlite.DBConstants.SUBJECTS_CURSE_ID;
 import static com.tsg.tot.sqlite.DBConstants.SUBJECTS_DESCRIPTION;
+import static com.tsg.tot.sqlite.DBConstants.SUBJECTS_GRADE_ID;
 import static com.tsg.tot.sqlite.DBConstants.SUBJECTS_ID;
 import static com.tsg.tot.sqlite.DBConstants.SUBJECTS_IMAGE;
 import static com.tsg.tot.sqlite.DBConstants.SUBJECTS_SUBTITLE;
@@ -94,7 +97,7 @@ public class DatabaseRepository implements Repository {
     //Get info of DB Tables
 
     @Override
-    public float getVersion(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public float getVersion(Context context) {
         float version;
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -104,8 +107,6 @@ public class DatabaseRepository implements Repository {
 
         version = c.getFloat(0);
 
-        onFinishedListener.onCheckVersionFinished(version, context);
-
         db.close();
         dbHelper.close();
 
@@ -113,37 +114,67 @@ public class DatabaseRepository implements Repository {
     }
 
     @Override
-    public List<Device> getDevice(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Device> getDevice(Context context) {
         return null;
     }
 
     @Override
-    public List<Lessons> getLessons(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Lessons> getLessons(Context context) {
         return null;
     }
 
     @Override
-    public List<Grade> getGrade(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Grade> getGrade(Context context) {
         return null;
     }
 
     @Override
-    public List<Exercises> getExercises(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Exercises> getExercises(Context context) {
         return null;
     }
 
     @Override
-    public List<Submissions> getSubmissions(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Submissions> getSubmissions(Context context) {
         return null;
     }
 
     @Override
-    public List<Student> getStudent(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
-        return null;
+    public List<Student> getStudent(Context context) {
+        List<Student> studentList = new ArrayList<>();
+
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String query = "SELECT * FROM " + STUDENTS_TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        try {
+            if (cursor.getCount() > 0) {
+                do {
+                    //get columns
+                    int idStudent = cursor.getColumnIndex(STUDENTS_ID);
+                    int condeStudent = cursor.getColumnIndex(STUDENTS_CODE);
+                    int studentName = cursor.getColumnIndex(STUDENTS_NAME);
+
+                    //add row to list
+                    studentList.add(new Student(
+                            cursor.getInt(idStudent),
+                            cursor.getInt(condeStudent),
+                            cursor.getString(studentName)
+                    ));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+
+        db.close();
+        dbHelper.close();
+        return studentList;
     }
 
     @Override
-    public List<Evaluations> getEvaluations(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Evaluations> getEvaluations(Context context) {
         return null;
     }
 
@@ -153,32 +184,70 @@ public class DatabaseRepository implements Repository {
     }
 
     @Override
-    public List<StudyMaterial> getStudyMaterial(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<StudyMaterial> getStudyMaterial(Context context) {
         return null;
     }
 
     @Override
-    public List<Subjects> getSubjects(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Subjects> getSubjects(Context context) {
+        List<Subjects> subjectsList = new ArrayList<>();
+
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String query = "SELECT * FROM " + SUBJECTS_TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        try {
+            if (cursor.getCount() > 0) {
+                do {
+                    //get columns
+                    int idSubject = cursor.getColumnIndex(SUBJECTS_ID);
+                    int titleSubject = cursor.getColumnIndex(SUBJECTS_TITLE);
+                    int idGrade = cursor.getColumnIndex(SUBJECTS_GRADE_ID);
+                    int idTeacher = cursor.getColumnIndex(SUBJECTS_TEACHER_ID);
+                    int subjectSubtitle = cursor.getColumnIndex(SUBJECTS_SUBTITLE);
+                    int descriptionSubject = cursor.getColumnIndex(SUBJECTS_DESCRIPTION);
+                    int imageSubject = cursor.getColumnIndex(SUBJECTS_IMAGE);
+
+                    //add row to list
+                    subjectsList.add(new Subjects(
+                            Integer.getInteger(cursor.getString(idSubject)),
+                            cursor.getString(titleSubject),
+                            getGrade(db, cursor.getString(idGrade)),
+                            getTeacher(db, cursor.getString(idTeacher)),
+                            cursor.getString(subjectSubtitle),
+                            cursor.getString(descriptionSubject),
+                            cursor.getString(imageSubject)
+                    ));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+
+        db.close();
+        dbHelper.close();
+        return subjectsList;
+    }
+
+    @Override
+    public List<Planning> getPlanning(Context context) {
         return null;
     }
 
     @Override
-    public List<Planning> getPlanning(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Teacher> getTeachers(Context context) {
         return null;
     }
 
     @Override
-    public List<Teacher> getTeachers(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Upload> getUploads(Context context) {
         return null;
     }
 
     @Override
-    public List<Upload> getUploads(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
-        return null;
-    }
-
-    @Override
-    public List<Task> getTasks(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Task> getTasks(Context context) {
         return null;
     }
 
@@ -228,7 +297,21 @@ public class DatabaseRepository implements Repository {
 
     @Override
     public void updateGrade(List<Grade> gradesList, Context context) {
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        if (gradesList != null) {
+            for (Grade grade : gradesList) {
+                if (checkId(db, GRADE_TABLE_NAME, GRADE_ID, grade.getId().toString()) == 0) {
+                    cv.put(GRADE_ID, grade.getId());
+                    cv.put(GRADE_TITLE, grade.getNombre());
+                    db.insert(GRADE_TABLE_NAME, null, cv);
+                }
+            }
+        }
 
+        db.close();
+        dbHelper.close();
     }
 
     @Override
@@ -350,7 +433,7 @@ public class DatabaseRepository implements Repository {
                 if (checkId(db, SUBJECTS_TABLE_NAME, SUBJECTS_ID, subjects.getId().toString()) == 0) {
                     cv.put(SUBJECTS_ID, subjects.getId());
                     cv.put(SUBJECTS_TITLE, subjects.getTitulo());
-                    cv.put(SUBJECTS_CURSE_ID, subjects.getCurso().getId());
+                    cv.put(SUBJECTS_GRADE_ID, subjects.getCurso().getId());
                     cv.put(SUBJECTS_TEACHER_ID, subjects.getProfesor().getId());
                     cv.put(SUBJECTS_SUBTITLE, subjects.getSubtitulo());
                     cv.put(SUBJECTS_DESCRIPTION, subjects.getDescripcion());
@@ -450,29 +533,31 @@ public class DatabaseRepository implements Repository {
     }
 
     @Override
-    public void postTask(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener) {
+    public void postTask(RequestBody requestBody) {
 
     }
 
     @Override
-    public void postEvaluations(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener) {
+    public void postEvaluations(RequestBody requestBody) {
 
     }
 
     @Override
-    public void postSubmissions(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener) {
+    public void postSubmissions(RequestBody requestBody) {
 
     }
 
     @Override
-    public void postExercises(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener) {
+    public void postExercises(RequestBody requestBody) {
 
     }
 
     @Override
-    public void postBlob(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener) {
+    public void postBlob(RequestBody requestBody) {
 
     }
+
+    //Utils
 
     /**
      * Method that traverses the column of the table
@@ -493,5 +578,67 @@ public class DatabaseRepository implements Repository {
         }
         c.close();
         return 0;
+    }
+
+    /**
+     * Method that obtains the code and name of the grade of any subject
+     *
+     * @param db database
+     * @param id id grade
+     * @return object Grade
+     */
+    public Grade getGrade(SQLiteDatabase db, String id) {
+        Grade grade = null;
+        String query = "SELECT * FROM " + GRADE_TABLE_NAME + " WHERE " + GRADE_ID + " = " + id;
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        try {
+            if (cursor.getCount() > 0) {
+                do {
+                    //get columns
+                    int idGrade = cursor.getColumnIndex(GRADE_ID);
+                    int titleGrade = cursor.getColumnIndex(GRADE_TITLE);
+
+                    //add row to object
+                    grade = new Grade(cursor.getInt(idGrade),
+                            cursor.getString(titleGrade));
+
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+        return grade;
+    }
+
+    /**
+     * Method that obtains the code and name of the teacher of any subject
+     *
+     * @param db database
+     * @param id id teacher
+     * @return object teacher
+     */
+    public Teacher getTeacher(SQLiteDatabase db, String id) {
+        Teacher teacher = null;
+        String query = "SELECT * FROM " + TEACHER_TABLE_NAME + " WHERE " + TEACHER_ID + " = " + id;
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        try {
+            if (cursor.getCount() > 0) {
+                do {
+                    //get columns
+                    int idTeacher = cursor.getColumnIndex(TEACHER_ID);
+                    int teacherName = cursor.getColumnIndex(TEACHER_NAME);
+
+                    //add row to object
+                    teacher = new Teacher(cursor.getInt(idTeacher),
+                            cursor.getString(teacherName));
+
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+        return teacher;
     }
 }

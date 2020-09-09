@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">TOT</string>
     <string name="db_version">Version: </string>
+
+    <string name="message_snackbar_refresh">BASE DE DATOS ACTUALIZADA</string>
+
+    <string name="main_view_StudentCode">Código: </string>
+    <string name="main_view_PendingTasks">Tareas pendientes: </string>
+    <string name="main_view_PendingEvaluations">Evaluaciones pendientes: </string>
+
 </resources>

@@ -20,7 +20,6 @@ import com.tsg.tot.data.model.Upload;
 import com.tsg.tot.data.model.Version;
 import com.tsg.tot.data.remote.ApiService;
 import com.tsg.tot.data.remote.ApiUtils;
-import com.tsg.tot.main.MainMVP;
 
 import java.util.List;
 
@@ -52,7 +51,7 @@ public class ApiRepository implements Repository {
     //GET calls to API
 
     @Override
-    public float getVersion(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public float getVersion(Context context) {
         mApiService.getVersion().enqueue(new Callback<List<Version>>() {
             @Override
             public void onResponse(Call<List<Version>> call, Response<List<Version>> response) {
@@ -79,7 +78,6 @@ public class ApiRepository implements Repository {
             @Override
             public void onFailure(Call<List<Version>> call, Throwable t) {
                 Log.d("onFailure getVersion", t.toString());
-                onFinishedListener.onFailure(t);
             }
         });
 
@@ -87,7 +85,7 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public List<Device> getDevice(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Device> getDevice(Context context) {
         mApiService.getDevice().enqueue(new Callback<List<Device>>() {
             @Override
             public void onResponse(Call<List<Device>> call, Response<List<Device>> response) {
@@ -119,7 +117,7 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public List<Lessons> getLessons(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Lessons> getLessons(Context context) {
         mApiService.getLessons().enqueue(new Callback<List<Lessons>>() {
             @Override
             public void onResponse(Call<List<Lessons>> call, Response<List<Lessons>> response) {
@@ -152,7 +150,7 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public List<Grade> getGrade(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Grade> getGrade(Context context) {
         mApiService.getGrade().enqueue(new Callback<List<Grade>>() {
             @Override
             public void onResponse(Call<List<Grade>> call, Response<List<Grade>> response) {
@@ -184,7 +182,7 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public List<Exercises> getExercises(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Exercises> getExercises(Context context) {
         mApiService.getExercises().enqueue(new Callback<List<Exercises>>() {
             @Override
             public void onResponse(Call<List<Exercises>> call, Response<List<Exercises>> response) {
@@ -217,7 +215,7 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public List<Submissions> getSubmissions(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Submissions> getSubmissions(Context context) {
         mApiService.getSubmissions().enqueue(new Callback<List<Submissions>>() {
             @Override
             public void onResponse(Call<List<Submissions>> call, Response<List<Submissions>> response) {
@@ -255,7 +253,7 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public List<Student> getStudent(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Student> getStudent(Context context) {
         mApiService.getStudent().enqueue(new Callback<List<Student>>() {
             @Override
             public void onResponse(Call<List<Student>> call, Response<List<Student>> response) {
@@ -289,7 +287,7 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public List<Evaluations> getEvaluations(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Evaluations> getEvaluations(Context context) {
         mApiService.getEvaluations().enqueue(new Callback<List<Evaluations>>() {
             @Override
             public void onResponse(Call<List<Evaluations>> call, Response<List<Evaluations>> response) {
@@ -330,7 +328,7 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public List<StudyMaterial> getStudyMaterial(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<StudyMaterial> getStudyMaterial(Context context) {
         mApiService.getStudyMaterial().enqueue(new Callback<List<StudyMaterial>>() {
             @Override
             public void onResponse(Call<List<StudyMaterial>> call, Response<List<StudyMaterial>> response) {
@@ -365,7 +363,7 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public List<Subjects> getSubjects(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Subjects> getSubjects(Context context) {
         mApiService.getSubjects().enqueue(new Callback<List<Subjects>>() {
             @Override
             public void onResponse(Call<List<Subjects>> call, Response<List<Subjects>> response) {
@@ -408,7 +406,7 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public List<Planning> getPlanning(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Planning> getPlanning(Context context) {
         mApiService.getPlanning().enqueue(new Callback<List<Planning>>() {
             @Override
             public void onResponse(Call<List<Planning>> call, Response<List<Planning>> response) {
@@ -444,7 +442,7 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public List<Teacher> getTeachers(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Teacher> getTeachers(Context context) {
         mApiService.getTeachers().enqueue(new Callback<List<Teacher>>() {
             @Override
             public void onResponse(Call<List<Teacher>> call, Response<List<Teacher>> response) {
@@ -479,7 +477,7 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public List<Upload> getUploads(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Upload> getUploads(Context context) {
         mApiService.getUploads().enqueue(new Callback<List<Upload>>() {
             @Override
             public void onResponse(Call<List<Upload>> call, Response<List<Upload>> response) {
@@ -511,7 +509,7 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public List<Task> getTasks(MainMVP.Model.OnFinishedListener onFinishedListener, Context context) {
+    public List<Task> getTasks(Context context) {
         mApiService.getTasks().enqueue(new Callback<List<Task>>() {
             @Override
             public void onResponse(Call<List<Task>> call, Response<List<Task>> response) {
@@ -624,7 +622,7 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public void postTask(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener) {
+    public void postTask(RequestBody requestBody) {
         mApiService.postTask(requestBody).enqueue(new Callback<Task>() {
             @Override
             public void onResponse(Call<Task> call, Response<Task> response) {
@@ -642,7 +640,7 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public void postEvaluations(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener) {
+    public void postEvaluations(RequestBody requestBody) {
         mApiService.postEvaluations(requestBody).enqueue(new Callback<Evaluations>() {
             @Override
             public void onResponse(Call<Evaluations> call, Response<Evaluations> response) {
@@ -660,7 +658,7 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public void postExercises(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener) {
+    public void postExercises(RequestBody requestBody) {
         mApiService.postExercises(requestBody).enqueue(new Callback<Exercises>() {
             @Override
             public void onResponse(Call<Exercises> call, Response<Exercises> response) {
@@ -678,7 +676,7 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public void postSubmissions(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener) {
+    public void postSubmissions(RequestBody requestBody) {
         mApiService.postSubmissions(requestBody).enqueue(new Callback<Submissions>() {
             @Override
             public void onResponse(Call<Submissions> call, Response<Submissions> response) {
@@ -696,7 +694,7 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public void postBlob(RequestBody body, MainMVP.Model.OnFinishedListener onFinishedListener) {
+    public void postBlob(RequestBody body) {
         mApiService.postBlob(body).enqueue(new Callback<Blob>() {
             @Override
             public void onResponse(Call<Blob> call, Response<Blob> response) {

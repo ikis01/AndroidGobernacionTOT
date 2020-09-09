@@ -60,4 +60,12 @@ public class Task {
     public void setMaterias(Integer materias) {
         this.materias = materias;
     }
+
+    public Task(Integer id, Upload subida, String nombre, String codigo, Integer materias) {
+        this.id = id;
+        this.subida = subida;
+        this.nombre = nombre;
+        this.codigo = codigo;
+        this.materias = materias;
+    }
 }

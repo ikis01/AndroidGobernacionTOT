@@ -49,4 +49,11 @@ public class Evaluations {
     public void setMaterias(Integer materias) {
         this.materias = materias;
     }
+
+    public Evaluations(Integer id, Upload subida, String nombre, Integer materias) {
+        this.id = id;
+        this.subida = subida;
+        this.nombre = nombre;
+        this.materias = materias;
+    }
 }

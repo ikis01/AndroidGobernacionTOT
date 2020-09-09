@@ -16,7 +16,6 @@ import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
 import com.tsg.tot.data.model.Upload;
-import com.tsg.tot.main.MainMVP;
 
 import java.util.List;
 
@@ -26,35 +25,35 @@ public interface Repository {
 
     //GET
 
-    float getVersion(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
+    float getVersion(Context context);
 
-    List<Device> getDevice(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
+    List<Device> getDevice(Context context);
 
-    List<Lessons> getLessons(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
+    List<Lessons> getLessons(Context context);
 
-    List<Grade> getGrade(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
+    List<Grade> getGrade(Context context);
 
-    List<Exercises> getExercises(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
+    List<Exercises> getExercises(Context context);
 
-    List<Submissions> getSubmissions(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
+    List<Submissions> getSubmissions(Context context);
 
-    List<Student> getStudent(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
+    List<Student> getStudent(Context context);
 
-    List<Evaluations> getEvaluations(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
+    List<Evaluations> getEvaluations(Context context);
 
     String getIPEND(Context context);
 
-    List<StudyMaterial> getStudyMaterial(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
+    List<StudyMaterial> getStudyMaterial(Context context);
 
-    List<Subjects> getSubjects(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
+    List<Subjects> getSubjects(Context context);
 
-    List<Planning> getPlanning(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
+    List<Planning> getPlanning(Context context);
 
-    List<Teacher> getTeachers(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
+    List<Teacher> getTeachers(Context context);
 
-    List<Upload> getUploads(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
+    List<Upload> getUploads(Context context);
 
-    List<Task> getTasks(MainMVP.Model.OnFinishedListener onFinishedListener, Context context);
+    List<Task> getTasks(Context context);
 
     //UPDATE - POST
 
@@ -88,13 +87,13 @@ public interface Repository {
 
     void updateBlobs(List<Blob> blobList, Context context);
 
-    void postTask(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener);
+    void postTask(RequestBody requestBody);
 
-    void postEvaluations(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener);
+    void postEvaluations(RequestBody requestBody);
 
-    void postExercises(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener);
+    void postExercises(RequestBody requestBody);
 
-    void postSubmissions(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener);
+    void postSubmissions(RequestBody requestBody);
 
-    void postBlob(RequestBody requestBody, MainMVP.Model.OnFinishedListener onFinishedListener);
+    void postBlob(RequestBody requestBody);
 }

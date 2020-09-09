@@ -36,6 +36,9 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             "`Descripcion` TEXT, " +
             "`Imagen` TEXT)";
 
+    private static final String GRADE_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS `Grado` (`idGrado` INTEGER," +
+            "`Grado` TEXT)";
+
     private static final String STUDY_MATERIAL_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS `MaterialEstudio` (" +
             "  `idMaterialEstudio` INTEGER," +
             "  `Clases_id` INTEGER," +
@@ -96,12 +99,13 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //Creo DB
+        //Crea DB
         db.execSQL(VERSION_TABLE_CREATE);
         db.execSQL(TASK_TABLE_CREATE);
         db.execSQL(UPLOAD_TABLE_CREATE);
         db.execSQL(TEACHER_TABLE_CREATE);
         db.execSQL(SUBJECTS_TABLE_CREATE);
+        db.execSQL(GRADE_TABLE_CREATE);
         db.execSQL(STUDY_MATERIAL_TABLE_CREATE);
         db.execSQL(IPEND_TABLE_CREATE);
         db.execSQL(EVALUATION_TABLE_CREATE);
@@ -111,7 +115,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         db.execSQL(CLASSES_TABLE_CREATE);
         db.execSQL(BLOB_TABLE_CREATE);
 
-        //Asigno Version 0.1 a la tabla
+        //Asigna Version 0.1 a la tabla
         ContentValues cv = new ContentValues();
         cv.put(VERSION_NUMBER, 1.0);
         db.insert(VERSION_TABLE_NAME, null, cv);

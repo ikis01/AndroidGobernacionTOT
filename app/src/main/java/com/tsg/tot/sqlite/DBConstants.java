@@ -3,6 +3,13 @@ package com.tsg.tot.sqlite;
 public final class DBConstants {
 
     /**
+     * Constants to identify from which repository
+     * the information will be extracted
+     */
+    public static final int API_REPOSITORY = 0;
+    public static final int DATABASE_REPOSITORY = 1;
+
+    /**
      * Table Names
      */
     public static final String VERSION_TABLE_NAME = "VERSION";
@@ -10,6 +17,7 @@ public final class DBConstants {
     public static final String UPLOAD_TABLE_NAME = "Subida";
     public static final String TEACHER_TABLE_NAME = "Profesor";
     public static final String SUBJECTS_TABLE_NAME = "Materias";
+    public static final String GRADE_TABLE_NAME = "Grado";
     public static final String STUDYMATERIAL_TABLE_NAME = "MaterialEstudio";
     public static final String IPEND_TABLE_NAME = "IPEND";
     public static final String EVALUATION_TABLE_NAME = "Evaluacion";
@@ -49,11 +57,17 @@ public final class DBConstants {
      */
     public static final String SUBJECTS_ID = "idMaterias";
     public static final String SUBJECTS_TITLE = "Titulo";
-    public static final String SUBJECTS_CURSE_ID = "Cursos_idCursos";
+    public static final String SUBJECTS_GRADE_ID = "Cursos_idCursos";
     public static final String SUBJECTS_TEACHER_ID = "Profesor_idProfesor";
     public static final String SUBJECTS_SUBTITLE = "Subtitulo";
     public static final String SUBJECTS_DESCRIPTION = "Descripcion";
     public static final String SUBJECTS_IMAGE = "Imagen";
+
+    /**
+     * Grado table columns
+     */
+    public static final String GRADE_ID = "idGrado";
+    public static final String GRADE_TITLE = "Grado";
 
     /**
      * MaterialEstudio table columns

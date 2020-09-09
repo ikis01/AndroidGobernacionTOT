@@ -22,8 +22,11 @@ public interface MainMVP {
 
     interface View {
 
-        void setTextVersion(float version);
+        void setInfoStudent(List<Student> studentList);
 
+        void setInfoSubject(Subjects subjects);
+
+        void notifyRefresh();
     }
 
     interface Presenter {
@@ -34,6 +37,14 @@ public interface MainMVP {
 
         void checkVersions(Context context);
 
+        List<Subjects> getSubjects(Context context);
+
+        void setInfoStudent(Context context);
+
+        void setInfoSubject(Subjects subjects);
+
+        void notifyRefresh();
+
         void testPOST(Context context);
 
     }
@@ -41,70 +52,68 @@ public interface MainMVP {
     interface Model {
 
         interface OnFinishedListener {
-            void onCheckVersionFinished(float version, Context context);
-
             void onFailure(Throwable t);
         }
 
         void createDb(Context context);
 
-        float checkAPIVersion(OnFinishedListener onFinishedListener, Context context);
+        float checkAPIVersion(Context context);
 
-        float checkDbVersion(OnFinishedListener onFinishedListener, Context context);
+        float checkDbVersion(Context context);
 
         void updateAllDb(float versionList,
                          List<Task> taskList,
                          List<Upload> uploadList,
                          List<Teacher> teacherList,
                          List<Subjects> subjectsList,
+                         List<Grade> gradeList,
                          List<StudyMaterial> studyMaterialList,
                          List<Evaluations> evaluationsList,
                          List<Student> studentList,
                          List<Submissions> submissionsList,
                          List<Exercises> exercisesList,
                          List<Lessons> lessonsList,
-                         OnFinishedListener onFinishedListener,
                          Context context);
 
         //Methods for downloading data from Endpoints
 
-        List<Device> checkDevices(OnFinishedListener onFinishedListener, Context context);
+        List<Device> checkDevices(Context context, int from);
 
-        List<Lessons> checkLessons(OnFinishedListener onFinishedListener, Context context);
+        List<Lessons> checkLessons(Context context, int from);
 
-        List<Grade> checkGrades(OnFinishedListener onFinishedListener, Context context);
+        List<Grade> checkGrades(Context context, int from);
 
-        List<Exercises> checkExercises(OnFinishedListener onFinishedListener, Context context);
+        List<Exercises> checkExercises(Context context, int from);
 
-        List<Submissions> checkSubmissions(OnFinishedListener onFinishedListener, Context context);
+        List<Submissions> checkSubmissions(Context context, int from);
 
-        List<Student> checkStudents(OnFinishedListener onFinishedListener, Context context);
+        List<Student> checkStudents(Context context, int from);
 
-        List<Evaluations> checkEvaluations(OnFinishedListener onFinishedListener, Context context);
+        List<Evaluations> checkEvaluations(Context context, int from);
 
-        List<StudyMaterial> checkStudyMaterials(OnFinishedListener onFinishedListener, Context context);
+        List<StudyMaterial> checkStudyMaterials(Context context, int from);
 
-        List<Subjects> checkSubjects(OnFinishedListener onFinishedListener, Context context);
+        List<Subjects> checkSubjects(Context context, int from);
 
-        List<Planning> checkPlanning(OnFinishedListener onFinishedListener, Context context);
+        List<Planning> checkPlanning(Context context, int from);
 
-        List<Teacher> checkTeachers(OnFinishedListener onFinishedListener, Context context);
+        List<Teacher> checkTeachers(Context context, int from);
 
-        List<Upload> checkUploads(OnFinishedListener onFinishedListener, Context context);
+        List<Upload> checkUploads(Context context, int from);
 
-        List<Task> checkTasks(OnFinishedListener onFinishedListener, Context context);
+        List<Task> checkTasks(Context context, int from);
 
         //Methods for POST data on Endpoints
 
-        void postTask(OnFinishedListener onFinishedListener, String uploadId, String subjectId, String name, String code);
+        void postTask(String uploadId, String subjectId, String name, String code);
 
-        void postEvaluations(OnFinishedListener onFinishedListener, String uploadId, String name, String subjectId);
+        void postEvaluations(String uploadId, String name, String subjectId);
 
-        void postExercises(OnFinishedListener onFinishedListener, String uploadId, String name, String lessonsId);
+        void postExercises(String uploadId, String name, String lessonsId);
 
-        void postSubmissions(OnFinishedListener onFinishedListener, String upp, String exercisesId, String taskId, String evaluationId, String uploadId, String studentId);
+        void postSubmissions(String upp, String exercisesId, String taskId, String evaluationId, String uploadId, String studentId);
 
-        void postBlob(OnFinishedListener onFinishedListener, String code, String file, String upload, String submissionId);
+        void postBlob(String code, String file, String upload, String submissionId);
     }
 
 }

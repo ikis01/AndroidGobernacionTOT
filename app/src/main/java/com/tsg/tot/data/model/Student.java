@@ -10,7 +10,7 @@ public class Student {
     private Integer id;
     @SerializedName("curso")
     @Expose
-    private Curse curso;
+    private Grade curso;
     @SerializedName("codigo")
     @Expose
     private Integer codigo;
@@ -32,11 +32,11 @@ public class Student {
         this.id = id;
     }
 
-    public Curse getCurso() {
+    public Grade getCurso() {
         return curso;
     }
 
-    public void setCurso(Curse curso) {
+    public void setCurso(Grade curso) {
         this.curso = curso;
     }
 
@@ -70,5 +70,20 @@ public class Student {
 
     public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public Student(Integer id, Grade curso, Integer codigo, String nombres, String apellidos, String fechaNacimiento) {
+        this.id = id;
+        this.curso = curso;
+        this.codigo = codigo;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public Student(Integer id, Integer codigo, String nombres) {
+        this.id = id;
+        this.codigo = codigo;
+        this.nombres = nombres;
     }
 }

@@ -5,6 +5,13 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.tsg.tot.data.model.Subjects;
+
+import java.util.List;
+
+import static com.tsg.tot.sqlite.DBConstants.API_REPOSITORY;
+import static com.tsg.tot.sqlite.DBConstants.DATABASE_REPOSITORY;
+
 public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishedListener {
 
     @Nullable
@@ -27,34 +34,49 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
 
     @Override
     public void checkVersions(Context context) {
-        MainMVP.Model.OnFinishedListener onFinishedListener = this;
-        Log.d("Debug", "checkVersions");
+        Log.d("checkVersions", "checkVersions");
         if (view != null) {
             new Thread(() -> {
-                Log.d("Debug", "Thread");
+                Log.d("checkVersions", "Thread");
                 //Thread for checking versions
                 while (true) {
-                    if (model.checkAPIVersion(onFinishedListener, context) == model.checkDbVersion(onFinishedListener, context)) {
-                        Log.d("Debug", "Same version");
+
+                    //Set version No.
+                    float apiVersion = model.checkAPIVersion(context);
+                    float dbVersion = model.checkDbVersion(context);
+
+                    //Waiting time between queries
+                    try {
+                        Thread.sleep(15 * 1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (apiVersion == dbVersion || apiVersion == 0) {
+                        Log.d("checkVersions", "Same version");
+                    } else {
+                        Log.d("checkVersions", "Diferent version");
+                        model.updateAllDb(model.checkAPIVersion(context),
+                                model.checkTasks(context, API_REPOSITORY),
+                                model.checkUploads(context, API_REPOSITORY),
+                                model.checkTeachers(context, API_REPOSITORY),
+                                model.checkSubjects(context, API_REPOSITORY),
+                                model.checkGrades(context, API_REPOSITORY),
+                                model.checkStudyMaterials(context, API_REPOSITORY),
+                                model.checkEvaluations(context, API_REPOSITORY),
+                                model.checkStudents(context, API_REPOSITORY),
+                                model.checkSubmissions(context, API_REPOSITORY),
+                                model.checkExercises(context, API_REPOSITORY),
+                                model.checkLessons(context, API_REPOSITORY),
+                                context);
+
                         try {
-                            Thread.sleep(20 * 1000);
+                            Thread.sleep(15 * 1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                    } else {
-                        Log.d("Debug", "Diferent version");
-                        model.updateAllDb(model.checkAPIVersion(onFinishedListener, context),
-                                model.checkTasks(onFinishedListener, context),
-                                model.checkUploads(onFinishedListener, context),
-                                model.checkTeachers(onFinishedListener, context),
-                                model.checkSubjects(onFinishedListener, context),
-                                model.checkStudyMaterials(onFinishedListener, context),
-                                model.checkEvaluations(onFinishedListener, context),
-                                model.checkStudents(onFinishedListener, context),
-                                model.checkSubmissions(onFinishedListener, context),
-                                model.checkExercises(onFinishedListener, context),
-                                model.checkLessons(onFinishedListener, context),
-                                onFinishedListener, context);
+
+                        this.notifyRefresh();
                     }
                 }
             }).start();
@@ -62,9 +84,21 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
     }
 
     @Override
-    public void onCheckVersionFinished(float version, Context context) {
+    public List<Subjects> getSubjects(Context context) {
+        return model.checkSubjects(context, DATABASE_REPOSITORY);
+    }
+
+    @Override
+    public void setInfoStudent(Context context) {
         if (view != null) {
-            view.setTextVersion(version);
+            view.setInfoStudent(model.checkStudents(context, DATABASE_REPOSITORY));
+        }
+    }
+
+    @Override
+    public void setInfoSubject(Subjects subjects) {
+        if (view != null) {
+            view.setInfoSubject(subjects);
         }
     }
 
@@ -74,7 +108,14 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
     }
 
     @Override
+    public void notifyRefresh() {
+        if (view != null) {
+            view.notifyRefresh();
+        }
+    }
+
+    @Override
     public void testPOST(Context context) {
-        model.postSubmissions(this, "", "3", "224", "2", "269", "1");
+        model.postSubmissions("", "3", "224", "2", "269", "1");
     }
 }

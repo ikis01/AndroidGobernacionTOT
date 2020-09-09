@@ -60,4 +60,12 @@ public class StudyMaterial {
     public void setBlob(Integer blob) {
         this.blob = blob;
     }
+
+    public StudyMaterial(Integer id, String nombre, String descripcion, Integer clases, Integer blob) {
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.clases = clases;
+        this.blob = blob;
+    }
 }

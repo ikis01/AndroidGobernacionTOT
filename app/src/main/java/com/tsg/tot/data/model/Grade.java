@@ -27,4 +27,9 @@ public class Grade {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public Grade(Integer id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
 }

@@ -50,4 +50,10 @@ public class Exercises {
         this.clases = clases;
     }
 
+    public Exercises(Integer id, Upload subida, String nombre, Integer clases) {
+        this.id = id;
+        this.subida = subida;
+        this.nombre = nombre;
+        this.clases = clases;
+    }
 }

@@ -94,4 +94,14 @@ public class Submissions {
         this.estudiante = estudiante;
     }
 
+    public Submissions(Integer id, String creado, Integer upp, Integer ejercios, Integer tarea, Integer evaluacion, Integer subida, Integer estudiante) {
+        this.id = id;
+        this.creado = creado;
+        this.upp = upp;
+        this.ejercios = ejercios;
+        this.tarea = tarea;
+        this.evaluacion = evaluacion;
+        this.subida = subida;
+        this.estudiante = estudiante;
+    }
 }

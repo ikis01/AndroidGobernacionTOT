@@ -3,14 +3,16 @@ package com.tsg.tot.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Subjects {
+import java.io.Serializable;
+
+public class Subjects implements Serializable {
 
     @SerializedName("id")
     @Expose
     private Integer id;
     @SerializedName("curso")
     @Expose
-    private Curse curso;
+    private Grade curso;
     @SerializedName("profesor")
     @Expose
     private Teacher profesor;
@@ -38,11 +40,11 @@ public class Subjects {
         this.id = id;
     }
 
-    public Curse getCurso() {
+    public Grade getCurso() {
         return curso;
     }
 
-    public void setCurso(Curse curso) {
+    public void setCurso(Grade curso) {
         this.curso = curso;
     }
 
@@ -92,5 +94,18 @@ public class Subjects {
 
     public void setImagen(String imagen) {
         this.imagen = imagen;
+    }
+
+    public Subjects(Integer id, String titulo, Grade curso, Teacher profesor, String subtitulo, String descripcion, String imagen) {
+        this.id = id;
+        this.curso = curso;
+        this.profesor = profesor;
+        this.titulo = titulo;
+        this.subtitulo = subtitulo;
+        this.descripcion = descripcion;
+        this.imagen = imagen;
+    }
+
+    public Subjects() {
     }
 }
