@@ -1,4 +1,4 @@
-package com.tsg.tot.main;
+package com.tsg.tot.main.mainmvp;
 
 import com.tsg.tot.repository.ApiRepository;
 import com.tsg.tot.repository.DatabaseRepository;

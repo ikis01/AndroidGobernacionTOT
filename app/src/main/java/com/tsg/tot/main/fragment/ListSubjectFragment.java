@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tsg.tot.R;
 import com.tsg.tot.adapter.SubjectsAdapter;
 import com.tsg.tot.data.model.Subjects;
-import com.tsg.tot.main.MainMVP;
+import com.tsg.tot.main.mainmvp.MainMVP;
 
 import java.util.List;
 

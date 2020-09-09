@@ -3,7 +3,7 @@ package com.tsg.tot.main.fragment;
 import android.content.Context;
 
 import com.tsg.tot.data.model.Subjects;
-import com.tsg.tot.main.MainMVP;
+import com.tsg.tot.main.mainmvp.MainMVP;
 
 import java.util.List;
 

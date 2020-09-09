@@ -1,7 +1,7 @@
 package com.tsg.tot.root;
 
-import com.tsg.tot.main.MainModule;
-import com.tsg.tot.main.MainView;
+import com.tsg.tot.main.mainmvp.MainModule;
+import com.tsg.tot.main.mainmvp.MainView;
 
 import javax.inject.Singleton;
 

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/classroom"
     android:orientation="vertical"
-    tools:context=".main.MainView">
+    tools:context=".main.mainmvp.MainView">
 
     <RelativeLayout
         android:id="@+id/toolbar"

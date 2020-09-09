@@ -2,7 +2,7 @@ package com.tsg.tot.root;
 
 import android.app.Application;
 
-import com.tsg.tot.main.MainModule;
+import com.tsg.tot.main.mainmvp.MainModule;
 
 public class App extends Application {
 
