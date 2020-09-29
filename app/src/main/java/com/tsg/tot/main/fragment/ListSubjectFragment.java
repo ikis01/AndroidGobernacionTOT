@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tsg.tot.R;
 import com.tsg.tot.adapter.SubjectsAdapter;
 import com.tsg.tot.data.model.Subjects;
+import com.tsg.tot.data.model.Task;
 import com.tsg.tot.main.mainmvp.MainMVP;
 
 import java.util.List;
@@ -88,4 +89,10 @@ public class ListSubjectFragment extends Fragment implements FragmentsMVP.View {
     public void setSubjects(List<Subjects> subjectsList, Context context, MainMVP.Presenter presenter) {
         subjectsAdapter.dataSet(subjectsList, subjectsList.size(), context, presenter);
     }
+
+    @Override
+    public void setTaskSubjects(List<Task> taskSubjects, Context context, MainMVP.Presenter presenter) {
+
+    }
+
 }

@@ -56,10 +56,11 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.ViewHo
         holder.nameSubject.setText(subjectsList.get(position).getTitulo());
 
         holder.itemView.setOnClickListener(view -> {
-            Subjects subjects = new Subjects(null,
+            Subjects subjects = new Subjects(subjectsList.get(position).getId(),
+                    subjectsList.get(position).getCurso(),
+                    subjectsList.get(position).getProfesor(),
+                    subjectsList.get(position).getCodigo(),
                     subjectsList.get(position).getTitulo(),
-                    null,
-                    null,
                     subjectsList.get(position).getSubtitulo(),
                     subjectsList.get(position).getDescripcion(),
                     subjectsList.get(position).getImagen());

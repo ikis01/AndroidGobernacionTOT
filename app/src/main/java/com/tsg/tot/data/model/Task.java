@@ -20,6 +20,33 @@ public class Task {
     @SerializedName("materias")
     @Expose
     private Integer materias;
+    @SerializedName("estudiante")
+    @Expose
+    private Integer estudiante;
+
+    /**
+     * No args constructor for use in serialization
+     */
+    public Task() {
+    }
+
+    /**
+     * @param estudiante student
+     * @param codigo     code
+     * @param subida     upload
+     * @param id         id
+     * @param nombre     name
+     * @param materias   last name
+     */
+    public Task(Integer id, Upload subida, String nombre, String codigo, Integer materias, Integer estudiante) {
+        super();
+        this.id = id;
+        this.subida = subida;
+        this.nombre = nombre;
+        this.codigo = codigo;
+        this.materias = materias;
+        this.estudiante = estudiante;
+    }
 
     public Integer getId() {
         return id;
@@ -61,11 +88,12 @@ public class Task {
         this.materias = materias;
     }
 
-    public Task(Integer id, Upload subida, String nombre, String codigo, Integer materias) {
-        this.id = id;
-        this.subida = subida;
-        this.nombre = nombre;
-        this.codigo = codigo;
-        this.materias = materias;
+    public Integer getEstudiante() {
+        return estudiante;
     }
+
+    public void setEstudiante(Integer estudiante) {
+        this.estudiante = estudiante;
+    }
+
 }

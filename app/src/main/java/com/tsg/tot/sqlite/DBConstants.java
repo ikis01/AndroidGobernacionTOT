@@ -39,6 +39,8 @@ public final class DBConstants {
     public static final String TASK_NAME = "NombreTarea";
     public static final String TASK_SUBJECT_ID = "Materias_idMaterias";
     public static final String TASK_UPLOAD_ID = "Subida_idSubida";
+    public static final String TASK_CODE = "Codigo";
+    public static final String TASK_STUDENT_ID = "Estudiante";
 
     /**
      * Subida table columns
@@ -57,6 +59,7 @@ public final class DBConstants {
      */
     public static final String SUBJECTS_ID = "idMaterias";
     public static final String SUBJECTS_TITLE = "Titulo";
+    public static final String SUBJECTS_CODE = "Codigo";
     public static final String SUBJECTS_GRADE_ID = "Cursos_idCursos";
     public static final String SUBJECTS_TEACHER_ID = "Profesor_idProfesor";
     public static final String SUBJECTS_SUBTITLE = "Subtitulo";

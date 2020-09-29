@@ -62,6 +62,7 @@ import static com.tsg.tot.sqlite.DBConstants.STUDYMATERIAL_DESCRIPTION;
 import static com.tsg.tot.sqlite.DBConstants.STUDYMATERIAL_ID;
 import static com.tsg.tot.sqlite.DBConstants.STUDYMATERIAL_NAME;
 import static com.tsg.tot.sqlite.DBConstants.STUDYMATERIAL_TABLE_NAME;
+import static com.tsg.tot.sqlite.DBConstants.SUBJECTS_CODE;
 import static com.tsg.tot.sqlite.DBConstants.SUBJECTS_DESCRIPTION;
 import static com.tsg.tot.sqlite.DBConstants.SUBJECTS_GRADE_ID;
 import static com.tsg.tot.sqlite.DBConstants.SUBJECTS_ID;
@@ -78,8 +79,10 @@ import static com.tsg.tot.sqlite.DBConstants.SUBMISSIONS_TABLE_NAME;
 import static com.tsg.tot.sqlite.DBConstants.SUBMISSIONS_TASK_ID;
 import static com.tsg.tot.sqlite.DBConstants.SUBMISSIONS_UPLOAD_ID;
 import static com.tsg.tot.sqlite.DBConstants.SUBMISSIONS_UPP;
+import static com.tsg.tot.sqlite.DBConstants.TASK_CODE;
 import static com.tsg.tot.sqlite.DBConstants.TASK_ID;
 import static com.tsg.tot.sqlite.DBConstants.TASK_NAME;
+import static com.tsg.tot.sqlite.DBConstants.TASK_STUDENT_ID;
 import static com.tsg.tot.sqlite.DBConstants.TASK_SUBJECT_ID;
 import static com.tsg.tot.sqlite.DBConstants.TASK_TABLE_NAME;
 import static com.tsg.tot.sqlite.DBConstants.TASK_UPLOAD_ID;
@@ -204,6 +207,7 @@ public class DatabaseRepository implements Repository {
                     //get columns
                     int idSubject = cursor.getColumnIndex(SUBJECTS_ID);
                     int titleSubject = cursor.getColumnIndex(SUBJECTS_TITLE);
+                    int codeSubject = cursor.getColumnIndex(SUBJECTS_CODE);
                     int idGrade = cursor.getColumnIndex(SUBJECTS_GRADE_ID);
                     int idTeacher = cursor.getColumnIndex(SUBJECTS_TEACHER_ID);
                     int subjectSubtitle = cursor.getColumnIndex(SUBJECTS_SUBTITLE);
@@ -212,10 +216,11 @@ public class DatabaseRepository implements Repository {
 
                     //add row to list
                     subjectsList.add(new Subjects(
-                            Integer.getInteger(cursor.getString(idSubject)),
-                            cursor.getString(titleSubject),
+                            Integer.parseInt(cursor.getString(idSubject)),
                             getGrade(db, cursor.getString(idGrade)),
                             getTeacher(db, cursor.getString(idTeacher)),
+                            cursor.getString(codeSubject),
+                            cursor.getString(titleSubject),
                             cursor.getString(subjectSubtitle),
                             cursor.getString(descriptionSubject),
                             cursor.getString(imageSubject)
@@ -248,7 +253,43 @@ public class DatabaseRepository implements Repository {
 
     @Override
     public List<Task> getTasks(Context context) {
-        return null;
+        List<Task> taskList = new ArrayList<>();
+
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String query = "SELECT * FROM " + TASK_TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        try {
+            if (cursor.getCount() > 0) {
+                do {
+                    //get columns
+                    int idTask = cursor.getColumnIndex(TASK_ID);
+                    int nameTask = cursor.getColumnIndex(TASK_NAME);
+                    int idSubjectTask = cursor.getColumnIndex(TASK_SUBJECT_ID);
+                    int idUploadTask = cursor.getColumnIndex(TASK_UPLOAD_ID);
+                    int codeTask = cursor.getColumnIndex(TASK_CODE);
+                    int idStudent = cursor.getColumnIndex(TASK_STUDENT_ID);
+
+                    //add row to list
+                    taskList.add(new Task(
+                            Integer.parseInt(cursor.getString(idTask)),
+                            getUpload(db, cursor.getString(idUploadTask)),
+                            cursor.getString(nameTask),
+                            cursor.getString(codeTask),
+                            Integer.parseInt(cursor.getString(idSubjectTask)),
+                            Integer.parseInt(cursor.getString(idStudent))
+                    ));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+
+        db.close();
+        dbHelper.close();
+        return taskList;
     }
 
     //UPDATE info of DB Tables
@@ -433,6 +474,7 @@ public class DatabaseRepository implements Repository {
                 if (checkId(db, SUBJECTS_TABLE_NAME, SUBJECTS_ID, subjects.getId().toString()) == 0) {
                     cv.put(SUBJECTS_ID, subjects.getId());
                     cv.put(SUBJECTS_TITLE, subjects.getTitulo());
+                    cv.put(SUBJECTS_CODE, subjects.getCodigo());
                     cv.put(SUBJECTS_GRADE_ID, subjects.getCurso().getId());
                     cv.put(SUBJECTS_TEACHER_ID, subjects.getProfesor().getId());
                     cv.put(SUBJECTS_SUBTITLE, subjects.getSubtitulo());
@@ -502,6 +544,8 @@ public class DatabaseRepository implements Repository {
                     cv.put(TASK_NAME, task.getNombre());
                     cv.put(TASK_SUBJECT_ID, task.getMaterias());
                     cv.put(TASK_UPLOAD_ID, task.getSubida().getId());
+                    cv.put(TASK_CODE, task.getCodigo());
+                    cv.put(TASK_STUDENT_ID, task.getEstudiante());
                     db.insert(TASK_TABLE_NAME, null, cv);
                 }
             }
@@ -640,5 +684,29 @@ public class DatabaseRepository implements Repository {
             cursor.close();
         }
         return teacher;
+    }
+
+    public Upload getUpload (SQLiteDatabase db, String id){
+        Upload upload = null;
+        String query = "SELECT * FROM " + UPLOAD_TABLE_NAME + " WHERE " + UPLOAD_ID + " = " + id;
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        try {
+            if (cursor.getCount() > 0) {
+                do {
+                    //get columns
+                    int idUpload = cursor.getColumnIndex(UPLOAD_ID);
+                    int uploadDate = cursor.getColumnIndex(UPLOAD_DATE);
+
+                    //add row to object
+                    upload = new Upload(cursor.getInt(idUpload),
+                            cursor.getString(uploadDate));
+
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+        return upload;
     }
 }

@@ -27,4 +27,9 @@ public class Upload {
     public void setFecha(String fecha) {
         this.fecha = fecha;
     }
+
+    public Upload(Integer id, String fecha) {
+        this.id = id;
+        this.fecha = fecha;
+    }
 }

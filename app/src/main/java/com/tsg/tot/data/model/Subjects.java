@@ -96,10 +96,11 @@ public class Subjects implements Serializable {
         this.imagen = imagen;
     }
 
-    public Subjects(Integer id, String titulo, Grade curso, Teacher profesor, String subtitulo, String descripcion, String imagen) {
+    public Subjects(Integer id, Grade curso, Teacher profesor, String codigo, String titulo, String subtitulo, String descripcion, String imagen) {
         this.id = id;
         this.curso = curso;
         this.profesor = profesor;
+        this.codigo = codigo;
         this.titulo = titulo;
         this.subtitulo = subtitulo;
         this.descripcion = descripcion;

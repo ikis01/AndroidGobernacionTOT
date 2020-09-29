@@ -6,7 +6,9 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.tsg.tot.data.model.Subjects;
+import com.tsg.tot.data.model.Task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.tsg.tot.sqlite.DBConstants.API_REPOSITORY;
@@ -86,6 +88,26 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
     @Override
     public List<Subjects> getSubjects(Context context) {
         return model.checkSubjects(context, DATABASE_REPOSITORY);
+    }
+
+    @Override
+    public List<Task> getTaskSubject(Context context, int idSubject) {
+        List<Task> taskList = model.checkTasks(context, DATABASE_REPOSITORY);
+        List<Task> taskListFinal = new ArrayList<>();
+
+        if (taskList != null) {
+            for (Task task : taskList) {
+                try {
+                    if (task.getMaterias() == idSubject){
+                        taskListFinal.add(task);
+                    }
+                } catch (NullPointerException e) {
+                    Log.d("Debug NullPointerException ", e.toString());
+                }
+            }
+        }
+
+        return taskListFinal;
     }
 
     @Override

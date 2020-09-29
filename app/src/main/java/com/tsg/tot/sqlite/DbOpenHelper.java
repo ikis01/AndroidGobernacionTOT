@@ -20,7 +20,9 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     private static final String TASK_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS `Tarea` (`idTarea` INTEGER," +
             " `NombreTarea` TEXT," +
             " `Materias_idMaterias` INTEGER," +
-            " `Subida_idSubida` INTEGER)";
+            " `Subida_idSubida` INTEGER," +
+            " `Codigo` INTEGER," +
+            " `Estudiante` INTEGER)";
 
     private static final String UPLOAD_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS `Subida` (`idSubida` INTEGER," +
             "`Fecha` TEXT)";
@@ -30,6 +32,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
     private static final String SUBJECTS_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS `Materias` (`idMaterias` INTEGER," +
             "`Titulo` TEXT, " +
+            "`Codigo` TEXT, " +
             "`Cursos_idCursos` INTEGER, " +
             "`Profesor_idProfesor` INTEGER, " +
             "`Subtitulo` TEXT, " +

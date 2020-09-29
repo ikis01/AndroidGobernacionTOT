@@ -39,6 +39,8 @@ public interface MainMVP {
 
         List<Subjects> getSubjects(Context context);
 
+        List<Task> getTaskSubject(Context context, int idSubject);
+
         void setInfoStudent(Context context);
 
         void setInfoSubject(Subjects subjects);

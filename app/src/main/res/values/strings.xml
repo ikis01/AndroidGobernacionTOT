@@ -5,7 +5,5 @@
     <string name="message_snackbar_refresh">BASE DE DATOS ACTUALIZADA</string>
 
     <string name="main_view_StudentCode">Código: </string>
-    <string name="main_view_PendingTasks">Tareas pendientes: </string>
-    <string name="main_view_PendingEvaluations">Evaluaciones pendientes: </string>
-
+    <string name="main_view_PendingTasks">Tareas pendientes </string>
 </resources>

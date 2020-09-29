@@ -1,5 +1,6 @@
 package com.tsg.tot.main.mainmvp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -38,7 +39,7 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
     FragmentTransaction fragmentTransaction;
 
     TextView tv_studentCode, tv_studentName, tv_institutionName,
-            tv_location, tv_pendingEvaluations, tv_pendingTask;
+            tv_location, tv_pendingTask;
 
     LinearLayout mainLayout;
 
@@ -71,7 +72,6 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
         tv_location = findViewById(R.id.tv_location);
 
         tv_pendingTask = findViewById(R.id.tv_pendingTask);
-        tv_pendingEvaluations = findViewById(R.id.tv_pendingEvaluations);
     }
 
     @Override
@@ -106,8 +106,7 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
             tv_studentName.setText(studentList.get(0).getNombres());
         }
 
-        tv_pendingTask.setText(getResources().getString(R.string.main_view_PendingTasks));
-        tv_pendingEvaluations.setText(getResources().getString(R.string.main_view_PendingEvaluations));
+        tv_pendingTask.setText(getResources().getString(R.string.main_view_PendingTasks) + ": ");
     }
 
     @Override
@@ -117,8 +116,9 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
 
         if (informationFragment != null && findViewById(R.id.contentFragment) == null) {
             informationFragment.setInformation(subjects);
+            informationFragment.setTaskSubjects(presenter.getTaskSubject(this, subjects.getId()), this, presenter);
         } else {
-            informationFragment = new InformationFragment();
+            informationFragment = new InformationFragment(presenter);
             Bundle bundleEnvio = new Bundle();
             bundleEnvio.putSerializable("subject", subjects);
             informationFragment.setArguments(bundleEnvio);
