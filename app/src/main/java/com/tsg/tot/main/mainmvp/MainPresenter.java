@@ -42,10 +42,13 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
                 Log.d("checkVersions", "Thread");
                 //Thread for checking versions
                 while (true) {
-
                     //Set version No.
                     float apiVersion = model.checkAPIVersion(context);
                     float dbVersion = model.checkDbVersion(context);
+
+                    if (dbVersion == apiVersion) {
+                        dismissLoadingDialog();
+                    }
 
                     //Waiting time between queries
                     try {
@@ -98,7 +101,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
         if (taskList != null) {
             for (Task task : taskList) {
                 try {
-                    if (task.getMaterias() == idSubject){
+                    if (task.getMaterias() == idSubject) {
                         taskListFinal.add(task);
                     }
                 } catch (NullPointerException e) {
@@ -133,11 +136,18 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
     public void notifyRefresh() {
         if (view != null) {
             view.notifyRefresh();
+            dismissLoadingDialog();
         }
     }
 
     @Override
     public void testPOST(Context context) {
         model.postSubmissions("", "3", "224", "2", "269", "1");
+    }
+
+    private void dismissLoadingDialog() {
+        if (view != null) {
+            view.dismissLoadingDialog();
+        }
     }
 }

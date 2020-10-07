@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -43,6 +44,8 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
 
     LinearLayout mainLayout;
 
+    ProgressDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,7 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
         requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
 
         presenter.createDB(this);
+
 
         //Init Fragment
         listSubjectFragment = new ListSubjectFragment(presenter);
@@ -72,12 +76,16 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
         tv_location = findViewById(R.id.tv_location);
 
         tv_pendingTask = findViewById(R.id.tv_pendingTask);
+
+        dialog = ProgressDialog.show(MainView.this, "",
+                getResources().getString(R.string.message_load_db));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         presenter.setView(this);
+        showLoadingDialog();
         presenter.checkVersions(this);
         presenter.setInfoStudent(this);
     }
@@ -141,5 +149,19 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
                 .setActionTextColor(getResources().getColor(R.color.colorWhite))
                 .setDuration(10000)
                 .show();
+    }
+
+    @Override
+    public void showLoadingDialog() {
+        if (!dialog.isShowing()) {
+            dialog.show();
+        }
+    }
+
+    @Override
+    public void dismissLoadingDialog() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
     }
 }

@@ -27,6 +27,10 @@ public interface MainMVP {
         void setInfoSubject(Subjects subjects);
 
         void notifyRefresh();
+
+        void showLoadingDialog();
+
+        void dismissLoadingDialog();
     }
 
     interface Presenter {
