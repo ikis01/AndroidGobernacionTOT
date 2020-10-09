@@ -28,6 +28,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Clase que consulta los endpoint de la API
+ */
 public class ApiRepository implements Repository {
 
     private ApiService mApiService = ApiUtils.getAPIService();

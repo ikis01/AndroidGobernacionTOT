@@ -95,6 +95,9 @@ import static com.tsg.tot.sqlite.DBConstants.UPLOAD_TABLE_NAME;
 import static com.tsg.tot.sqlite.DBConstants.VERSION_NUMBER;
 import static com.tsg.tot.sqlite.DBConstants.VERSION_TABLE_NAME;
 
+/**
+ * Clase que consulta los datos en la DB.
+ */
 public class DatabaseRepository implements Repository {
 
     //Get info of DB Tables

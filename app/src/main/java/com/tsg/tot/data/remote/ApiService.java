@@ -24,6 +24,9 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
+/**
+ * End Point del API
+ */
 public interface ApiService {
 
     @GET("api/gobernacion/cursos/versiones.json")

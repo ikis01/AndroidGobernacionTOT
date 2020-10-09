@@ -1,5 +1,9 @@
 package com.tsg.tot.sqlite;
 
+/**
+ * Clase que contiene todas las Constantes utilizadas en la
+ * creación y consulta de tablas de la Base de Datos.
+ */
 public final class DBConstants {
 
     /**

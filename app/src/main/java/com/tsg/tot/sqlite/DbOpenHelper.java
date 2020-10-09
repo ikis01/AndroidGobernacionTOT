@@ -13,6 +13,9 @@ import static com.tsg.tot.sqlite.DBConstants.IPEND_TABLE_NAME;
 import static com.tsg.tot.sqlite.DBConstants.VERSION_NUMBER;
 import static com.tsg.tot.sqlite.DBConstants.VERSION_TABLE_NAME;
 
+/**
+ * Clase que crea la base de datos y todas sus tablas.
+ */
 public class DbOpenHelper extends SQLiteOpenHelper {
 
     private static final String VERSION_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS `VERSION` (`NUMERO` FLOAT)";

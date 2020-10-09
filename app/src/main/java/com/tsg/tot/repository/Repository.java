@@ -21,6 +21,9 @@ import java.util.List;
 
 import okhttp3.RequestBody;
 
+/**
+ * Interfaz que define los métodos utilizados por las clases que la implementan
+ */
 public interface Repository {
 
     //GET
