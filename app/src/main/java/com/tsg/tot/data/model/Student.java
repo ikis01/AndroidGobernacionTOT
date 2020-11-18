@@ -14,7 +14,7 @@ public class Student {
     @SerializedName("codigo")
     @Expose
     private Integer codigo;
-    @SerializedName("nombres")
+    @SerializedName("nombre")
     @Expose
     private String nombres;
     @SerializedName("apellidos")
