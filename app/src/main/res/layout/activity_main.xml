@@ -18,47 +18,119 @@
         android:elevation="5dp">
 
         <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="150dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:background="#CA6B54"
+            android:orientation="horizontal">
+
+            <TableLayout
+                android:layout_width="507dp"
+                android:layout_height="130dp"
+                android:layout_gravity="center"
+                android:layout_weight="2">
+
+                <TableRow android:orientation="vertical">
+
+                    <Button
+                        android:layout_gravity="center"
+                        android:id="@+id/bt_notificaciones"
+                        android:layout_marginStart="15dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/notificacion"
+                        android:text=""
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </TableRow>
+
+                <TableRow android:orientation="vertical">
+
+                    <Button
+                        android:layout_gravity="center"
+                        android:id="@+id/bt_listado"
+                        android:layout_marginStart="15dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/listado"
+                        android:text=""
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+
+                        android:textStyle="bold" />
+
+                </TableRow>
+
+            </TableLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:layout_margin="10dp"
-            android:orientation="horizontal">
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp">
+            >
+            <Button
+                android:id="@+id/bt_usuario"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:background="@drawable/perfil_usuario"
+                android:text=""
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginEnd="10dp"
-                android:layout_weight="1"
-                android:src="@drawable/perfil_usuario" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="250dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp">
+
+
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
-                android:gravity="center_vertical"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_studentCode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="left"
                     android:textColor="@color/colorWhite"
                     android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tv_studentName"
                     android:layout_width="wrap_content"
-                    android:layout_height="22dp"
+                    android:layout_height="30dp"
                     android:text="Nombre Estudiante"
                     android:textColor="@color/colorWhite"
-                    android:textSize="24sp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_institutionName"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:text="NOMBRE DE LA INSTITUCIÓN"
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
@@ -71,22 +143,72 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="14sp"
                     android:textStyle="bold|italic" />
-            </LinearLayout>
 
+            </LinearLayout>
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="bottom"
-                android:orientation="vertical">
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="0dp"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tv_pendingTask"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="16sp" />
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1">
+
+                    <TableRow android:orientation="vertical"
+                        android:paddingBottom="5dp">
+
+                        <Button
+                            android:layout_height="match_parent"
+                            android:layout_width="fill_parent"
+                            android:background="@drawable/custom_button_main"
+                            android:text="  ACTUALIZAR  "
+
+                            android:layout_gravity="center_horizontal"
+                            android:id="@+id/bt_actualizar"
+
+                            android:textAllCaps="false"
+                            android:textColor="@android:color/white"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+
+                    </TableRow>
+
+                    <TableRow android:orientation="vertical"
+                        android:paddingBottom="5dp">
+                        <Button
+                            android:layout_height="match_parent"
+                            android:layout_width="fill_parent"
+                            android:background="@drawable/custom_button_main"
+                            android:text=" RECARGAR "
+                            android:layout_gravity="center_horizontal"
+                            android:id="@+id/bt_recargar"
+                            android:textAllCaps="false"
+                            android:textColor="@android:color/white"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+
+                    </TableRow>
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/tv_pendingTask"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                </TableLayout>
             </LinearLayout>
+
+
         </LinearLayout>
     </RelativeLayout>
 
@@ -100,19 +222,27 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="20dp"
+            android:layout_margin="10dp"
             android:layout_weight="1"
             android:background="@drawable/subjects_bg"
             android:orientation="vertical"
             tools:ignore="NestedWeights">
 
 
-            <TextView
+            <!--TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="0dp"
                 android:layout_weight="1"
-                android:gravity="center" />
+                android:gravity="center" /-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/grado_materias1" />
 
             <FrameLayout
                 android:id="@+id/contentList"
