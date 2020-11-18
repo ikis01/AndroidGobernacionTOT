@@ -104,6 +104,7 @@ public final class DBConstants {
      */
     public static final String STUDENTS_ID = "idEstudiante";
     public static final String STUDENTS_NAME = "Nombres";
+    public static final String STUDENTS_LAST_NAME= "Apellidos";
     public static final String STUDENTS_CURSE_ID = "Cursos_idCursos";
     public static final String STUDENTS_CODE = "CodigoEstudiante";
 

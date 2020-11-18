@@ -62,7 +62,8 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
     private static final String STUDENT_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS `Estudiante` (" +
             "  `idEstudiante` INTEGER," +
-            "  `Nombres` INTEGER," +
+            "  `Nombres` TEXT," +
+            "  `Apellidos` TEXT," +
             "  `Cursos_idCursos` INTEGER," +
             "  `CodigoEstudiante` TEXT)";
 
