@@ -55,6 +55,7 @@ import static com.tsg.tot.sqlite.DBConstants.STUDENTS_CODE;
 import static com.tsg.tot.sqlite.DBConstants.STUDENTS_CURSE_ID;
 import static com.tsg.tot.sqlite.DBConstants.STUDENTS_ID;
 import static com.tsg.tot.sqlite.DBConstants.STUDENTS_NAME;
+import static com.tsg.tot.sqlite.DBConstants.STUDENTS_LAST_NAME;
 import static com.tsg.tot.sqlite.DBConstants.STUDENTS_TABLE_NAME;
 import static com.tsg.tot.sqlite.DBConstants.STUDYMATERIAL_BLOB_ID;
 import static com.tsg.tot.sqlite.DBConstants.STUDYMATERIAL_CLASSES_ID;
@@ -161,12 +162,14 @@ public class DatabaseRepository implements Repository {
                     int idStudent = cursor.getColumnIndex(STUDENTS_ID);
                     int condeStudent = cursor.getColumnIndex(STUDENTS_CODE);
                     int studentName = cursor.getColumnIndex(STUDENTS_NAME);
+                    int studentLastName = cursor.getColumnIndex(STUDENTS_LAST_NAME);
 
                     //add row to list
                     studentList.add(new Student(
                             cursor.getInt(idStudent),
                             cursor.getInt(condeStudent),
                             cursor.getString(studentName)
+
                     ));
                 } while (cursor.moveToNext());
             }
