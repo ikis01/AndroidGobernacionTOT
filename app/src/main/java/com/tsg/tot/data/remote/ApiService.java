@@ -16,6 +16,7 @@ import com.tsg.tot.data.model.Teacher;
 import com.tsg.tot.data.model.Upload;
 import com.tsg.tot.data.model.Version;
 
+import java.io.StringReader;
 import java.util.List;
 
 import okhttp3.RequestBody;
@@ -28,75 +29,80 @@ import retrofit2.http.POST;
  * End Point del API
  */
 public interface ApiService {
+    String GET_VERSION ="api/gobernacion/cursos/versiones";
+    String GET_DEVICE = "api/gobernacion/cursos/disposotivos";
+    String GET_LESSONS = "api/gobernacion/cursos/clases" ;
+    String GET_GRADE = "api/gobernacion/cursos/grados";
+    String GET_EXERCISES = "api/gobernacion/cursos/ejercicios";
+    String GET_SUBMISSIONS = "api/gobernacion/cursos/entregas";
+    String GET_STUDENT = "api/gobernacion/cursos/estudiantes";
+    String GET_EVALUATIONS = "api/gobernacion/cursos/evaluaciones";
+    String GET_STUDY_MATERIAL="api/gobernacion/cursos/materialestudio";
+    String GET_SUBJECTS = "api/gobernacion/cursos/materias";
+    String GET_PLANNING = "api/gobernacion/cursos/planeacion";
+    String GET_TEACHERS = "api/gobernacion/cursos/profesores";
+    String GET_UPLOADS ="api/gobernacion/cursos/subidas";
+    String GET_TASKS = "api/gobernacion/cursos/tareas";
+    String POST_TASK = "api/gobernacion/cursos/tareas/";
+    String POST_EVALUATION = "api/gobernacion/cursos/evaluaciones/";
+    String POST_EXERCISES ="api/gobernacion/cursos/ejercicios/";
+    String POST_SUBMISSIONS ="api/gobernacion/cursos/entregas/";
+    String POST_BLOB =  "upload";
 
-    //@GET("api/gobernacion/cursos/versiones.json")
-    @GET("api/gobernacion/cursos/versiones")
+    @GET(GET_VERSION)
     Call<List<Version>> getVersion();
 
-   // @GET("api/gobernacion/cursos/disposotivos.json")
-    @GET("api/gobernacion/cursos/disposotivos")
+    @GET(GET_DEVICE)
     Call<List<Device>> getDevice();
 
-    //@GET("api/gobernacion/cursos/clases.json")
-    @GET("api/gobernacion/cursos/clases")
+    @GET(GET_LESSONS)
     Call<List<Lessons>> getLessons();
 
-    //@GET("api/gobernacion/cursos/grados.json")
-    @GET("api/gobernacion/cursos/grados")
+    @GET(GET_GRADE)
     Call<List<Grade>> getGrade();
 
-    //@GET("api/gobernacion/cursos/ejercicios.json")
-    @GET("api/gobernacion/cursos/ejercicios")
+    @GET(GET_EXERCISES)
     Call<List<Exercises>> getExercises();
 
-    // @GET("api/gobernacion/cursos/entregas.json")
-    @GET("api/gobernacion/cursos/entregas")
+    @GET(GET_SUBMISSIONS)
     Call<List<Submissions>> getSubmissions();
 
-    //@GET("api/gobernacion/cursos/estudiantes.json")
-    @GET("api/gobernacion/cursos/estudiantes")
+    @GET(GET_STUDENT)
     Call<List<Student>> getStudent();
 
-    //@GET("api/gobernacion/cursos/evaluaciones.json")
-    @GET("api/gobernacion/cursos/evaluaciones")
+    @GET(GET_EVALUATIONS)
     Call<List<Evaluations>> getEvaluations();
 
-    //@GET("api/gobernacion/cursos/materialestudio.json")
-    @GET("api/gobernacion/cursos/materialestudio")
+    @GET(GET_STUDY_MATERIAL)
     Call<List<StudyMaterial>> getStudyMaterial();
 
-    //@GET("api/gobernacion/cursos/materias.json")
-    @GET("api/gobernacion/cursos/materias")
+    @GET(GET_SUBJECTS)
     Call<List<Subjects>> getSubjects();
 
-    //@GET("api/gobernacion/cursos/planeacion.json")
-    @GET("api/gobernacion/cursos/planeacion")
+    @GET(GET_PLANNING)
     Call<List<Planning>> getPlanning();
 
-    //@GET("api/gobernacion/cursos/profesores.json")
-    @GET("api/gobernacion/cursos/profesores")
+    @GET(GET_TEACHERS)
     Call<List<Teacher>> getTeachers();
 
-    //@GET("api/gobernacion/cursos/subidas.json")
-    @GET("api/gobernacion/cursos/subidas")
+    @GET(GET_UPLOADS)
     Call<List<Upload>> getUploads();
 
-    //@GET("api/gobernacion/cursos/tareas.json")
-    @GET("api/gobernacion/cursos/tareas")
+    @GET(GET_TASKS)
     Call<List<Task>> getTasks();
 
-    @POST("api/gobernacion/cursos/tareas/")
+    @POST(POST_TASK)
     Call<Task> postTask(@Body RequestBody body);
 
-    @POST("api/gobernacion/cursos/evaluaciones/")
+    @POST(POST_EVALUATION)
     Call<Evaluations> postEvaluations(@Body RequestBody body);
 
-    @POST("api/gobernacion/cursos/ejercicios/")
+    @POST(POST_EXERCISES)
     Call<Exercises> postExercises(@Body RequestBody body);
 
-    @POST("api/gobernacion/cursos/entregas/")
+    @POST(POST_SUBMISSIONS)
     Call<Submissions> postSubmissions(@Body RequestBody body);
 
-    @POST("upload/")
+    @POST(POST_BLOB)
     Call<Blob> postBlob(@Body RequestBody body);
 }
