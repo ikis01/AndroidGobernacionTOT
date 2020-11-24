@@ -21,6 +21,7 @@
         <item name="android:progressBarStyle">@color/colorAccent</item>
 
 
+
     </style>
 
 </resources>
