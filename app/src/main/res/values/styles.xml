@@ -14,6 +14,13 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:layout_gravity">bottom</item>
         <item name="android:windowBackground">@drawable/fondo</item>
+        <item name="android:indeterminate">false</item>
+        <item name="android:indeterminateProgressStyle">@color/colorAccent</item>
+        <item name="android:progress">5</item>
+        <item name="android:progressBackgroundTint">@color/colorPrimary</item>
+        <item name="android:progressBarStyle">@color/colorAccent</item>
+
+
     </style>
 
 </resources>

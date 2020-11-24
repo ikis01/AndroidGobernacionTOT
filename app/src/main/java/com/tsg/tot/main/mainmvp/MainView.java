@@ -82,6 +82,7 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
 
         dialog =  new CustomProgressDialog(MainView.this,
                 getResources().getString(R.string.message_load_db));
+        dialog.setIcon(R.drawable.tot_icon);
         dialog.show();
     }
 
@@ -91,13 +92,19 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
        // presenter.uploadFileTest(this);
         presenter.setView(this);
         showLoadingDialog();
-        presenter.checkVersions(this);
+        presenter.checkVersions(this,dialog);
+        dialog.setProgress(dialog.getProgress()+5);
         presenter.setInfoStudent(this);
+        dialog.setProgress(dialog.getProgress()+5);
+
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        finish();
+        startActivity(getIntent());
     }
 
     @Override
@@ -145,7 +152,7 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
 
     @Override
     public void notifyRefresh() {
-        Snackbar.make(mainLayout, getResources().getString(R.string.message_snackbar_refresh), Snackbar.LENGTH_INDEFINITE)
+        /*Snackbar.make(mainLayout, getResources().getString(R.string.message_snackbar_refresh), Snackbar.LENGTH_INDEFINITE)
                 .setBackgroundTint(getResources().getColor(R.color.colorAccent))
                 .setAction("RECARGAR", view -> {
                     finish();
@@ -153,7 +160,9 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
                 })
                 .setActionTextColor(getResources().getColor(R.color.colorWhite))
                 .setDuration(10000)
-                .show();
+                .show();*/
+        finish();
+        startActivity(getIntent());
     }
 
     @Override
