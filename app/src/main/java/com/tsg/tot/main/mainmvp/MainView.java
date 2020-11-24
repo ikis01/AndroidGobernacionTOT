@@ -1,5 +1,6 @@
 package com.tsg.tot.main.mainmvp;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.tsg.tot.R;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Subjects;
+import com.tsg.tot.main.fragment.CustomProgressDialog;
 import com.tsg.tot.main.fragment.InformationFragment;
 import com.tsg.tot.main.fragment.ListSubjectFragment;
 import com.tsg.tot.root.App;
@@ -44,7 +46,8 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
 
     LinearLayout mainLayout;
 
-    ProgressDialog dialog;
+    //ProgressDialog dialog;
+    CustomProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,13 +80,15 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
 
         tv_pendingTask = findViewById(R.id.tv_pendingTask);
 
-        dialog = ProgressDialog.show(MainView.this, "",
+        dialog =  new CustomProgressDialog(MainView.this,
                 getResources().getString(R.string.message_load_db));
+        dialog.show();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+       // presenter.uploadFileTest(this);
         presenter.setView(this);
         showLoadingDialog();
         presenter.checkVersions(this);
