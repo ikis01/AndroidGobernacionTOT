@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
+import com.tsg.tot.main.fragment.CustomProgressDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
     }
 
     @Override
-    public void checkVersions(Context context) {
+    public void checkVersions(Context context, CustomProgressDialog dialog) {
         Log.d("checkVersions", "checkVersions");
         if (view != null) {
             new Thread(() -> {
@@ -73,7 +74,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
                                 model.checkSubmissions(context, API_REPOSITORY),
                                 model.checkExercises(context, API_REPOSITORY),
                                 model.checkLessons(context, API_REPOSITORY),
-                                context);
+                                context,dialog);
 
                         try {
                             Thread.sleep(15 * 1000);
@@ -82,6 +83,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
                         }
 
                         this.notifyRefresh();
+
                     }
                 }
             }).start();
@@ -150,4 +152,8 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
             view.dismissLoadingDialog();
         }
     }
+   // @Override
+   // public void uploadFileTest (Context context){
+   //     model.postBlob("679049","archvioEnTexto","897","12");
+   // }
 }

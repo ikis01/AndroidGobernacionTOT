@@ -17,6 +17,7 @@ import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
 import com.tsg.tot.data.model.Upload;
+import com.tsg.tot.main.fragment.CustomProgressDialog;
 import com.tsg.tot.repository.ApiRepository;
 import com.tsg.tot.repository.DatabaseRepository;
 import com.tsg.tot.sqlite.DbOpenHelper;
@@ -68,20 +69,33 @@ public class MainModel implements MainMVP.Model {
                             List<Subjects> subjectsList, List<Grade> gradeList, List<StudyMaterial> studyMaterialList,
                             List<Evaluations> evaluationsList, List<Student> studentList,
                             List<Submissions> submissionsList, List<Exercises> exercisesList,
-                            List<Lessons> lessonsList, Context context) {
+                            List<Lessons> lessonsList, Context context,CustomProgressDialog dialog) {
 
+        dialog.setProgress(dialog.getProgress()+5);
         databaseRepository.updateVersion(version, context);
+        dialog.setProgress(dialog.getProgress()+5);
         databaseRepository.updateTasks(taskList, context);
+        dialog.setProgress(dialog.getProgress()+5);
         databaseRepository.updateUploads(uploadList, context);
+        dialog.setProgress(dialog.getProgress()+5);
         databaseRepository.updateTeachers(teacherList, context);
+        dialog.setProgress(dialog.getProgress()+5);
         databaseRepository.updateSubjects(subjectsList, context);
+        dialog.setProgress(dialog.getProgress()+5);
         databaseRepository.updateGrade(gradeList, context);
+        dialog.setProgress(dialog.getProgress()+5);
         databaseRepository.updateStudyMaterial(studyMaterialList, context);
+        dialog.setProgress(dialog.getProgress()+5);
         databaseRepository.updateEvaluations(evaluationsList, context);
+        dialog.setProgress(dialog.getProgress()+5);
         databaseRepository.updateStudent(studentList, context);
+        dialog.setProgress(dialog.getProgress()+5);
         databaseRepository.updateSubmissions(submissionsList, context);
+        dialog.setProgress(dialog.getProgress()+5);
         databaseRepository.updateExercises(exercisesList, context);
+        dialog.setProgress(dialog.getProgress()+5);
         databaseRepository.updateLessons(lessonsList, context);
+        dialog.setProgress(dialog.getProgress()+5);
     }
 
     @Override

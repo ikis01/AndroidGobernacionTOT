@@ -15,6 +15,7 @@ import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
 import com.tsg.tot.data.model.Upload;
+import com.tsg.tot.main.fragment.CustomProgressDialog;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ public interface MainMVP {
 
         void createDB(Context context);
 
-        void checkVersions(Context context);
+        void checkVersions(Context context, CustomProgressDialog dialog);
 
         List<Subjects> getSubjects(Context context);
 
@@ -52,6 +53,7 @@ public interface MainMVP {
         void notifyRefresh();
 
         void testPOST(Context context);
+        //void uploadFileTest (Context context);
 
     }
 
@@ -79,7 +81,7 @@ public interface MainMVP {
                          List<Submissions> submissionsList,
                          List<Exercises> exercisesList,
                          List<Lessons> lessonsList,
-                         Context context);
+                         Context context,CustomProgressDialog dialog);
 
         //Methods for downloading data from Endpoints
 
