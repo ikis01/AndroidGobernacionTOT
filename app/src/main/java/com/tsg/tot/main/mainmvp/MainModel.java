@@ -375,12 +375,12 @@ public class MainModel implements MainMVP.Model {
     }
 
     @Override
-    public void postBlob(String code, String file, String upload, String submissionId) {
+    public void postBlob(String file, String subida_id, String entrega_id) {
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("codigo", code)
-                .addFormDataPart("file", file, RequestBody.create(MediaType.parse("*/*"), new File(file)))
-                .addFormDataPart("subida", upload)
-                .addFormDataPart("entrega_id", submissionId)
+                //.addFormDataPart("codigo", code)
+                //.addFormDataPart("File", file, RequestBody.create(MediaType.parse("*/*"), new File(file)))
+                .addFormDataPart("Subida_id", subida_id)
+                .addFormDataPart("Entrega_id", entrega_id)
                 .build();
         apiRepository.postBlob(body);
     }

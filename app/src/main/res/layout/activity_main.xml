@@ -121,25 +121,40 @@
                 <TextView
                     android:id="@+id/tv_studentName"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="20pt"
                     android:text="Nombre Estudiante"
                     android:textColor="@color/colorWhite"
-                    android:textSize="26sp"
+                    android:textSize="18pt"
                     android:textStyle="bold" />
 
-                <TextView
+                <!--TextView
                     android:id="@+id/tv_institutionName"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:text="NOMBRE DE LA INSTITUCIÓN"
                     android:textColor="@color/colorBlack"
-                    android:textSize="18sp" />
-
+                    android:textSize="18sp" /-->
                 <TextView
+                    android:id="@+id/tv_institutionName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18pt"
+                    android:text="TSG"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16pt" />
+
+                <!--TextView
                     android:id="@+id/tv_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ubicación"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14sp"
+                    android:textStyle="bold|italic" /-->
+                <TextView
+                    android:id="@+id/tv_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bogotá"
                     android:textColor="@color/colorBlack"
                     android:textSize="14sp"
                     android:textStyle="bold|italic" />
@@ -169,6 +184,7 @@
                             android:layout_width="fill_parent"
                             android:background="@drawable/custom_button_main"
                             android:text="  ACTUALIZAR  "
+                            android:onClick="update"
 
                             android:layout_gravity="center_horizontal"
                             android:id="@+id/bt_actualizar"
@@ -176,7 +192,8 @@
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
                             android:textSize="16sp"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold"
+                            tools:ignore="OnClick" />
 
                     </TableRow>
 

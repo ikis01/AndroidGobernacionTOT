@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,7 +34,7 @@ import javax.inject.Inject;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.READ_PHONE_STATE;
 
-public class MainView extends AppCompatActivity implements MainMVP.View, ListSubjectFragment.OnFragmentInteractionListener {
+public class MainView extends AppCompatActivity implements MainMVP.View, ListSubjectFragment.OnFragmentInteractionListener, View.OnClickListener {
 
     @Inject
     MainMVP.Presenter presenter;
@@ -176,6 +178,40 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
     public void dismissLoadingDialog() {
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
+        }
+    }
+
+    public void update(View view)  {
+        dialog =  new CustomProgressDialog(MainView.this,
+                getResources().getString(R.string.message_load_db));
+        dialog.setIcon(R.drawable.tot_icon);
+        dialog.show();
+        presenter.updateEverything(this,dialog);
+        dialog.setProgress(dialog.getProgress()+5);
+        presenter.setInfoStudent(this);
+        dialog.setProgress(dialog.getProgress()+5);
+    }
+
+
+    @Override
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.statusTaskImage: //id de ImageView.
+                dialog =  new CustomProgressDialog(MainView.this,
+                        getResources().getString(R.string.message_load_db));
+                dialog.setIcon(R.drawable.tot_icon);
+                dialog.show();
+                presenter.updateEverything(this,dialog);
+                dialog.setProgress(dialog.getProgress()+5);
+                presenter.setInfoStudent(this);
+                dialog.setProgress(dialog.getProgress()+5);
+                //realiza operación al dar clic al imageView.
+                Intent intent = new Intent(this, MainView.class);
+                startActivity(intent);
+
+                break;
+            default:
+                break;
         }
     }
 }

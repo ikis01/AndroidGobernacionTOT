@@ -35,6 +35,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
         model.createDb(context);
     }
 
+
     @Override
     public void checkVersions(Context context, CustomProgressDialog dialog) {
         Log.d("checkVersions", "checkVersions");
@@ -60,6 +61,8 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
 
                     if (apiVersion == dbVersion || apiVersion == 0) {
                         Log.d("checkVersions", "Same version");
+                        /// en caso de tener la misma version cerrar dialog o no conectarse al kiosco imc
+                        dialog.dismiss();
                     } else {
                         Log.d("checkVersions", "Diferent version");
                         model.updateAllDb(model.checkAPIVersion(context),
@@ -78,6 +81,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
 
                         try {
                             Thread.sleep(15 * 1000);
+                            dialog.setIcon(dialog.getProgress()+10);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -150,6 +154,43 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
     private void dismissLoadingDialog() {
         if (view != null) {
             view.dismissLoadingDialog();
+        }
+    }
+
+    public void updateEverything(Context context, CustomProgressDialog dialog){
+
+        if (view != null) {
+            new Thread(() -> {
+                Log.d("checkVersions", "Thread");
+                //Thread for checking versions
+
+                        Log.d("checkVersions", "Diferent version");
+                        model.updateAllDb(model.checkAPIVersion(context),
+                                model.checkTasks(context, API_REPOSITORY),
+                                model.checkUploads(context, API_REPOSITORY),
+                                model.checkTeachers(context, API_REPOSITORY),
+                                model.checkSubjects(context, API_REPOSITORY),
+                                model.checkGrades(context, API_REPOSITORY),
+                                model.checkStudyMaterials(context, API_REPOSITORY),
+                                model.checkEvaluations(context, API_REPOSITORY),
+                                model.checkStudents(context, API_REPOSITORY),
+                                model.checkSubmissions(context, API_REPOSITORY),
+                                model.checkExercises(context, API_REPOSITORY),
+                                model.checkLessons(context, API_REPOSITORY),
+                                context,dialog);
+
+                        try {
+                            Thread.sleep(15 * 1000);
+                            dialog.setProgress(dialog.getProgress()+10);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        this.notifyRefresh();
+
+
+
+            }).start();
         }
     }
    // @Override

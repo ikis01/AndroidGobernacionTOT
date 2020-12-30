@@ -708,7 +708,7 @@ public class ApiRepository implements Repository {
 
             @Override
             public void onFailure(Call<Blob> call, Throwable t) {
-                Log.d("POST", "Unable to submit post to API.");
+              Log.d("POST", "Unable to submit post to API.");
             }
         });
     }

@@ -36,6 +36,8 @@ public interface MainMVP {
 
     interface Presenter {
 
+
+
         void setView(MainMVP.View view);
 
         void createDB(Context context);
@@ -51,7 +53,7 @@ public interface MainMVP {
         void setInfoSubject(Subjects subjects);
 
         void notifyRefresh();
-
+        void updateEverything (Context context, CustomProgressDialog dialog);
         void testPOST(Context context);
         //void uploadFileTest (Context context);
 
@@ -121,7 +123,7 @@ public interface MainMVP {
 
         void postSubmissions(String upp, String exercisesId, String taskId, String evaluationId, String uploadId, String studentId);
 
-        void postBlob(String code, String file, String upload, String submissionId);
+        void postBlob(String file, String subida_id, String entrega_id);
     }
 
 }
