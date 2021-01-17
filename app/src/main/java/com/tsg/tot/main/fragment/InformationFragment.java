@@ -1,6 +1,7 @@
 package com.tsg.tot.main.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -10,19 +11,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tsg.tot.R;
-import com.tsg.tot.adapter.SubjectsAdapter;
 import com.tsg.tot.adapter.TasksAdapter;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.main.mainmvp.MainMVP;
+import com.tsg.tot.main.mainmvp.MainView;
+import com.tsg.tot.subject.SubjectActivity;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -39,6 +43,7 @@ public class InformationFragment extends Fragment implements FragmentsMVP.View{
 
     TextView tv_title, tv_subtitle, tv_description;
     ImageView iv_image;
+    ImageButton ib_subject;
 
     RecyclerView recyclerViewTask;
     TasksAdapter tasksAdapter;
@@ -60,7 +65,7 @@ public class InformationFragment extends Fragment implements FragmentsMVP.View{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_information, container, false);
-
+        ib_subject =  view.findViewById(R.id.ib_subject);
         recyclerViewTask = view.findViewById(R.id.recyclerTask);
         recyclerViewTask.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -85,7 +90,6 @@ public class InformationFragment extends Fragment implements FragmentsMVP.View{
             }
 
         }
-
         return view;
     }
 
@@ -93,6 +97,21 @@ public class InformationFragment extends Fragment implements FragmentsMVP.View{
         tv_title.setText(subjects.getTitulo());
         tv_subtitle.setText(subjects.getSubtitulo());
         tv_description.setText(subjects.getDescripcion());
+        ib_subject.setOnClickListener(view -> {
+
+            //Toast.makeText(context,"click en material: "+taskList.get(position).getNombre(),Toast.LENGTH_SHORT).show();
+            Intent intent  = new  Intent (getContext(), SubjectActivity.class);
+            intent.putExtra( "idSubject",subjects.getId());
+            intent.putExtra("titleSubject",subjects.getTitulo());
+            intent.putExtra("student_name",((AppCompatTextView)((MainView)getContext()).tv_studentName).getText());
+
+
+            getContext().startActivity(intent);
+
+
+        });
+
+
 
         try {
             InputStream stream = new ByteArrayInputStream(Base64.decode(subjects.getImagen().getBytes(), Base64.DEFAULT));

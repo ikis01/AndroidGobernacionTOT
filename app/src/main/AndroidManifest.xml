@@ -17,11 +17,19 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".subject.SubjectActivity"
+            android:screenOrientation="landscape" >
+
+        </activity>
+        <!-- android:label="@string/title_activity_tarea" -->
+        <activity
+            android:name=".task.TaskActivity"
+            android:screenOrientation="landscape" />
+        <activity
             android:name=".main.mainmvp.MainView"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

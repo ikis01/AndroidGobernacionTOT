@@ -20,7 +20,9 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
     private static final String VERSION_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS `VERSION` (`NUMERO` FLOAT)";
 
-    private static final String TASK_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS `Tarea` (`idTarea` INTEGER," +
+
+    private static final String TASK_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS `Tarea` ("+
+            "`idTarea` INTEGER," +
             " `NombreTarea` TEXT," +
             " `Materias_idMaterias` INTEGER," +
             " `Subida_idSubida` INTEGER," +
@@ -97,6 +99,11 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             "  `Entrega_id` INTEGER," +
             "  `Ruta` TEXT)";
 
+    private static final String USERS_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS `Usuarios` ( "+
+            "`idUsuario` INTEGER,"+
+            "`Password`  TEXT,"+
+            "`UserName`TEXT )";
+
     private static final String DB_NAME = "TOT";
     private static final int DB_VERSION = 1;
 
@@ -121,6 +128,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         db.execSQL(EXERCISES_TABLE_CREATE);
         db.execSQL(CLASSES_TABLE_CREATE);
         db.execSQL(BLOB_TABLE_CREATE);
+        db.execSQL(USERS_TABLE_CREATE);
 
         //Asigna Version 0.1 a la tabla
         ContentValues cv = new ContentValues();

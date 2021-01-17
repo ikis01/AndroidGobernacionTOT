@@ -3,7 +3,9 @@ package com.tsg.tot.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Teacher {
+import java.io.Serializable;
+
+public class Teacher implements Serializable {
 
     @SerializedName("id")
     @Expose

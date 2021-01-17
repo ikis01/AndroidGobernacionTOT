@@ -1,15 +1,11 @@
-package com.tsg.tot.main.mainmvp;
+package com.tsg.tot.task.taskmvp;
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Looper;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,14 +14,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.tsg.tot.R;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.main.fragment.CustomProgressDialog;
 import com.tsg.tot.main.fragment.InformationFragment;
 import com.tsg.tot.main.fragment.ListSubjectFragment;
-import com.tsg.tot.root.App;
 
 import java.util.List;
 
@@ -34,16 +28,16 @@ import javax.inject.Inject;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.READ_PHONE_STATE;
 
-public class MainView extends AppCompatActivity implements MainMVP.View, ListSubjectFragment.OnFragmentInteractionListener, View.OnClickListener {
+public class TaskView extends AppCompatActivity implements TaskMVP.View,View.OnClickListener,ListSubjectFragment.OnFragmentInteractionListener {
 
     @Inject
-    MainMVP.Presenter presenter;
+    TaskMVP.Presenter presenter;
 
-    ListSubjectFragment listSubjectFragment;
+   // ListSubjectFragment listSubjectFragment;
     InformationFragment informationFragment;
     FragmentTransaction fragmentTransaction;
 
-    public TextView tv_studentCode, tv_studentName, tv_institutionName,
+    TextView tv_studentCode, tv_studentName, tv_institutionName,
             tv_location, tv_pendingTask;
 
     LinearLayout mainLayout;
@@ -58,18 +52,18 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         initViewElements();
-        ((App) getApplication()).getComponent().inject(this);
+       // ((App) getApplication()).getComponent().inject(this);
 
         //Permissions
         requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
 
-        presenter.createDB(this);
+        //presenter.createDB(this);
 
 
         //Init Fragment
-        listSubjectFragment = new ListSubjectFragment(presenter);
+        //listSubjectFragment = new ListSubjectFragment(presenter);
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.contentList, listSubjectFragment);
+       // fragmentTransaction.replace(R.id.contentList, listSubjectFragment);
         fragmentTransaction.commit();
     }
 
@@ -82,7 +76,7 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
 
         tv_pendingTask = findViewById(R.id.tv_pendingTask);
 
-        dialog =  new CustomProgressDialog(MainView.this,
+        dialog =  new CustomProgressDialog(TaskView.this,
                 getResources().getString(R.string.message_load_db));
         dialog.setIcon(R.drawable.tot_icon);
         dialog.show();
@@ -91,10 +85,10 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
     @Override
     protected void onResume() {
         super.onResume();
-       // presenter.uploadFileTest(this);
+        // presenter.uploadFileTest(this);
         presenter.setView(this);
         showLoadingDialog();
-        presenter.checkVersions(this,dialog);
+      //  presenter.checkVersions(this,dialog);
         dialog.setProgress(dialog.getProgress()+5);
         presenter.setInfoStudent(this);
         dialog.setProgress(dialog.getProgress()+5);
@@ -138,18 +132,23 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
 
         if (informationFragment != null && findViewById(R.id.contentFragment) == null) {
             informationFragment.setInformation(subjects);
-            informationFragment.setTaskSubjects(presenter.getTaskSubject(this, subjects.getId()), this, presenter);
+            //informationFragment.setTaskSubjects(presenter.getTaskSubject(this, subjects.getId()), this, presenter);
         } else {
-            informationFragment = new InformationFragment(presenter);
-            Bundle bundleEnvio = new Bundle();
-            bundleEnvio.putSerializable("subject", subjects);
-            informationFragment.setArguments(bundleEnvio);
+           // informationFragment = new InformationFragment(presenter);
+           // Bundle bundleEnvio = new Bundle();
+           // bundleEnvio.putSerializable("subject", subjects);
+           // informationFragment.setArguments(bundleEnvio);
 
             //Carga el fragment en el Activity
-            getSupportFragmentManager().beginTransaction().
-                    replace(R.id.contentFragment, informationFragment).
-                    addToBackStack(null).commit();
+            //getSupportFragmentManager().beginTransaction().
+            //       replace(R.id.contentFragment, informationFragment).
+            //        addToBackStack(null).commit();
         }
+    }
+
+    @Override
+    public void notifyRefreh() {
+
     }
 
     @Override
@@ -182,11 +181,11 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
     }
 
     public void update(View view)  {
-        dialog =  new CustomProgressDialog(MainView.this,
+        dialog =  new CustomProgressDialog(TaskView.this,
                 getResources().getString(R.string.message_load_db));
         dialog.setIcon(R.drawable.tot_icon);
         dialog.show();
-        presenter.updateEverything(this,dialog);
+       // presenter.updateEverything(this,dialog);
         dialog.setProgress(dialog.getProgress()+5);
         presenter.setInfoStudent(this);
         dialog.setProgress(dialog.getProgress()+5);
@@ -197,16 +196,16 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
     public void onClick(View view){
         switch (view.getId()){
             case R.id.statusTaskImage: //id de ImageView.
-                dialog =  new CustomProgressDialog(MainView.this,
+                dialog =  new CustomProgressDialog(TaskView.this,
                         getResources().getString(R.string.message_load_db));
                 dialog.setIcon(R.drawable.tot_icon);
                 dialog.show();
-                presenter.updateEverything(this,dialog);
+               // presenter.updateEverything(this,dialog);
                 dialog.setProgress(dialog.getProgress()+5);
                 presenter.setInfoStudent(this);
                 dialog.setProgress(dialog.getProgress()+5);
                 //realiza operación al dar clic al imageView.
-                Intent intent = new Intent(this, MainView.class);
+                Intent intent = new Intent(this, TaskView.class);
                 startActivity(intent);
 
                 break;

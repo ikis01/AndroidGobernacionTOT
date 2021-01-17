@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/classroom"
     android:orientation="vertical"
-    tools:context=".main.mainmvp.MainView">
+    tools:context=".task.TaskActivity">
 
     <RelativeLayout
         android:id="@+id/toolbar"
@@ -18,7 +18,7 @@
         android:elevation="5dp">
 
         <LinearLayout
-            android:layout_width="100dp"
+            android:layout_width="160dp"
             android:layout_height="150dp"
             android:layout_centerVertical="true"
             android:layout_marginStart="0dp"
@@ -29,12 +29,28 @@
             android:orientation="horizontal">
 
             <TableLayout
-                android:layout_width="507dp"
-                android:layout_height="130dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="2">
 
-                <TableRow android:orientation="vertical">
+                <Button
+                    android:layout_gravity="center"
+                    android:id="@+id/imv_contract"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/contract"
+                    android:text=""
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <!--<TableRow android:orientation="vertical">
 
                     <Button
                         android:layout_gravity="center"
@@ -67,20 +83,20 @@
 
                         android:textStyle="bold" />
 
-                </TableRow>
+                </TableRow>-->
 
             </TableLayout>
         </LinearLayout>
 
-        <LinearLayout
+       <!-- <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:layout_marginStart="120dp"
+            android:layout_marginStart="110dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp">
-            >
+
             <Button
                 android:id="@+id/bt_usuario"
                 android:layout_width="120dp"
@@ -91,7 +107,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-        </LinearLayout>
+        </LinearLayout>!-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -110,34 +126,27 @@
                 android:layout_weight="4"
                 android:orientation="vertical">
 
-                <TextView
+                <!--<TextView
                     android:id="@+id/tv_studentCode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="left"
                     android:textColor="@color/colorWhite"
-                    android:textSize="12sp" />
+                    android:textSize="12sp" />!-->
 
                 <TextView
                     android:id="@+id/tv_studentName"
                     android:layout_width="wrap_content"
-                    android:layout_height="20pt"
+                    android:layout_height="25pt"
                     android:text="Nombre Estudiante"
                     android:textColor="@color/colorWhite"
                     android:textSize="18pt"
                     android:textStyle="bold" />
 
-                <!--TextView
-                    android:id="@+id/tv_institutionName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:text="NOMBRE DE LA INSTITUCIÓN"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="18sp" /-->
                 <TextView
-                    android:id="@+id/tv_institutionName"
+                    android:id="@+id/tv_taskName"
                     android:layout_width="wrap_content"
-                    android:layout_height="18pt"
+                    android:layout_height="25pt"
                     android:text="TSG"
                     android:textColor="@color/colorBlack"
                     android:textSize="16pt" />
@@ -150,14 +159,14 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="14sp"
                     android:textStyle="bold|italic" /-->
-                <TextView
+                <!--<TextView
                     android:id="@+id/tv_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Bogotá"
                     android:textColor="@color/colorBlack"
                     android:textSize="14sp"
-                    android:textStyle="bold|italic" />
+                    android:textStyle="bold|italic" />!-->
 
             </LinearLayout>
             <LinearLayout
@@ -180,14 +189,14 @@
                         android:paddingBottom="5dp">
 
                         <Button
-                            android:layout_height="match_parent"
-                            android:layout_width="fill_parent"
-                            android:background="@drawable/custom_button_main"
-                            android:text="  ACTUALIZAR  "
-                            android:onClick="update"
-
-                            android:layout_gravity="center_horizontal"
                             android:id="@+id/bt_subir_archivos"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/custom_button_main"
+
+                            android:onClick="update"
+                            android:text="  Subir Archivos  "
 
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
@@ -201,12 +210,12 @@
                         android:paddingBottom="5dp">
 
                         <Button
-                            android:id="@+id/bt_upload_file"
+                            android:id="@+id/btn_volver"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:background="@drawable/custom_button_main"
-                            android:text=" RECARGAR "
+                            android:text=" Volver "
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
                             android:textSize="16sp"
@@ -237,45 +246,12 @@
         android:baselineAligned="false"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/subjects_bg"
-            android:orientation="vertical"
-            tools:ignore="NestedWeights">
-
-
-            <!--TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginBottom="0dp"
-                android:layout_weight="1"
-                android:gravity="center" /-->
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:src="@drawable/grado_materias1" />
-
-            <FrameLayout
-                android:id="@+id/contentList"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="3" />
-
-        </LinearLayout>
-
         <FrameLayout
             android:id="@+id/contentFragment"
             android:background="@drawable/info_bg"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="0dp"
             android:layout_weight="5" />
     </LinearLayout>
 </LinearLayout>
