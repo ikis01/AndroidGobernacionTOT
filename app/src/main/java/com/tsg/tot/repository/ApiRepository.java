@@ -1,5 +1,6 @@
 package com.tsg.tot.repository;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
 
@@ -17,6 +18,7 @@ import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
 import com.tsg.tot.data.model.Upload;
+import com.tsg.tot.data.model.Users;
 import com.tsg.tot.data.model.Version;
 import com.tsg.tot.data.remote.ApiService;
 import com.tsg.tot.data.remote.ApiUtils;
@@ -658,6 +660,16 @@ public class ApiRepository implements Repository {
                 Log.d("POST", "Unable to submit post to API.");
             }
         });
+    }
+
+    @Override
+    public void updateUser(ContentValues cv,Context context){
+
+    }
+
+    @Override
+    public List<Users> getUsers(ContentValues cv, Context context) {
+        return null;
     }
 
     @Override

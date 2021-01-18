@@ -22,7 +22,7 @@ public class Users {
         this.idUsuario = idUsuario;
     }
 
-    public String getUserName() {
+    public String Name() {
         return userName;
     }
 
@@ -35,6 +35,12 @@ public class Users {
     }
 
     public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Users(Integer idUsuario, String userName, String password) {
+        this.idUsuario = idUsuario;
+        this.userName = userName;
         this.password = password;
     }
 }

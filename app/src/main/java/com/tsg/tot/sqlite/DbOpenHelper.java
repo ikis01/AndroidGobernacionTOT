@@ -100,9 +100,19 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             "  `Ruta` TEXT)";
 
     private static final String USERS_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS `Usuarios` ( "+
-            "`idUsuario` INTEGER,"+
+            "`idUsuario` INTEGER constraint `Usuarios_pk`" +
+            "primary key autoincrement,"+
             "`Password`  TEXT,"+
             "`UserName`TEXT )";
+
+    private static final String FILE_KIOSCO_CREATE = " CREATE TABLE IF NOT EXISTS `ArchivosKiosco` ( "+
+            "`idArchivosTOT` INTEGER constraint `ArchivosKiosco_PK`" +
+            "primary key autoincrement,"+
+            "`archivoKiosco`  INTEGER,"+
+            "`codigo` TEXT," +
+            "`ruta` TEXT," +
+            "`idEntrega` INTEGER," +
+            "`subida_idsubida` INTEGER)";
 
     private static final String DB_NAME = "TOT";
     private static final int DB_VERSION = 1;
@@ -129,6 +139,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         db.execSQL(CLASSES_TABLE_CREATE);
         db.execSQL(BLOB_TABLE_CREATE);
         db.execSQL(USERS_TABLE_CREATE);
+        db.execSQL(FILE_KIOSCO_CREATE);
 
         //Asigna Version 0.1 a la tabla
         ContentValues cv = new ContentValues();
@@ -145,4 +156,5 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
 
     }
+
 }

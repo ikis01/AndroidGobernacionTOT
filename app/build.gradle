@@ -53,6 +53,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'androidx.navigation:navigation-fragment:2.2.2'
     implementation 'androidx.navigation:navigation-ui:2.2.2'
+    implementation 'androidx.wear:wear:1.0.0'
     //Pruebas de test
     //testImplementation 'org.mockito:mockito-core:2.+'
     testImplementation 'junit:junit:4.13'
@@ -71,5 +72,6 @@ dependencies {
     //Inyeccion de dependencias
     implementation 'com.google.dagger:dagger:2.11'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.9'
+    compileOnly 'com.google.android.wearable:wearable:2.6.0'
 
 }

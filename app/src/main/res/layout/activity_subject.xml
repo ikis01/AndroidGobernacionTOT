@@ -189,14 +189,14 @@
                         android:paddingBottom="5dp">
 
                         <Button
-                            android:id="@+id/bt_subir_archivos"
+                            android:id="@+id/bt_cerrar_sesion"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:background="@drawable/custom_button_main"
 
                             android:onClick="update"
-                            android:text="  Subir Archivos  "
+                            android:text="  Cerrar Sesión  "
 
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"

@@ -19,6 +19,7 @@ import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
 import com.tsg.tot.data.model.Upload;
+import com.tsg.tot.data.model.Users;
 import com.tsg.tot.sqlite.DbOpenHelper;
 
 import java.util.ArrayList;
@@ -93,6 +94,10 @@ import static com.tsg.tot.sqlite.DBConstants.TEACHER_TABLE_NAME;
 import static com.tsg.tot.sqlite.DBConstants.UPLOAD_DATE;
 import static com.tsg.tot.sqlite.DBConstants.UPLOAD_ID;
 import static com.tsg.tot.sqlite.DBConstants.UPLOAD_TABLE_NAME;
+import static com.tsg.tot.sqlite.DBConstants.USERS_ID;
+import static com.tsg.tot.sqlite.DBConstants.USERS_PASSWORD;
+import static com.tsg.tot.sqlite.DBConstants.USERS_TABLE_NAME;
+import static com.tsg.tot.sqlite.DBConstants.USERS_USER_NAME;
 import static com.tsg.tot.sqlite.DBConstants.VERSION_NUMBER;
 import static com.tsg.tot.sqlite.DBConstants.VERSION_TABLE_NAME;
 
@@ -299,6 +304,57 @@ public class DatabaseRepository implements Repository {
     }
 
     //UPDATE info of DB Tables
+
+    @Override
+    public List<Users> getUsers(ContentValues cv, Context context ){
+
+        String userNameString = (String) cv.get("UserName");
+        String passwordString = (String) cv.get("Password");
+        List<Users> usersList = new ArrayList<>();
+
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String query = "SELECT * FROM " + USERS_TABLE_NAME+ " WHERE "
+                        +USERS_USER_NAME + " = '" + userNameString +"'"
+                        +" AND " + USERS_PASSWORD + " = '" +passwordString +"'";
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        try {
+            if (cursor.getCount() > 0) {
+                do {
+                    //get columns
+                    int idUsuario = cursor.getColumnIndex(USERS_ID);
+                    int userName = cursor.getColumnIndex(USERS_USER_NAME);
+                    int password = cursor.getColumnIndex(USERS_PASSWORD);
+
+                    //add row to list
+                    usersList.add(new Users(
+                            Integer.parseInt(cursor.getString(idUsuario)),
+                            cursor.getString(userName),
+                            cursor.getString(password)));
+
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+
+        db.close();
+        dbHelper.close();
+        return usersList;
+    }
+
+    @Override
+    public void updateUser (ContentValues cv,Context context){
+
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        db.insert("Usuarios",null,cv);
+        db.close();
+        dbHelper.close();
+    }
 
     @Override
     public void updateVersion(float version, Context context) {

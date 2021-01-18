@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tsg.tot">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-feature android:name="android.hardware.type.watch" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -16,23 +20,33 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".subject.SubjectActivity"
-            android:screenOrientation="landscape" >
 
-        </activity>
-        <!-- android:label="@string/title_activity_tarea" -->
+        <!--
+               Set to true if your app is Standalone, that is, it does not require the handheld
+               app to run.
+        -->
         <activity
-            android:name=".task.TaskActivity"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".main.mainmvp.MainView"
+            android:name=".login.LoginActivity"
+            android:label="@string/title_activity_login"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".subject.SubjectActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".task.TaskActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".main.mainmvp.MainView"
+            android:screenOrientation="landscape">
+
+
+
         </activity>
     </application>
 

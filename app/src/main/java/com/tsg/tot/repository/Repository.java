@@ -1,5 +1,6 @@
 package com.tsg.tot.repository;
 
+import android.content.ContentValues;
 import android.content.Context;
 
 import com.tsg.tot.data.model.Blob;
@@ -16,6 +17,7 @@ import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
 import com.tsg.tot.data.model.Upload;
+import com.tsg.tot.data.model.Users;
 
 import java.util.List;
 
@@ -58,7 +60,14 @@ public interface Repository {
 
     List<Task> getTasks(Context context);
 
+
     //UPDATE - POST
+
+    List<Users> getUsers(ContentValues cv, Context context );
+
+    void updateUser (ContentValues cv,Context context);
+
+
 
     void updateVersion(float version, Context context);
 

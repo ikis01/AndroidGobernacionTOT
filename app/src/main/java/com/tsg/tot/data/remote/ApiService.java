@@ -13,6 +13,7 @@ import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
+import com.tsg.tot.data.model.Token;
 import com.tsg.tot.data.model.Upload;
 import com.tsg.tot.data.model.Version;
 
@@ -29,6 +30,7 @@ import retrofit2.http.POST;
  * End Point del API
  */
 public interface ApiService {
+    String POST_LOGIN = "api/cuentas/login";
     String GET_VERSION ="api/gobernacion/cursos/versiones";
     String GET_DEVICE = "api/gobernacion/cursos/disposotivos";
     String GET_LESSONS = "api/gobernacion/cursos/clases" ;
@@ -105,4 +107,7 @@ public interface ApiService {
 
     @POST(POST_BLOB)
     Call<Blob> postBlob(@Body RequestBody body);
+
+    @POST(POST_LOGIN)
+    Call<Token> postLogin(@Body RequestBody body);
 }

@@ -1,5 +1,7 @@
 package com.tsg.tot.sqlite;
 
+import java.security.PublicKey;
+
 /**
  * Clase que contiene todas las Constantes utilizadas en la
  * creación y consulta de tablas de la Base de Datos.
@@ -30,7 +32,7 @@ public final class DBConstants {
     public static final String EXERCISES_TABLE_NAME = "Ejercicios";
     public static final String LESSONS_TABLE_NAME = "Clases";
     public static final String BLOB_TABLE_NAME = "Blob";
-    public static final String USERS_TABLE_NAME = "Usuario";
+    public static final String USERS_TABLE_NAME = "Usuarios";
 
     /**
      * Version table columns
@@ -146,5 +148,13 @@ public final class DBConstants {
     public static final String BLOB_UPLOAD_ID = "Subida_idSubida";
     public static final String BLOB_SUBMISSION_ID = "Entrega_id";
     public static final String BLOB_RUTE = "Ruta";
+
+    /**
+     *  Users table columns
+     */
+    public static final String USERS_ID ="idUsuario";
+    public static final String USERS_PASSWORD="Password";
+    public static final String USERS_USER_NAME ="UserName";
+
 
 }

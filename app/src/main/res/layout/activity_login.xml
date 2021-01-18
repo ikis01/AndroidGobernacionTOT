@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fondo"
+    android:orientation="vertical"
+    tools:context=".login.LoginActivity">
+
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top"
+        android:layout_weight="1"
+
+        android:elevation="10dp">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="100dp">
+
+        </TableLayout>
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="250dp"
+            android:orientation="horizontal">
+            <TableRow>
+                <TextView
+                    android:id="@+id/tv_estatus_kiosko"
+                    android:text="Estatus"
+                    android:textSize="16pt">
+
+                </TextView>
+            </TableRow>
+            <TableRow>
+
+                <TextView android:text="Usuario"
+                    android:id="@+id/tv_usuario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25pt"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16pt">
+
+                </TextView>
+
+                <EditText
+                    android:textAlignment="textEnd"
+                    android:id="@+id/et_usuario"
+                    android:text="Escriba el usuario">
+
+                </EditText>
+            </TableRow>
+
+            <TableRow>
+
+                <TextView android:text="Contraseña"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25pt"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16pt">
+
+                </TextView>
+
+                <EditText
+
+                    android:text="Contraseña"
+                    android:inputType="textPassword"
+                    android:id="@+id/et_contrasena">
+
+                </EditText>
+            </TableRow>
+            <TableRow>
+                <Button
+                    android:id="@+id/bt_registrarse"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/custom_button_main"
+
+                    android:onClick="registrar"
+                    android:text="  Registrarse "
+
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:ignore="OnClick" />
+                <Button
+                    android:id="@+id/bt_iniciar_sesion"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/custom_button_main"
+
+                    android:onClick="iniciarSesion"
+                    android:text="  Iniciar Sesión "
+
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:ignore="OnClick" />
+            </TableRow>
+        </TableLayout>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:baselineAligned="false"
+        android:orientation="horizontal"/>
+</LinearLayout>

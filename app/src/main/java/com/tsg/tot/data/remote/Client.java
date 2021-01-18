@@ -18,8 +18,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-class Client {
+import java.net.Socket;
+public class Client {
 
     private static Retrofit retrofit = null;
     public static class UnsafeOkHttpClient {
@@ -83,7 +83,7 @@ class Client {
 
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(ApiUtils.BASE_URL)
+                    .baseUrl(ApiUtils.BASE_URL+":"+ApiUtils.PORT_URL+"/")
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .client(httpClient)
@@ -102,5 +102,19 @@ class Client {
                     .build();
         }
         return retrofit;*/
+    }
+
+    public boolean isClientOnline() {
+        boolean isOnline = false;
+        try {
+            Socket s = new Socket(ApiUtils.BASE_URL, Integer.parseInt(ApiUtils.PORT_URL));
+            if (s.isConnected()) {
+                isOnline = true;
+                System.out.println("Conexión establecida con la dirección: " + ApiUtils.BASE_URL);
+            }
+        } catch (Exception e) {
+            System.err.println("No se pudo establecer conexión con: " +ApiUtils.BASE_URL);
+        }
+        return isOnline;
     }
 }
