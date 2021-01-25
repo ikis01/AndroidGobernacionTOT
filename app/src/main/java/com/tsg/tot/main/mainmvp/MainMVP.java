@@ -15,6 +15,13 @@ import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
 import com.tsg.tot.data.model.Upload;
+import com.tsg.tot.data.remote.model.GradeRemote;
+import com.tsg.tot.data.remote.model.LessonsRemote;
+import com.tsg.tot.data.remote.model.StudentRemote;
+import com.tsg.tot.data.remote.model.StudyMaterialRemote;
+import com.tsg.tot.data.remote.model.SubjectsRemote;
+import com.tsg.tot.data.remote.model.TaskRemote;
+import com.tsg.tot.data.remote.model.TeacherRemote;
 import com.tsg.tot.main.fragment.CustomProgressDialog;
 
 import java.util.List;
@@ -42,18 +49,18 @@ public interface MainMVP {
 
         void createDB(Context context);
 
-        void checkVersions(Context context, CustomProgressDialog dialog);
+        void checkVersions(Context context, CustomProgressDialog dialog,String token,String idUsuario);
 
-        List<Subjects> getSubjects(Context context);
+        List<Subjects> getSubjects(Context context,String token,Integer code);
 
-        List<Task> getTaskSubject(Context context, int idSubject);
+        List<Task> getTaskSubject(Context context, int idSubject,String token);
 
-        void setInfoStudent(Context context);
+        void setInfoStudent(Context context, Integer idUsuario);
 
         void setInfoSubject(Subjects subjects);
 
         void notifyRefresh();
-        void updateEverything (Context context, CustomProgressDialog dialog);
+        void updateEverything (Context context, CustomProgressDialog dialog,String token);
         void testPOST(Context context);
         //void uploadFileTest (Context context);
 
@@ -70,6 +77,19 @@ public interface MainMVP {
         float checkAPIVersion(Context context);
 
         float checkDbVersion(Context context);
+
+        void updateDatabase(String idUsuario ,
+                            Context context ,
+                            float version,
+                            GradeRemote gradeRemote,
+                            StudentRemote studentRemote,
+                            List<TeacherRemote> teacherRemoteList,
+                            List<SubjectsRemote> subjectsRemoteList,
+                            List<TaskRemote>taskRemoteList,
+                            List<StudyMaterialRemote> materialRemoteList,
+                            List<LessonsRemote> lessonsRemoteList);
+
+
 
         void updateAllDb(float versionList,
                          List<Task> taskList,
@@ -90,6 +110,7 @@ public interface MainMVP {
         List<Device> checkDevices(Context context, int from);
 
         List<Lessons> checkLessons(Context context, int from);
+        List<LessonsRemote> checkMyLessons (Context context, int from ,String token);
 
         List<Grade> checkGrades(Context context, int from);
 
@@ -97,21 +118,40 @@ public interface MainMVP {
 
         List<Submissions> checkSubmissions(Context context, int from);
 
-        List<Student> checkStudents(Context context, int from);
+        List<Student> checkStudents(Context context, int from, Integer idUsuario);
 
         List<Evaluations> checkEvaluations(Context context, int from);
 
         List<StudyMaterial> checkStudyMaterials(Context context, int from);
 
-        List<Subjects> checkSubjects(Context context, int from);
+
+
+
+        List<Subjects> checkSubjects(Context context, int from, String auth,Integer code);
 
         List<Planning> checkPlanning(Context context, int from);
 
-        List<Teacher> checkTeachers(Context context, int from);
+        List<Teacher> checkTeachers(Context context, int from,String auth);
+
+        List<TeacherRemote> checkMyTeachers(Context context, int from, String auth);
+
+
 
         List<Upload> checkUploads(Context context, int from);
 
-        List<Task> checkTasks(Context context, int from);
+        List<Task> checkTasks(Context context, int from,String token);
+        List<TaskRemote> checkMyTasks(Context context, int from,String token);
+
+        GradeRemote checkMyGrade (Context context, int from , String auth);
+
+        StudentRemote checkMyStudent(Context context,int from,String auth);
+
+        List<SubjectsRemote> checkMySubjects(Context context ,int from ,String auth);
+
+
+        List<StudyMaterialRemote> checkMyPendingStudyMaterials(Context context,int from ,String token);
+
+
 
         //Methods for POST data on Endpoints
 

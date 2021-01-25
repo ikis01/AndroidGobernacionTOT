@@ -1,9 +1,11 @@
 package com.tsg.tot.data.model;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Token {
+public class TokenCustom {
 
     @SerializedName("token")
     @Expose
@@ -26,5 +28,22 @@ public class Token {
 
     public void setExpiration(String expiration) {
         this.expiration = expiration;
+    }
+
+    public TokenCustom(String token,String expiration){
+        this.token = token;
+        this.expiration= expiration;
+
+    }
+    public TokenCustom(){
+
+    }
+
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "TokenCustom { token=" +this.token + " expiration = "+this.expiration+"}"
+        ;
     }
 }

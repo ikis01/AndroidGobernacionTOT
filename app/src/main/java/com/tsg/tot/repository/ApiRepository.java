@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.gson.JsonObject;
 import com.tsg.tot.data.model.Blob;
 import com.tsg.tot.data.model.Device;
 import com.tsg.tot.data.model.Evaluations;
@@ -17,11 +18,19 @@ import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
+import com.tsg.tot.data.model.TokenCustom;
 import com.tsg.tot.data.model.Upload;
 import com.tsg.tot.data.model.Users;
 import com.tsg.tot.data.model.Version;
 import com.tsg.tot.data.remote.ApiService;
 import com.tsg.tot.data.remote.ApiUtils;
+import com.tsg.tot.data.remote.model.GradeRemote;
+import com.tsg.tot.data.remote.model.LessonsRemote;
+import com.tsg.tot.data.remote.model.StudentRemote;
+import com.tsg.tot.data.remote.model.StudyMaterialRemote;
+import com.tsg.tot.data.remote.model.SubjectsRemote;
+import com.tsg.tot.data.remote.model.TaskRemote;
+import com.tsg.tot.data.remote.model.TeacherRemote;
 
 import java.util.List;
 
@@ -33,10 +42,11 @@ import retrofit2.Response;
 /**
  * Clase que consulta los endpoint de la API
  */
-public class ApiRepository implements Repository {
+public class ApiRepository implements RemoteRepository {
 
     private ApiService mApiService = ApiUtils.getAPIService();
     public float apiVersion;
+    TokenCustom tokenCustom = new TokenCustom("", "");
 
     //List final for uptade DB
     List<Device> deviceListFinal;
@@ -47,11 +57,17 @@ public class ApiRepository implements Repository {
     List<Student> studentListFinal;
     List<Evaluations> evaluationsListFinal;
     List<StudyMaterial> studyMaterialListFinal;
-    List<Subjects> subjectsListFinal;
+    List<SubjectsRemote> subjectsListFinal;
     List<Planning> planningListFinal;
-    List<Teacher> teacherListFinal;
+    List<TeacherRemote> teacherListFinal;
     List<Upload> uploadListFinal;
-    List<Task> taskListFinal;
+    //List<Task> taskListFinal;
+    List<TaskRemote> taskListFinal;
+
+    GradeRemote gradeRemote;
+    List<StudyMaterialRemote> studyMaterialRemoteList;
+    StudentRemote studentRemote;
+    List<LessonsRemote> lessonsRemoteList;
 
     //GET calls to API
 
@@ -153,6 +169,67 @@ public class ApiRepository implements Repository {
 
         return lessonsListFinal;
     }
+
+    @Override
+    public List<LessonsRemote> getMyLessons(Context context,String auth) {
+
+        mApiService.getMyLessons(auth).enqueue(new Callback<List<LessonsRemote>>() {
+            @Override
+            public void onResponse(Call<List<LessonsRemote>> call, Response<List<LessonsRemote>> response) {
+                if (response.isSuccessful()) {
+                    List<LessonsRemote> lessonsList = response.body();
+                    lessonsRemoteList = lessonsList;
+                    if (lessonsRemoteList != null) {
+                        for (LessonsRemote lesson : lessonsRemoteList) {
+                            try {
+                                Log.d("Debug LessonRemote id ", lesson.getId().toString());
+                                Log.d("Debug LessonRemot name ", lesson.getNombre());
+                            } catch (NullPointerException e) {
+                                Log.d("Debug NullPointerException ", e.toString());
+                            }
+                        }
+                    } else {
+                        Log.d("Debug ", "lessonsRemoteList is null");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<LessonsRemote>> call, Throwable t) {
+                Log.d("onFailure getMyLessons", t.toString());
+            }
+        });
+
+        return lessonsRemoteList;
+    }
+
+    @Override
+    public GradeRemote getMyGrade(Context context, String auth) {
+        mApiService.getMyGrade(auth).enqueue(new Callback<GradeRemote>() {
+            @Override
+            public void onResponse(Call<GradeRemote> call, Response <GradeRemote> response) {
+                if (response.isSuccessful()) {
+                    GradeRemote gradeRemoteResponse = response.body();
+                    gradeRemote = gradeRemoteResponse;
+
+                                Log.d("Debug grade id ", gradeRemote.getId().toString());
+                                Log.d("Debug grade name ", gradeRemote.getNombre());
+
+                    } else {
+                        Log.d("Debug ", "gradeList is null");
+                    }
+                }
+
+
+            @Override
+            public void onFailure(Call<GradeRemote> call, Throwable t) {
+                Log.d("onFailure getGrade", t.toString());
+            }
+        });
+
+        return gradeRemote;
+    }
+
 
     @Override
     public List<Grade> getGrade(Context context) {
@@ -327,10 +404,6 @@ public class ApiRepository implements Repository {
         return evaluationsListFinal;
     }
 
-    @Override
-    public String getIPEND(Context context) {
-        return null;
-    }
 
     @Override
     public List<StudyMaterial> getStudyMaterial(Context context) {
@@ -368,29 +441,17 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public List<Subjects> getSubjects(Context context) {
-        mApiService.getSubjects().enqueue(new Callback<List<Subjects>>() {
+    public List<SubjectsRemote> getMySubjects(Context context, String auth) {
+        mApiService.getMySubjects(auth).enqueue(new Callback<List<SubjectsRemote>>() {
             @Override
-            public void onResponse(Call<List<Subjects>> call, Response<List<Subjects>> response) {
+            public void onResponse(Call<List<SubjectsRemote>> call, Response<List<SubjectsRemote>> response) {
                 if (response.isSuccessful()) {
-                    List<Subjects> subjectsList = response.body();
+                    List<SubjectsRemote> subjectsList = response.body();
                     subjectsListFinal = subjectsList;
                     if (subjectsList != null) {
-                        for (Subjects subjects : subjectsList) {
+                        for (SubjectsRemote subjects : subjectsList) {
                             try {
                                 Log.d("Debug subjects id ", subjects.getId().toString());
-                                Log.d("Debug subjects curse id ", subjects.getCurso().getId().toString());
-                                Log.d("Debug subjects curse name ", subjects.getCurso().getNombre());
-                                Log.d("Debug subjects teacher id ", subjects.getProfesor().getId().toString());
-                                Log.d("Debug subjects teacher code ", subjects.getProfesor().getCodigo().toString());
-                                Log.d("Debug subjects teacher name ", subjects.getProfesor().getNombres());
-                                Log.d("Debug subjects teacher last name ", subjects.getProfesor().getApellidos());
-                                Log.d("Debug subjects teacher birth date", subjects.getProfesor().getFechaNacimiento());
-                                Log.d("Debug subjects code ", subjects.getCodigo());
-                                Log.d("Debug subjects title ", subjects.getTitulo());
-                                Log.d("Debug subjects subtitle", subjects.getSubtitulo());
-                                Log.d("Debug subjects description ", subjects.getDescripcion());
-                                Log.d("Debug subjects image ", subjects.getImagen());
                             } catch (NullPointerException e) {
                                 Log.d("Debug NullPointerException ", e.toString());
                             }
@@ -402,7 +463,7 @@ public class ApiRepository implements Repository {
             }
 
             @Override
-            public void onFailure(Call<List<Subjects>> call, Throwable t) {
+            public void onFailure(Call<List<SubjectsRemote>> call, Throwable t) {
                 Log.d("onFailure getSubjects", t.toString());
             }
         });
@@ -447,21 +508,21 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public List<Teacher> getTeachers(Context context) {
-        mApiService.getTeachers().enqueue(new Callback<List<Teacher>>() {
+    public List<TeacherRemote> getTeachers(Context context, String auth) {
+        mApiService.getTeachers(auth).enqueue(new Callback<List<TeacherRemote>>() {
             @Override
-            public void onResponse(Call<List<Teacher>> call, Response<List<Teacher>> response) {
+            public void onResponse(Call<List<TeacherRemote>> call, Response<List<TeacherRemote>> response) {
                 if (response.isSuccessful()) {
-                    List<Teacher> teacherList = response.body();
+                    List<TeacherRemote> teacherList = response.body();
                     teacherListFinal = teacherList;
                     if (teacherList != null) {
-                        for (Teacher teacher : teacherList) {
+                        for (TeacherRemote teacher : teacherList) {
                             try {
                                 Log.d("Debug teacher id ", teacher.getId().toString());
-                                Log.d("Debug teacher code ", teacher.getCodigo().toString());
+                                //Log.d("Debug teacher code ", teacher.getCodigo().toString());
                                 Log.d("Debug teacher name ", teacher.getNombres());
                                 Log.d("Debug teacher last name ", teacher.getApellidos());
-                                Log.d("Debug teacher birth date ", teacher.getFechaNacimiento());
+                                //Log.d("Debug teacher birth date ", teacher.getFechaNacimiento());
                             } catch (NullPointerException e) {
                                 Log.d("Debug NullPointerException ", e.toString());
                             }
@@ -473,7 +534,7 @@ public class ApiRepository implements Repository {
             }
 
             @Override
-            public void onFailure(Call<List<Teacher>> call, Throwable t) {
+            public void onFailure(Call<List<TeacherRemote>> call, Throwable t) {
                 Log.d("onFailure getTeachers", t.toString());
             }
         });
@@ -514,22 +575,21 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public List<Task> getTasks(Context context) {
-        mApiService.getTasks().enqueue(new Callback<List<Task>>() {
+    public List<TaskRemote> getTasks(Context context, String authKey) {
+
+        mApiService.getTasks(authKey).enqueue(new Callback<List<TaskRemote>>() {
+
             @Override
-            public void onResponse(Call<List<Task>> call, Response<List<Task>> response) {
+            public void onResponse(Call<List<TaskRemote>> call, Response<List<TaskRemote>> response) {
                 if (response.isSuccessful()) {
-                    List<Task> taskList = response.body();
+                    List<TaskRemote> taskList = response.body();
                     taskListFinal = taskList;
                     if (taskList != null) {
-                        for (Task task : taskList) {
+                        for (TaskRemote task : taskList) {
                             try {
-                                Log.d("Debug task id ", task.getId().toString());
-                                Log.d("Debug task upload id ", task.getSubida().getId().toString());
-                                Log.d("Debug task upload date ", task.getSubida().getFecha());
-                                Log.d("Debug task name ", task.getNombre());
-                                Log.d("Debug task code ", task.getCodigo());
-                                Log.d("Debug task subject ", task.getMaterias().toString());
+                                Log.d("Debug task id ", task.getTareaId().toString());
+                                Log.d("Debug task upload id ", task.getIdArchivoD2L().toString());
+
                             } catch (NullPointerException e) {
                                 Log.d("Debug NullPointerException ", e.toString());
                             }
@@ -541,12 +601,13 @@ public class ApiRepository implements Repository {
             }
 
             @Override
-            public void onFailure(Call<List<Task>> call, Throwable t) {
+            public void onFailure(Call<List<TaskRemote>> call, Throwable t) {
                 Log.d("onFailure getTasks", t.toString());
             }
         });
 
         return taskListFinal;
+
     }
 
     //POST calls to API
@@ -627,6 +688,70 @@ public class ApiRepository implements Repository {
     }
 
     @Override
+    public StudentRemote getMyStudent(Context context, String auth) {
+        mApiService.getMyStudent(auth).enqueue(new Callback<StudentRemote>() {
+            @Override
+            public void onResponse(Call<StudentRemote> call, Response<StudentRemote> response) {
+                if (response.isSuccessful()) {
+                    StudentRemote student = response.body();
+                    studentRemote = student;
+                    if (student != null) {
+                            try {
+                                Log.d("Debug my student id ", student.getId().toString());
+                                Log.d("Debug my student  name ", student.getNombre());
+                            } catch (NullPointerException e) {
+                                Log.d("Debug NullPointerException ", e.toString());
+                            }
+
+                    } else {
+                        Log.d("Debug ", "gradeList is null");
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<StudentRemote> call, Throwable t) {
+
+            }
+        });
+        return studentRemote;
+    }
+
+    @Override
+    public List<StudyMaterialRemote> getMyPendingStudyMaterial(Context context, String auth) {
+
+        mApiService.getMyPendingStudyMaterial(auth).enqueue(new Callback<List<StudyMaterialRemote>>() {
+            @Override
+            public void onResponse(Call<List<StudyMaterialRemote>> call, Response<List<StudyMaterialRemote>> response) {
+                if (response.isSuccessful()) {
+                    List<StudyMaterialRemote> studyMaterialRemotes = response.body();
+                    studyMaterialRemoteList = studyMaterialRemotes;
+                    if (studyMaterialRemoteList != null) {
+                        for (StudyMaterialRemote material : studyMaterialRemoteList) {
+                            try {
+                                Log.d("Debug Material Estudio  id ", material.getId().toString());
+                                Log.d("Debug Material Estudio name  ", material.getNombreArchivo());
+                            } catch (NullPointerException e) {
+                                Log.d("Debug NullPointerException ", e.toString());
+                            }
+                        }
+                    } else {
+                        Log.d("Debug ", "gradeList is null");
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<StudyMaterialRemote>> call, Throwable t) {
+
+            }
+        });
+        return studyMaterialRemoteList;
+    }
+
+    @Override
     public void postTask(RequestBody requestBody) {
         mApiService.postTask(requestBody).enqueue(new Callback<Task>() {
             @Override
@@ -663,7 +788,7 @@ public class ApiRepository implements Repository {
     }
 
     @Override
-    public void updateUser(ContentValues cv,Context context){
+    public void updateUser(ContentValues cv, Context context) {
 
     }
 
@@ -709,6 +834,27 @@ public class ApiRepository implements Repository {
     }
 
     @Override
+    public TokenCustom postLogin(JsonObject requestBody) {
+
+        mApiService.postLogin(requestBody).enqueue(new Callback<TokenCustom>() {
+
+            @Override
+            public void onResponse(Call<TokenCustom> call, Response<TokenCustom> response) {
+                if (response.isSuccessful()) {
+                    tokenCustom = response.body();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TokenCustom> call, Throwable t) {
+                Log.d("onFailure getVersion", t.toString());
+            }
+        });
+
+        return tokenCustom;
+    }
+
+    @Override
     public void postBlob(RequestBody body) {
         mApiService.postBlob(body).enqueue(new Callback<Blob>() {
             @Override
@@ -720,7 +866,7 @@ public class ApiRepository implements Repository {
 
             @Override
             public void onFailure(Call<Blob> call, Throwable t) {
-              Log.d("POST", "Unable to submit post to API.");
+                Log.d("POST", "Unable to submit post to API.");
             }
         });
     }

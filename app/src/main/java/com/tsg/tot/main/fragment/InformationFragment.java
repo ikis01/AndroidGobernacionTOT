@@ -26,7 +26,7 @@ import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.main.mainmvp.MainMVP;
 import com.tsg.tot.main.mainmvp.MainView;
-import com.tsg.tot.subject.SubjectActivity;
+import com.tsg.tot.subject.DetailSubjectActivity;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -100,7 +100,7 @@ public class InformationFragment extends Fragment implements FragmentsMVP.View{
         ib_subject.setOnClickListener(view -> {
 
             //Toast.makeText(context,"click en material: "+taskList.get(position).getNombre(),Toast.LENGTH_SHORT).show();
-            Intent intent  = new  Intent (getContext(), SubjectActivity.class);
+            Intent intent  = new  Intent (getContext(), DetailSubjectActivity.class);
             intent.putExtra( "idSubject",subjects.getId());
             intent.putExtra("titleSubject",subjects.getTitulo());
             intent.putExtra("student_name",((AppCompatTextView)((MainView)getContext()).tv_studentName).getText());
@@ -132,7 +132,7 @@ public class InformationFragment extends Fragment implements FragmentsMVP.View{
     @Override
     public void onResume() {
         super.onResume();
-        setTaskSubjects(presenter.getTaskSubject(getContext(), subjects.getId()), getContext(), presenter);
+        setTaskSubjects(presenter.getTaskSubject(getContext(), subjects.getId(),""), getContext(), presenter);
     }
 
     @Override

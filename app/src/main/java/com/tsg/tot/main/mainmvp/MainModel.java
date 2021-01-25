@@ -1,8 +1,13 @@
 package com.tsg.tot.main.mainmvp;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 import android.util.Log;
+
+import androidx.core.app.ActivityCompat;
 
 import com.tsg.tot.data.model.Device;
 import com.tsg.tot.data.model.Evaluations;
@@ -17,15 +22,35 @@ import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
 import com.tsg.tot.data.model.Upload;
+import com.tsg.tot.data.remote.model.GradeRemote;
+import com.tsg.tot.data.remote.model.LessonsRemote;
+import com.tsg.tot.data.remote.model.StudentRemote;
+import com.tsg.tot.data.remote.model.StudyMaterialRemote;
+import com.tsg.tot.data.remote.model.SubjectsRemote;
+import com.tsg.tot.data.remote.model.TaskRemote;
+import com.tsg.tot.data.remote.model.TeacherRemote;
 import com.tsg.tot.main.fragment.CustomProgressDialog;
 import com.tsg.tot.repository.ApiRepository;
 import com.tsg.tot.repository.DatabaseRepository;
 import com.tsg.tot.sqlite.DbOpenHelper;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
-import okhttp3.MediaType;
+import kotlin.io.FilePathComponents;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
@@ -64,38 +89,142 @@ public class MainModel implements MainMVP.Model {
     }
 
     @Override
+    public void updateDatabase(String idUsusario, Context context,
+                               float version,
+                               GradeRemote gradeRemote,
+                               StudentRemote studentRemote,
+                               List<TeacherRemote> teacherRemoteList,
+                               List<SubjectsRemote> subjectsRemoteList,
+                               List<TaskRemote> taskRemoteList,
+                               List<StudyMaterialRemote> materialRemoteList,
+                               List<LessonsRemote> lessonsRemoteList
+    )  {
+        File storageDirMaterialRemote = null;
+        File storageDirectoryStudent = null;
+        File storageDirTask = null ;
+
+        databaseRepository.updateMyStudent(studentRemote, context, Integer.parseInt(idUsusario));
+        databaseRepository.updateMySubjects(subjectsRemoteList, context);
+        databaseRepository.updateRelStudentSubjects(studentRemote, subjectsRemoteList, context);
+
+        databaseRepository.updateVersion(version, context);
+        databaseRepository.updateMyGrade(gradeRemote, context, studentRemote);
+
+        databaseRepository.updateMYTeachers(teacherRemoteList, context);
+
+
+        databaseRepository.updateMyTasks(taskRemoteList, context, studentRemote, 0);
+        databaseRepository.updateMyStudyMaterial(materialRemoteList, context);
+        databaseRepository.updateMyLessons(lessonsRemoteList,context );
+
+
+        if (studentRemote != null) {
+
+            if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+                //RUNTIME PERMISSION Android M
+                if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    storageDirectoryStudent = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Data", studentRemote.getNombre().replace(" ", "") + studentRemote.getId());
+                    storageDirectoryStudent.mkdir();
+                } else {
+                    // requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
+                }
+
+            }
+
+        }
+
+        if (taskRemoteList!=null && studentRemote !=null){
+            for(TaskRemote taskRemote : taskRemoteList){
+
+                if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+                    //RUNTIME PERMISSION Android M
+                    if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        //storageDirMaterialRemote = new File(storageDirectoryStudent.getPath(), material.getIdD2L()+"BLOB");
+                        storageDirTask = new File(storageDirectoryStudent.getPath(), taskRemote.getTareaId()+"BLOB");
+
+                        if (storageDirTask.mkdir()){
+
+                            if (Download (taskRemote.getFile().getUrl(),storageDirTask, taskRemote.getNombreArchivo(),"Tarea_")){
+
+
+                            }
+
+
+                        }
+
+
+                    }
+
+                }
+
+            }
+
+        }
+
+
+
+        if (materialRemoteList != null) {
+            for (StudyMaterialRemote material : materialRemoteList) {
+
+                if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+                    //RUNTIME PERMISSION Android M
+                    if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        //storageDirMaterialRemote = new File(storageDirectoryStudent.getPath(), material.getIdD2L()+"BLOB");
+                        storageDirMaterialRemote = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+"/Data", material.getIdD2L()+"BLOB");
+
+                       if (storageDirMaterialRemote.mkdir()){
+
+                             Download (material.getUrl(),storageDirMaterialRemote,material.getNombreArchivo(),"Material_");
+
+
+                        }
+
+
+                    }
+
+                }
+
+
+            }
+
+        }
+
+
+    }
+
+    @Override
     public void updateAllDb(float version, List<Task> taskList,
                             List<Upload> uploadList, List<Teacher> teacherList,
                             List<Subjects> subjectsList, List<Grade> gradeList, List<StudyMaterial> studyMaterialList,
                             List<Evaluations> evaluationsList, List<Student> studentList,
                             List<Submissions> submissionsList, List<Exercises> exercisesList,
-                            List<Lessons> lessonsList, Context context,CustomProgressDialog dialog) {
+                            List<Lessons> lessonsList, Context context, CustomProgressDialog dialog) {
 
-        dialog.setProgress(dialog.getProgress()+5);
+        dialog.setProgress(dialog.getProgress() + 5);
         databaseRepository.updateVersion(version, context);
-        dialog.setProgress(dialog.getProgress()+5);
+        dialog.setProgress(dialog.getProgress() + 5);
         databaseRepository.updateTasks(taskList, context);
-        dialog.setProgress(dialog.getProgress()+5);
+        dialog.setProgress(dialog.getProgress() + 5);
         databaseRepository.updateUploads(uploadList, context);
-        dialog.setProgress(dialog.getProgress()+5);
+        dialog.setProgress(dialog.getProgress() + 5);
         databaseRepository.updateTeachers(teacherList, context);
-        dialog.setProgress(dialog.getProgress()+5);
+        dialog.setProgress(dialog.getProgress() + 5);
         databaseRepository.updateSubjects(subjectsList, context);
-        dialog.setProgress(dialog.getProgress()+5);
+        dialog.setProgress(dialog.getProgress() + 5);
         databaseRepository.updateGrade(gradeList, context);
-        dialog.setProgress(dialog.getProgress()+5);
+        dialog.setProgress(dialog.getProgress() + 5);
         databaseRepository.updateStudyMaterial(studyMaterialList, context);
-        dialog.setProgress(dialog.getProgress()+5);
+        dialog.setProgress(dialog.getProgress() + 5);
         databaseRepository.updateEvaluations(evaluationsList, context);
-        dialog.setProgress(dialog.getProgress()+5);
+        dialog.setProgress(dialog.getProgress() + 5);
         databaseRepository.updateStudent(studentList, context);
-        dialog.setProgress(dialog.getProgress()+5);
+        dialog.setProgress(dialog.getProgress() + 5);
         databaseRepository.updateSubmissions(submissionsList, context);
-        dialog.setProgress(dialog.getProgress()+5);
+        dialog.setProgress(dialog.getProgress() + 5);
         databaseRepository.updateExercises(exercisesList, context);
-        dialog.setProgress(dialog.getProgress()+5);
+        dialog.setProgress(dialog.getProgress() + 5);
         databaseRepository.updateLessons(lessonsList, context);
-        dialog.setProgress(dialog.getProgress()+5);
+        dialog.setProgress(dialog.getProgress() + 5);
     }
 
     @Override
@@ -131,6 +260,22 @@ public class MainModel implements MainMVP.Model {
                 break;
         }
 
+        return lessonsList;
+    }
+
+    @Override
+    public List<LessonsRemote> checkMyLessons(Context context, int from, String token) {
+        List<LessonsRemote> lessonsList = null;
+        switch (from) {
+            case API_REPOSITORY:
+                lessonsList = apiRepository.getMyLessons(context, token);
+                break;
+            case DATABASE_REPOSITORY:
+                //lessonsList = databaseRepository.getGrade(context);
+                break;
+            default:
+                break;
+        }
         return lessonsList;
     }
 
@@ -188,7 +333,7 @@ public class MainModel implements MainMVP.Model {
     }
 
     @Override
-    public List<Student> checkStudents(Context context, int from) {
+    public List<Student> checkStudents(Context context, int from, Integer idUsuario) {
         List<Student> studentList = null;
 
         switch (from) {
@@ -196,7 +341,7 @@ public class MainModel implements MainMVP.Model {
                 studentList = apiRepository.getStudent(context);
                 break;
             case DATABASE_REPOSITORY:
-                studentList = databaseRepository.getStudent(context);
+                studentList = databaseRepository.getStudent(context, idUsuario);
                 break;
             default:
                 break;
@@ -223,6 +368,52 @@ public class MainModel implements MainMVP.Model {
     }
 
     @Override
+    public StudentRemote checkMyStudent(Context context, int from, String auth) {
+        StudentRemote student = null;
+
+        switch (from) {
+            case API_REPOSITORY:
+                student = apiRepository.getMyStudent(context, auth);
+
+                break;
+            case DATABASE_REPOSITORY:
+                //studyMaterialList = databaseRepository.getStudyMaterial(context);
+                break;
+            default:
+                break;
+        }
+
+
+        return student;
+    }
+
+    @Override
+    public List<StudyMaterialRemote> checkMyPendingStudyMaterials(Context context, int from, String token) {
+
+
+        List<StudyMaterialRemote> studyMaterialList = null;
+
+        switch (from) {
+            case API_REPOSITORY:
+                studyMaterialList = apiRepository.getMyPendingStudyMaterial(context, token);
+
+
+
+
+                //// AQUI SE TENDRIAN QUE DESCARGAR LOS ARCHIVOS DE MATERIAL ESTUDIO
+
+                break;
+            case DATABASE_REPOSITORY:
+                //studyMaterialList = databaseRepository.getStudyMaterial(context);
+                break;
+            default:
+                break;
+        }
+
+        return studyMaterialList;
+    }
+
+    @Override
     public List<StudyMaterial> checkStudyMaterials(Context context, int from) {
         List<StudyMaterial> studyMaterialList = null;
 
@@ -241,21 +432,41 @@ public class MainModel implements MainMVP.Model {
     }
 
     @Override
-    public List<Subjects> checkSubjects(Context context, int from) {
+    public List<Subjects> checkSubjects(Context context, int from, String auth, Integer code) {
         List<Subjects> subjectsList = null;
+        List<SubjectsRemote> subjectsRemoteList = null;
 
         switch (from) {
             case API_REPOSITORY:
-                subjectsList = apiRepository.getSubjects(context);
+                subjectsRemoteList = apiRepository.getMySubjects(context, auth);
                 break;
             case DATABASE_REPOSITORY:
-                subjectsList = databaseRepository.getSubjects(context);
+                subjectsList = databaseRepository.getSubjects(context, code);
                 break;
             default:
                 break;
         }
 
         return subjectsList;
+    }
+
+    @Override
+    public List<SubjectsRemote> checkMySubjects(Context context, int from, String auth) {
+
+        List<SubjectsRemote> subjectsRemoteList = null;
+
+        switch (from) {
+            case API_REPOSITORY:
+                subjectsRemoteList = apiRepository.getMySubjects(context, auth);
+                break;
+            case DATABASE_REPOSITORY:
+                //subjectsList = databaseRepository.getSubjects(context);
+                break;
+            default:
+                break;
+        }
+
+        return subjectsRemoteList;
     }
 
     @Override
@@ -275,13 +486,14 @@ public class MainModel implements MainMVP.Model {
         return planningList;
     }
 
-    @Override
-    public List<Teacher> checkTeachers(Context context, int from) {
-        List<Teacher> teacherList = null;
 
+    @Override
+    public List<Teacher> checkTeachers(Context context, int from, String auth) {
+        List<Teacher> teacherList = null;
+        List<TeacherRemote> teacherRemoteList = null;
         switch (from) {
             case API_REPOSITORY:
-                teacherList = apiRepository.getTeachers(context);
+                teacherRemoteList = apiRepository.getTeachers(context, auth);
                 break;
             case DATABASE_REPOSITORY:
                 teacherList = databaseRepository.getTeachers(context);
@@ -291,6 +503,25 @@ public class MainModel implements MainMVP.Model {
         }
 
         return teacherList;
+    }
+
+
+    @Override
+    public List<TeacherRemote> checkMyTeachers(Context context, int from, String auth) {
+
+        List<TeacherRemote> teacherRemoteList = null;
+        switch (from) {
+            case API_REPOSITORY:
+                teacherRemoteList = apiRepository.getTeachers(context, auth);
+                break;
+            case DATABASE_REPOSITORY:
+                //      teacherList = databaseRepository.getTeachers(context);
+                break;
+            default:
+                break;
+        }
+
+        return teacherRemoteList;
     }
 
     @Override
@@ -311,16 +542,35 @@ public class MainModel implements MainMVP.Model {
         return uploadList;
     }
 
+
     @Override
-    public List<Task> checkTasks(Context context, int from) {
+    public GradeRemote checkMyGrade(Context context, int from, String token) {
+        GradeRemote gradeRemoteList = null;
+        switch (from) {
+
+            case API_REPOSITORY:
+                gradeRemoteList = apiRepository.getMyGrade(context, token);
+                break;
+            case DATABASE_REPOSITORY:
+                //taskList = databaseRepository.getTasks(context,token);
+                break;
+            default:
+                break;
+        }
+        return gradeRemoteList;
+    }
+
+    @Override
+    public List<Task> checkTasks(Context context, int from, String token) {
         List<Task> taskList = null;
+        List<TaskRemote> taskRemoteList = null;
 
         switch (from) {
             case API_REPOSITORY:
-                taskList = apiRepository.getTasks(context);
+                taskRemoteList = apiRepository.getTasks(context, token);
                 break;
             case DATABASE_REPOSITORY:
-                taskList = databaseRepository.getTasks(context);
+                taskList = databaseRepository.getTasks(context, token);
                 break;
             default:
                 break;
@@ -328,6 +578,27 @@ public class MainModel implements MainMVP.Model {
 
         return taskList;
     }
+
+
+    @Override
+    public List<TaskRemote> checkMyTasks(Context context, int from, String token) {
+
+        List<TaskRemote> taskRemoteList = null;
+
+        switch (from) {
+            case API_REPOSITORY:
+                taskRemoteList = apiRepository.getTasks(context, token);
+                break;
+            case DATABASE_REPOSITORY:
+                //taskList = databaseRepository.getTasks(context,token);
+                break;
+            default:
+                break;
+        }
+
+        return taskRemoteList;
+    }
+
 
     @Override
     public void postTask(String uploadId, String subjectId, String name, String code) {
@@ -384,4 +655,36 @@ public class MainModel implements MainMVP.Model {
                 .build();
         apiRepository.postBlob(body);
     }
+
+
+    public static Boolean Download (String urlStr,File filePath ,String nombreArchivo ,String tipo )  {
+        try{
+        URL url = new URL (urlStr);
+
+        String fileAppend = new SimpleDateFormat("yyyyMMddHHmm").format(new Date()).concat("_");
+        File file = new File (filePath,tipo+fileAppend+nombreArchivo);
+            if(!file.exists()){ // Si no existe, crea el archivo.
+                file.createNewFile();
+            }
+
+        BufferedInputStream bis = new BufferedInputStream(url.openStream());
+        FileOutputStream fis = new FileOutputStream (file);
+        byte[] buffer = new byte[1024];
+        int count = 0;
+        while ((count = bis.read(buffer,0,1024))!=-1 ){
+            fis.write(buffer,0,count);
+        }
+
+        fis.close();
+        bis.close();
+
+        return true ;
+
+        } catch(FileNotFoundException e) {
+            return false; // swallow a 404
+        } catch (IOException e) {
+            return false; // swallow a 404
+        }
+    }
+
 }

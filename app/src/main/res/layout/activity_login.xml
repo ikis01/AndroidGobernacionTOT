@@ -51,9 +51,11 @@
                 </TextView>
 
                 <EditText
+                    android:layout_marginLeft="2dp"
                     android:textAlignment="textEnd"
                     android:id="@+id/et_usuario"
-                    android:text="Escriba el usuario">
+                    android:background="@color/colorWhite"
+                    android:tooltipText="Escriba el usuario">
 
                 </EditText>
             </TableRow>
@@ -61,7 +63,7 @@
             <TableRow>
 
                 <TextView android:text="Contraseña"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="25pt"
                     android:textColor="@color/colorBlack"
                     android:textSize="16pt">
@@ -70,8 +72,11 @@
 
                 <EditText
 
-                    android:text="Contraseña"
+                    android:layout_marginLeft="2dp"
+                    android:layout_width="match_parent"
+                    android:tooltipText="Contraseña"
                     android:inputType="textPassword"
+                    android:background="@color/colorWhite"
                     android:id="@+id/et_contrasena">
 
                 </EditText>
@@ -101,6 +106,23 @@
 
                     android:onClick="iniciarSesion"
                     android:text="  Iniciar Sesión "
+
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:ignore="OnClick"/>
+
+
+                <Button
+                    android:id="@+id/bt_sincronizar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/custom_button_main"
+
+                    android:onClick="sincronizar"
+                    android:text="  Sincronizar "
 
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"

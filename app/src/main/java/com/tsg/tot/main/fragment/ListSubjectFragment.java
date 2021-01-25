@@ -16,6 +16,7 @@ import com.tsg.tot.adapter.SubjectsAdapter;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.main.mainmvp.MainMVP;
+import com.tsg.tot.main.mainmvp.MainView;
 
 import java.util.List;
 
@@ -77,8 +78,19 @@ public class ListSubjectFragment extends Fragment implements FragmentsMVP.View {
 
     @Override
     public void onResume() {
+
+        Integer intCode = 0;
         super.onResume();
-        setSubjects(presenter.getSubjects(getContext()), getContext(), presenter);
+        String code = ((MainView)getContext()).tv_studentCode.getText().toString();
+        code = code.replace("Código:","");
+
+        if (code != ""){
+            intCode= Integer.parseInt(code);
+        }else{
+
+        }
+
+        setSubjects(presenter.getSubjects(getContext(),"",intCode), getContext(), presenter );
     }
 
     public interface OnFragmentInteractionListener {

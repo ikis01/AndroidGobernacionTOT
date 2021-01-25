@@ -28,14 +28,11 @@ public class TaskPresenter implements TaskMVP.Presenter, TaskMVP.Model.OnFinishe
         this.view=view;
     }
 
-    @Override
-    public List<Subjects> getSubjects(Context context) {
-        return model.checkSubjects(context, DATABASE_REPOSITORY);
-    }
+
 
     @Override
-    public List<Task> getTaskSubject(Context context, int idSubject) {
-        List<Task> taskList = model.checkTasks(context, DATABASE_REPOSITORY);
+    public List<Task> getTaskSubject(Context context, int idSubject,String token) {
+        List<Task> taskList = model.checkTasks(context, DATABASE_REPOSITORY,token);
         List<Task> taskListFinal = new ArrayList<>();
 
         if (taskList != null) {
@@ -56,7 +53,7 @@ public class TaskPresenter implements TaskMVP.Presenter, TaskMVP.Model.OnFinishe
     @Override
     public void setInfoStudent(Context context) {
         if (view != null) {
-            view.setInfoStudent(model.checkStudents(context, DATABASE_REPOSITORY));
+         //   view.setInfoStudent(model.checkStudents(context, DATABASE_REPOSITORY,idUsuario));
         }
     }
 

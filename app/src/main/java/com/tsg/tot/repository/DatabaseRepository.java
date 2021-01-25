@@ -4,7 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
+import com.google.gson.JsonObject;
 import com.tsg.tot.data.model.Blob;
 import com.tsg.tot.data.model.Device;
 import com.tsg.tot.data.model.Evaluations;
@@ -18,8 +21,16 @@ import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
+import com.tsg.tot.data.model.TokenCustom;
 import com.tsg.tot.data.model.Upload;
 import com.tsg.tot.data.model.Users;
+import com.tsg.tot.data.remote.model.GradeRemote;
+import com.tsg.tot.data.remote.model.LessonsRemote;
+import com.tsg.tot.data.remote.model.StudentRemote;
+import com.tsg.tot.data.remote.model.StudyMaterialRemote;
+import com.tsg.tot.data.remote.model.SubjectsRemote;
+import com.tsg.tot.data.remote.model.TaskRemote;
+import com.tsg.tot.data.remote.model.TeacherRemote;
 import com.tsg.tot.sqlite.DbOpenHelper;
 
 import java.util.ArrayList;
@@ -27,84 +38,13 @@ import java.util.List;
 
 import okhttp3.RequestBody;
 
-import static com.tsg.tot.sqlite.DBConstants.BLOB_CODE;
-import static com.tsg.tot.sqlite.DBConstants.BLOB_RUTE;
-import static com.tsg.tot.sqlite.DBConstants.BLOB_SUBMISSION_ID;
-import static com.tsg.tot.sqlite.DBConstants.BLOB_TABLE_NAME;
-import static com.tsg.tot.sqlite.DBConstants.BLOB_UPLOAD_ID;
-import static com.tsg.tot.sqlite.DBConstants.EVALUATION_ID;
-import static com.tsg.tot.sqlite.DBConstants.EVALUATION_NAME;
-import static com.tsg.tot.sqlite.DBConstants.EVALUATION_SUBJECT_ID;
-import static com.tsg.tot.sqlite.DBConstants.EVALUATION_TABLE_NAME;
-import static com.tsg.tot.sqlite.DBConstants.EVALUATION_UPLOAD_ID;
-import static com.tsg.tot.sqlite.DBConstants.EXERCISES_CLASSES_ID;
-import static com.tsg.tot.sqlite.DBConstants.EXERCISES_ID;
-import static com.tsg.tot.sqlite.DBConstants.EXERCISES_NAME;
-import static com.tsg.tot.sqlite.DBConstants.EXERCISES_TABLE_NAME;
-import static com.tsg.tot.sqlite.DBConstants.EXERCISES_UPLOAD_ID;
-import static com.tsg.tot.sqlite.DBConstants.GRADE_ID;
-import static com.tsg.tot.sqlite.DBConstants.GRADE_TABLE_NAME;
-import static com.tsg.tot.sqlite.DBConstants.GRADE_TITLE;
-import static com.tsg.tot.sqlite.DBConstants.LESSONS_ID;
-import static com.tsg.tot.sqlite.DBConstants.LESSONS_INIT_DATE;
-import static com.tsg.tot.sqlite.DBConstants.LESSONS_NAME;
-import static com.tsg.tot.sqlite.DBConstants.LESSONS_SUBJECT_ID;
-import static com.tsg.tot.sqlite.DBConstants.LESSONS_TABLE_NAME;
-import static com.tsg.tot.sqlite.DBConstants.LESSONS_TEACHER_ID;
-import static com.tsg.tot.sqlite.DBConstants.LESSONS_THEME;
-import static com.tsg.tot.sqlite.DBConstants.STUDENTS_CODE;
-import static com.tsg.tot.sqlite.DBConstants.STUDENTS_CURSE_ID;
-import static com.tsg.tot.sqlite.DBConstants.STUDENTS_ID;
-import static com.tsg.tot.sqlite.DBConstants.STUDENTS_NAME;
-import static com.tsg.tot.sqlite.DBConstants.STUDENTS_LAST_NAME;
-import static com.tsg.tot.sqlite.DBConstants.STUDENTS_TABLE_NAME;
-import static com.tsg.tot.sqlite.DBConstants.STUDYMATERIAL_BLOB_ID;
-import static com.tsg.tot.sqlite.DBConstants.STUDYMATERIAL_CLASSES_ID;
-import static com.tsg.tot.sqlite.DBConstants.STUDYMATERIAL_DESCRIPTION;
-import static com.tsg.tot.sqlite.DBConstants.STUDYMATERIAL_ID;
-import static com.tsg.tot.sqlite.DBConstants.STUDYMATERIAL_NAME;
-import static com.tsg.tot.sqlite.DBConstants.STUDYMATERIAL_TABLE_NAME;
-import static com.tsg.tot.sqlite.DBConstants.SUBJECTS_CODE;
-import static com.tsg.tot.sqlite.DBConstants.SUBJECTS_DESCRIPTION;
-import static com.tsg.tot.sqlite.DBConstants.SUBJECTS_GRADE_ID;
-import static com.tsg.tot.sqlite.DBConstants.SUBJECTS_ID;
-import static com.tsg.tot.sqlite.DBConstants.SUBJECTS_IMAGE;
-import static com.tsg.tot.sqlite.DBConstants.SUBJECTS_SUBTITLE;
-import static com.tsg.tot.sqlite.DBConstants.SUBJECTS_TABLE_NAME;
-import static com.tsg.tot.sqlite.DBConstants.SUBJECTS_TEACHER_ID;
-import static com.tsg.tot.sqlite.DBConstants.SUBJECTS_TITLE;
-import static com.tsg.tot.sqlite.DBConstants.SUBMISSIONS_CREATED;
-import static com.tsg.tot.sqlite.DBConstants.SUBMISSIONS_EVALUATION_ID;
-import static com.tsg.tot.sqlite.DBConstants.SUBMISSIONS_EXERCISES_ID;
-import static com.tsg.tot.sqlite.DBConstants.SUBMISSIONS_ID;
-import static com.tsg.tot.sqlite.DBConstants.SUBMISSIONS_TABLE_NAME;
-import static com.tsg.tot.sqlite.DBConstants.SUBMISSIONS_TASK_ID;
-import static com.tsg.tot.sqlite.DBConstants.SUBMISSIONS_UPLOAD_ID;
-import static com.tsg.tot.sqlite.DBConstants.SUBMISSIONS_UPP;
-import static com.tsg.tot.sqlite.DBConstants.TASK_CODE;
-import static com.tsg.tot.sqlite.DBConstants.TASK_ID;
-import static com.tsg.tot.sqlite.DBConstants.TASK_NAME;
-import static com.tsg.tot.sqlite.DBConstants.TASK_STUDENT_ID;
-import static com.tsg.tot.sqlite.DBConstants.TASK_SUBJECT_ID;
-import static com.tsg.tot.sqlite.DBConstants.TASK_TABLE_NAME;
-import static com.tsg.tot.sqlite.DBConstants.TASK_UPLOAD_ID;
-import static com.tsg.tot.sqlite.DBConstants.TEACHER_ID;
-import static com.tsg.tot.sqlite.DBConstants.TEACHER_NAME;
-import static com.tsg.tot.sqlite.DBConstants.TEACHER_TABLE_NAME;
-import static com.tsg.tot.sqlite.DBConstants.UPLOAD_DATE;
-import static com.tsg.tot.sqlite.DBConstants.UPLOAD_ID;
-import static com.tsg.tot.sqlite.DBConstants.UPLOAD_TABLE_NAME;
-import static com.tsg.tot.sqlite.DBConstants.USERS_ID;
-import static com.tsg.tot.sqlite.DBConstants.USERS_PASSWORD;
-import static com.tsg.tot.sqlite.DBConstants.USERS_TABLE_NAME;
-import static com.tsg.tot.sqlite.DBConstants.USERS_USER_NAME;
-import static com.tsg.tot.sqlite.DBConstants.VERSION_NUMBER;
-import static com.tsg.tot.sqlite.DBConstants.VERSION_TABLE_NAME;
+import static com.tsg.tot.sqlite.DBConstants.*;
+
 
 /**
  * Clase que consulta los datos en la DB.
  */
-public class DatabaseRepository implements Repository {
+public class DatabaseRepository implements LocalRepository {
 
     //Get info of DB Tables
 
@@ -151,12 +91,13 @@ public class DatabaseRepository implements Repository {
     }
 
     @Override
-    public List<Student> getStudent(Context context) {
+    public List<Student> getStudent(Context context,Integer idUsuario) {
         List<Student> studentList = new ArrayList<>();
 
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String query = "SELECT * FROM " + STUDENTS_TABLE_NAME;
+        String query = "SELECT * FROM " + STUDENTS_TABLE_NAME + " WHERE "
+                +STUDENT_FK_USUARIO + " = " +idUsuario ;
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
 
@@ -173,7 +114,8 @@ public class DatabaseRepository implements Repository {
                     studentList.add(new Student(
                             cursor.getInt(idStudent),
                             cursor.getInt(condeStudent),
-                            cursor.getString(studentName)
+                            cursor.getString(studentName),
+                            cursor.getString(studentLastName)
 
                     ));
                 } while (cursor.moveToNext());
@@ -203,12 +145,15 @@ public class DatabaseRepository implements Repository {
     }
 
     @Override
-    public List<Subjects> getSubjects(Context context) {
+    public List<Subjects> getSubjects(Context context,Integer codeGrado) {
         List<Subjects> subjectsList = new ArrayList<>();
 
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String query = "SELECT * FROM " + SUBJECTS_TABLE_NAME;
+        String query = "SELECT * FROM " + SUBJECTS_TABLE_NAME
+        +" , "+ REL_STUDENT_SUBJECT_TABLE_NAME +
+                   " WHERE " + REL_STUDENT_SUBJECT_FK_STUDENT+ " = " +codeGrado +
+                   " AND " + REL_STUDENT_SUBECT_FK_SUBJECT + " = "+ SUBJECTS_ID ;
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
 
@@ -219,7 +164,7 @@ public class DatabaseRepository implements Repository {
                     int idSubject = cursor.getColumnIndex(SUBJECTS_ID);
                     int titleSubject = cursor.getColumnIndex(SUBJECTS_TITLE);
                     int codeSubject = cursor.getColumnIndex(SUBJECTS_CODE);
-                    int idGrade = cursor.getColumnIndex(SUBJECTS_GRADE_ID);
+                    int idGrade = cursor.getColumnIndex(SUBJECTS_SUBTITLE);
                     int idTeacher = cursor.getColumnIndex(SUBJECTS_TEACHER_ID);
                     int subjectSubtitle = cursor.getColumnIndex(SUBJECTS_SUBTITLE);
                     int descriptionSubject = cursor.getColumnIndex(SUBJECTS_DESCRIPTION);
@@ -263,7 +208,7 @@ public class DatabaseRepository implements Repository {
     }
 
     @Override
-    public List<Task> getTasks(Context context) {
+    public List<Task> getTasks(Context context,String authKey) {
         List<Task> taskList = new ArrayList<>();
 
         DbOpenHelper dbHelper = new DbOpenHelper(context);
@@ -358,8 +303,9 @@ public class DatabaseRepository implements Repository {
 
     @Override
     public void updateVersion(float version, Context context) {
+        try{
         DbOpenHelper dbHelper = new DbOpenHelper(context);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        SQLiteDatabase db = dbHelper    .getWritableDatabase();
         ContentValues cv = new ContentValues();
 
         cv.put(VERSION_NUMBER, version);
@@ -368,12 +314,127 @@ public class DatabaseRepository implements Repository {
 
         db.close();
         dbHelper.close();
+        }catch (SQLiteException ex){
+
+            Log.d("exceptiom sqlite version ",ex.getMessage());
+        }
     }
 
     @Override
     public void updateDevice(List<Device> devicesList, Context context) {
 
     }
+
+    @Override
+    public TokenCustom postLogin(JsonObject requestBody) {
+        return null;
+    }
+
+    @Override
+    public void updateMyGrade(GradeRemote grade, Context context,StudentRemote student) {
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        if ( grade != null) {
+           // for (GradeRemote grade : gradesList) {
+                if (checkId(db, INFO_GRADE_TABLE_NAME, INFO_GRADE_IDINFOGRADO, grade.getId().toString()) == 0) {
+                    cv.put(INFO_GRADE_IDINFOGRADO, grade.getId());
+                    cv.put(INFO_GRADE_CODIGOGRADO, grade.getCodigo());
+                    cv.put(INFO_GRADE_INSTITUCION, grade.getInstitucion().getNombre());
+                    cv.put(INFO_GRADE_NOMBRE, grade.getNombre());
+                    cv.put(INFO_GRADE_ESTUDIANTE_IDESTUDIANTE, student.getId());
+                    cv.put(INFO_GRADE_UBICACIONINSTITUCION, grade.getInstitucion().getDireccion());
+                    db.insert(INFO_GRADE_TABLE_NAME, null, cv);
+                }
+            //}
+        }
+
+        db.close();
+        dbHelper.close();
+    }
+
+    @Override
+    public void updateMyStudent(StudentRemote studentRemote, Context context ,Integer idUsuario) {
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        if ( studentRemote != null) {
+            // for (GradeRemote grade : gradesList) {
+            if (checkId(db, STUDENT_TABLE_NAME, STUDENT_IDESTUDIANTE, studentRemote.getId().toString()) == 0) {
+                cv.put(STUDENTS_ID, studentRemote.getId());
+                cv.put(STUDENT_APELLIDOS, studentRemote.getApellidos());
+                cv.put(STUDENT_EDAD, studentRemote.getFecha_nacimiento());
+                cv.put(STUDENT_NOMBRES, studentRemote.getNombre());
+                cv.put(STUDENT_FK_USUARIO, idUsuario);
+                db.insert(STUDENT_TABLE_NAME, null, cv);
+            }
+            //}
+        }
+
+        db.close();
+        dbHelper.close();
+
+    }
+
+
+    @Override
+    public void updateMyTasks(List<TaskRemote> taskList, Context context,StudentRemote studentRemote,Integer regist) {
+
+        try{
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        if (taskList != null) {
+            for (TaskRemote task : taskList) {
+                if (checkId(db, TASK_TABLE_NAME, TASK_KIOSCO, task.getTareaId().toString()) == 0) {
+                    cv.put(TASK_ID, task.getTareaId());
+                    cv.put(TASK_CODE, task.getIdArchivoD2L());
+                    cv.put(TASK_NAME, task.getNombreActividad());
+                    cv.put(TASK_REGISTER, regist);
+                    cv.put(TASK_KIOSCO, task.getTareaId());
+                    cv.put(TASK_STUDENT_ID, studentRemote.getId());
+                    cv.put(TASK_SUBJECT_ID, task.getMateriaId());
+                    cv.put(TASK_UPLOAD_ID, task.getFile().getIdDescarga());
+                    db.insert(TASK_TABLE_NAME, null, cv);
+                }
+            }
+        }
+
+        db.close();
+         dbHelper.close();
+        }catch (SQLiteException wex){
+            Log.d("error al insertar ",wex.getMessage());
+        }
+    }
+
+
+
+
+    @Override
+    public void updateMyLessons(List<LessonsRemote> lessonsRemoteList, Context context) {
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        if (lessonsRemoteList != null) {
+            for (LessonsRemote lessons : lessonsRemoteList) {
+                if (checkId(db, LESSONS_TABLE_NAME, LESSONS_ID, lessons.getId().toString()) == 0) {
+                    cv.put(LESSONS_ID, lessons.getId());
+                    cv.put(LESSONS_CODIGO,lessons.getId()); /// consultar dato
+                    cv.put(LESSONS_THEME, lessons.getTema());
+                    cv.put(LESSONS_SUBJECT_ID, lessons.getMateriaId());
+                    cv.put(LESSONS_TEACHER_ID, lessons.getProfesorId());
+                    cv.put(LESSONS_NAME, lessons.getNombre());
+                    cv.put(LESSONS_INIT_DATE, lessons.getFecha_inicio());
+                    db.insert(LESSONS_TABLE_NAME, null, cv);
+                }
+            }
+        }
+
+        db.close();
+        dbHelper.close();
+    }
+
+
 
     @Override
     public void updateLessons(List<Lessons> lessonsList, Context context) {
@@ -397,6 +458,8 @@ public class DatabaseRepository implements Repository {
         db.close();
         dbHelper.close();
     }
+
+
 
     @Override
     public void updateGrade(List<Grade> gradesList, Context context) {
@@ -526,6 +589,55 @@ public class DatabaseRepository implements Repository {
         dbHelper.close();
     }
 
+
+    @Override
+    public void updateRelStudentSubjects(StudentRemote studentRemote, List<SubjectsRemote> subjectsRemoteList,Context context) {
+
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        if (subjectsRemoteList != null) {
+            for (SubjectsRemote subject : subjectsRemoteList) {
+                if (checkRelStudentSubject(db, REL_STUDENT_SUBJECT_TABLE_NAME,
+                        REL_STUDENT_SUBJECT_FK_STUDENT,
+                        studentRemote.getId().toString(),
+                        REL_STUDENT_SUBECT_FK_SUBJECT,
+                        subject.getId().toString()) == 0) {
+                    cv.put(REL_STUDENT_SUBJECT_FK_STUDENT, studentRemote.getId());
+                    cv.put(REL_STUDENT_SUBECT_FK_SUBJECT, subject.getId());
+                    db.insert(REL_STUDENT_SUBJECT_TABLE_NAME, null, cv);
+                }
+            }
+        }
+
+        db.close();
+        dbHelper.close();
+    }
+
+    @Override
+    public void updateMyStudyMaterial(List<StudyMaterialRemote> studyMaterialList, Context context) {
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        if (studyMaterialList != null) {
+            for (StudyMaterialRemote studyMaterial : studyMaterialList) {
+                if (checkId(db, STUDYMATERIAL_TABLE_NAME, STUDYMATERIAL_ID, studyMaterial.getId().toString()) == 0) {
+                    cv.put(STUDYMATERIAL_ID, studyMaterial.getId());
+                    cv.put(STUDYMATERIAL_DESCRIPTION, studyMaterial.getId());
+                    cv.put(STUDYMATERIAL_NAME, studyMaterial.getTema());
+                    cv.put(STUDYMATERIAL_NAME_FILE, studyMaterial.getNombreArchivo());
+                    cv.put(STUDYMATERIAL_PATH, studyMaterial.getRuta());
+                    cv.put(STUDYMATERIAL_CLASSES_ID, studyMaterial.getClaseId());
+                    db.insert(STUDYMATERIAL_TABLE_NAME, null, cv);
+                }
+            }
+        }
+
+        db.close();
+        dbHelper.close();
+    }
+
+
     @Override
     public void updateSubjects(List<Subjects> subjectsList, Context context) {
         DbOpenHelper dbHelper = new DbOpenHelper(context);
@@ -537,7 +649,6 @@ public class DatabaseRepository implements Repository {
                     cv.put(SUBJECTS_ID, subjects.getId());
                     cv.put(SUBJECTS_TITLE, subjects.getTitulo());
                     cv.put(SUBJECTS_CODE, subjects.getCodigo());
-                    cv.put(SUBJECTS_GRADE_ID, subjects.getCurso().getId());
                     cv.put(SUBJECTS_TEACHER_ID, subjects.getProfesor().getId());
                     cv.put(SUBJECTS_SUBTITLE, subjects.getSubtitulo());
                     cv.put(SUBJECTS_DESCRIPTION, subjects.getDescripcion());
@@ -574,6 +685,51 @@ public class DatabaseRepository implements Repository {
         db.close();
         dbHelper.close();
     }
+
+    @Override
+    public void updateMYTeachers(List<TeacherRemote> teacherList, Context context) {
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        if (teacherList != null) {
+            for (TeacherRemote teacher : teacherList) {
+                if (checkId(db, TEACHER_TABLE_NAME, TEACHER_ID, teacher.getId().toString()) == 0) {
+                    cv.put(TEACHER_ID, teacher.getId());
+                    cv.put(TEACHER_NAME, teacher.getNombres());
+                    cv.put(TEACHER_LAST_NAME,teacher.getApellidos());
+                    db.insert(TEACHER_TABLE_NAME, null, cv);
+                }
+            }
+        }
+
+        db.close();
+        dbHelper.close();
+    }
+
+    @Override
+    public void updateMySubjects(List<SubjectsRemote> subjectsList, Context context) {
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        if (subjectsList != null) {
+            for (SubjectsRemote subjects : subjectsList) {
+                if (checkId(db, SUBJECTS_TABLE_NAME, SUBJECTS_ID, subjects.getId().toString()) == 0) {
+                    cv.put(SUBJECTS_ID, subjects.getId());
+                    cv.put(SUBJECTS_CODE, subjects.getSubtitulo());
+                    cv.put(SUBJECTS_DESCRIPTION, subjects.getDescripcion());
+                    cv.put(SUBJECTS_SUBTITLE, subjects.getSubtitulo());
+                    cv.put(SUBJECTS_TITLE, subjects.getTitulo());
+                    cv.put(SUBJECTS_TEACHER_ID, subjects.getProfesorId());
+
+                    db.insert(SUBJECTS_TABLE_NAME, null, cv);
+                }
+            }
+        }
+
+        db.close();
+        dbHelper.close();
+    }
+
 
     @Override
     public void updateUploads(List<Upload> uploadList, Context context) {
@@ -686,6 +842,21 @@ public class DatabaseRepository implements Repository {
         return 0;
     }
 
+
+    public int checkRelStudentSubject (SQLiteDatabase db, String tableName, String fk_student, String studentValue ,String fk_subject ,String subjectValue) {
+        Cursor c = null;
+        String query = "SELECT count(*) FROM " + tableName
+                + " WHERE " + fk_student + " = " + studentValue
+                + " AND  " + fk_subject + " = " + subjectValue;
+        c = db.rawQuery(query, null);
+        if (c.moveToFirst()) {
+            return c.getInt(0);
+        }
+        c.close();
+        return 0;
+    }
+
+
     /**
      * Method that obtains the code and name of the grade of any subject
      *
@@ -695,15 +866,15 @@ public class DatabaseRepository implements Repository {
      */
     public Grade getGrade(SQLiteDatabase db, String id) {
         Grade grade = null;
-        String query = "SELECT * FROM " + GRADE_TABLE_NAME + " WHERE " + GRADE_ID + " = " + id;
+        String query = "SELECT * FROM " + INFO_GRADE_TABLE_NAME + " WHERE " + INFO_GRADE_CODIGOGRADO + " = " + id;
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
         try {
             if (cursor.getCount() > 0) {
                 do {
                     //get columns
-                    int idGrade = cursor.getColumnIndex(GRADE_ID);
-                    int titleGrade = cursor.getColumnIndex(GRADE_TITLE);
+                    int idGrade = cursor.getColumnIndex(INFO_GRADE_CODIGOGRADO);
+                    int titleGrade = cursor.getColumnIndex(INFO_GRADE_NOMBRE);
 
                     //add row to object
                     grade = new Grade(cursor.getInt(idGrade),
@@ -771,4 +942,5 @@ public class DatabaseRepository implements Repository {
         }
         return upload;
     }
+
 }

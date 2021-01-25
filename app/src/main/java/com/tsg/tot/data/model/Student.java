@@ -24,6 +24,16 @@ public class Student {
     @Expose
     private String fechaNacimiento;
 
+    private Integer FK_Usuario;
+
+    public Integer getFK_Usuario() {
+        return FK_Usuario;
+    }
+
+    public void setFK_Usuario(Integer FK_Usuario) {
+        this.FK_Usuario = FK_Usuario;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -85,5 +95,12 @@ public class Student {
         this.id = id;
         this.codigo = codigo;
         this.nombres = nombres;
+    }
+
+    public Student(Integer id, Integer codigo, String nombres, String apellidos) {
+        this.id = id;
+        this.codigo = codigo;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
     }
 }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/classroom"
     android:orientation="vertical"
-    tools:context=".task.TaskActivity">
+    tools:context=".task.TaskDetailActivity">
 
     <RelativeLayout
         android:id="@+id/toolbar"
@@ -246,12 +246,121 @@
         android:baselineAligned="false"
         android:orientation="horizontal">
 
-        <FrameLayout
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/subjects_bg"
+            android:orientation="vertical"
+            tools:ignore="NestedWeights">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/title_table_bg"
+                android:orientation="horizontal">
+
+                <!--ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:src="@drawable/task_icon" /!-->
+
+                <TextView
+                    android:id="@+id/tv_title_material"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="0dp"
+                    android:layout_weight="9"
+                    android:gravity="center_horizontal"
+                    android:padding="10dp"
+                    android:text="@string/activity_task_detail_StudyMaterial"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/materialTareaList"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3" >
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/subjects_bg"
+            android:orientation="vertical"
+            tools:ignore="NestedWeights">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/title_table_bg"
+                android:orientation="horizontal">
+
+                <!--ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:src="@drawable/task_icon" /!-->
+
+                <TextView
+                    android:id="@+id/tv_title_entregas"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="0dp"
+                    android:layout_weight="9"
+                    android:gravity="center_horizontal"
+                    android:padding="10dp"
+                    android:text="@string/activity_task_detail_Submissions"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+            <FrameLayout
+                android:id="@+id/entregasList"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                />
+
+        </LinearLayout>
+
+
+        <!--FrameLayout
             android:id="@+id/contentFragment"
             android:background="@drawable/info_bg"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="0dp"
-            android:layout_weight="5" />
+            android:layout_weight="5" /!-->
     </LinearLayout>
 </LinearLayout>

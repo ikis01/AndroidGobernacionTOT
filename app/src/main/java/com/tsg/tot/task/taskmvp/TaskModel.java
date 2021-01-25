@@ -5,6 +5,7 @@ import android.content.Context;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
+import com.tsg.tot.data.remote.model.TaskRemote;
 import com.tsg.tot.repository.ApiRepository;
 import com.tsg.tot.repository.DatabaseRepository;
 import com.tsg.tot.sqlite.DbOpenHelper;
@@ -25,7 +26,7 @@ public class TaskModel implements TaskMVP.Model {
     }
 
     @Override
-    public List<Student> checkStudents(Context context, int from) {
+    public List<Student> checkStudents(Context context, int from,Integer idUsuario) {
         List<Student> studentList = null;
 
         switch (from) {
@@ -33,7 +34,7 @@ public class TaskModel implements TaskMVP.Model {
                 studentList = apiRepository.getStudent(context);
                 break;
             case DATABASE_REPOSITORY:
-                studentList = databaseRepository.getStudent(context);
+                studentList = databaseRepository.getStudent(context,idUsuario);
                 break;
             default:
                 break;
@@ -43,15 +44,16 @@ public class TaskModel implements TaskMVP.Model {
 
 
     @Override
-    public List<Task> checkTasks(Context context, int from) {
+    public List<Task> checkTasks(Context context, int from,String token) {
         List<Task> taskList = null;
+        List<TaskRemote> taskListRemote = null;
 
         switch (from) {
             case API_REPOSITORY:
-                taskList = apiRepository.getTasks(context);
+                taskListRemote = apiRepository.getTasks(context,token);
                 break;
             case DATABASE_REPOSITORY:
-                taskList = databaseRepository.getTasks(context);
+                taskList = databaseRepository.getTasks(context,token);
                 break;
             default:
                 break;
@@ -61,21 +63,5 @@ public class TaskModel implements TaskMVP.Model {
     }
 
 
-    @Override
-    public List<Subjects> checkSubjects(Context context, int from) {
-        List<Subjects> subjectsList = null;
 
-        switch (from) {
-            case API_REPOSITORY:
-                subjectsList = apiRepository.getSubjects(context);
-                break;
-            case DATABASE_REPOSITORY:
-                subjectsList = databaseRepository.getSubjects(context);
-                break;
-            default:
-                break;
-        }
-
-        return subjectsList;
-    }
 }

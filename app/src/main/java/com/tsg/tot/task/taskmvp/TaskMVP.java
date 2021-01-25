@@ -21,9 +21,9 @@ public interface TaskMVP {
     }
     interface Presenter {
         void setView(TaskMVP.View view);
-        List<Subjects> getSubjects(Context context);
 
-        List<Task> getTaskSubject(Context context, int idSubject);
+
+        List<Task> getTaskSubject(Context context, int idSubject,String token);
 
         void setInfoStudent(Context context);
 
@@ -37,11 +37,11 @@ public interface TaskMVP {
             void onFailure(Throwable t);
         }
 
-        List<Student> checkStudents(Context context, int from);
+        List<Student> checkStudents(Context context, int from,Integer idUsuario);
 
-        List<Task> checkTasks(Context context, int from);
+        List<Task> checkTasks(Context context, int from,String Token);
 
-        List<Subjects> checkSubjects(Context context, int from);
+
 
     }
 }

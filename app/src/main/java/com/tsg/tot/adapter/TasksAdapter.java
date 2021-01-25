@@ -17,7 +17,7 @@ import com.tsg.tot.R;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.main.mainmvp.MainMVP;
 import com.tsg.tot.main.mainmvp.MainView;
-import com.tsg.tot.task.TaskActivity;
+import com.tsg.tot.task.TaskDetailActivity;
 
 import java.util.List;
 
@@ -86,7 +86,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
         holder.itemView.setOnClickListener(view -> {
 
             //Toast.makeText(context,"click en material: "+taskList.get(position).getNombre(),Toast.LENGTH_SHORT).show();
-            Intent intent  = new  Intent (view.getContext(), TaskActivity.class);
+            Intent intent  = new  Intent (view.getContext(), TaskDetailActivity.class);
             intent.putExtra( "holder",String.valueOf(holder.adapterTask));
             intent.putExtra("task_name",taskList.get(position).getNombre());
             intent.putExtra("student_name",((AppCompatTextView)((MainView)context).tv_studentName).getText());

@@ -3,6 +3,7 @@ package com.tsg.tot.main.mainmvp;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
@@ -12,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,6 +52,7 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
 
     //ProgressDialog dialog;
     CustomProgressDialog dialog;
+    String token, idUsuario ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +68,21 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
 
         presenter.createDB(this);
 
+        if (getIntent().getExtras()!=null) {
+             token = getIntent().getExtras().getString("token");
+             idUsuario = getIntent().getExtras().getString("idUsuario");
+        }
+           // Toast.makeText(this, "el token es : \n" + token, Toast.LENGTH_SHORT).show();
+
+
 
         //Init Fragment
         listSubjectFragment = new ListSubjectFragment(presenter);
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.contentList, listSubjectFragment);
         fragmentTransaction.commit();
+
+
     }
 
     private void initViewElements() {
@@ -91,14 +103,12 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
     @Override
     protected void onResume() {
         super.onResume();
-       // presenter.uploadFileTest(this);
         presenter.setView(this);
         showLoadingDialog();
-        presenter.checkVersions(this,dialog);
+        presenter.checkVersions(this,dialog,token,idUsuario);
         dialog.setProgress(dialog.getProgress()+5);
-        presenter.setInfoStudent(this);
+        presenter.setInfoStudent(this,Integer.parseInt(idUsuario));
         dialog.setProgress(dialog.getProgress()+5);
-
 
     }
 
@@ -123,9 +133,9 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
     public void setInfoStudent(List<Student> studentList) {
         if (studentList.size() > 0) {
             String code = getResources().getString(R.string.main_view_StudentCode)
-                    + studentList.get(0).getCodigo();
+                    + studentList.get(0).getId();
             tv_studentCode.setText(code);
-            tv_studentName.setText(studentList.get(0).getNombres());
+            tv_studentName.setText(studentList.get(0).getNombres()+" "+studentList.get(0).getApellidos() );
         }
 
         tv_pendingTask.setText(getResources().getString(R.string.main_view_PendingTasks) + ": ");
@@ -138,7 +148,7 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
 
         if (informationFragment != null && findViewById(R.id.contentFragment) == null) {
             informationFragment.setInformation(subjects);
-            informationFragment.setTaskSubjects(presenter.getTaskSubject(this, subjects.getId()), this, presenter);
+            informationFragment.setTaskSubjects(presenter.getTaskSubject(this, subjects.getId(),""), this, presenter);
         } else {
             informationFragment = new InformationFragment(presenter);
             Bundle bundleEnvio = new Bundle();
@@ -186,10 +196,18 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
                 getResources().getString(R.string.message_load_db));
         dialog.setIcon(R.drawable.tot_icon);
         dialog.show();
-        presenter.updateEverything(this,dialog);
+        presenter.updateEverything(this,dialog,token);
         dialog.setProgress(dialog.getProgress()+5);
-        presenter.setInfoStudent(this);
+        presenter.setInfoStudent(this,Integer.parseInt(idUsuario));
         dialog.setProgress(dialog.getProgress()+5);
+    }
+
+    public void logout (View view){
+
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction("com.package.ACTION_LOGOUT");
+        sendBroadcast(broadcastIntent);
+        finish();
     }
 
 
@@ -201,9 +219,9 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
                         getResources().getString(R.string.message_load_db));
                 dialog.setIcon(R.drawable.tot_icon);
                 dialog.show();
-                presenter.updateEverything(this,dialog);
+                presenter.updateEverything(this,dialog,token);
                 dialog.setProgress(dialog.getProgress()+5);
-                presenter.setInfoStudent(this);
+                presenter.setInfoStudent(this,Integer.parseInt(idUsuario));
                 dialog.setProgress(dialog.getProgress()+5);
                 //realiza operación al dar clic al imageView.
                 Intent intent = new Intent(this, MainView.class);

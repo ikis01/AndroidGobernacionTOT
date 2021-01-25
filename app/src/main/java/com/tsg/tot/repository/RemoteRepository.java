@@ -3,6 +3,7 @@ package com.tsg.tot.repository;
 import android.content.ContentValues;
 import android.content.Context;
 
+import com.google.gson.JsonObject;
 import com.tsg.tot.data.model.Blob;
 import com.tsg.tot.data.model.Device;
 import com.tsg.tot.data.model.Evaluations;
@@ -16,8 +17,16 @@ import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
+import com.tsg.tot.data.model.TokenCustom;
 import com.tsg.tot.data.model.Upload;
 import com.tsg.tot.data.model.Users;
+import com.tsg.tot.data.remote.model.GradeRemote;
+import com.tsg.tot.data.remote.model.LessonsRemote;
+import com.tsg.tot.data.remote.model.StudentRemote;
+import com.tsg.tot.data.remote.model.StudyMaterialRemote;
+import com.tsg.tot.data.remote.model.SubjectsRemote;
+import com.tsg.tot.data.remote.model.TaskRemote;
+import com.tsg.tot.data.remote.model.TeacherRemote;
 
 import java.util.List;
 
@@ -26,7 +35,7 @@ import okhttp3.RequestBody;
 /**
  * Interfaz que define los métodos utilizados por las clases que la implementan
  */
-public interface Repository {
+public interface RemoteRepository {
 
     //GET
 
@@ -36,9 +45,18 @@ public interface Repository {
 
     List<Lessons> getLessons(Context context);
 
+    List<LessonsRemote> getMyLessons(Context context, String auth);
+
     List<Grade> getGrade(Context context);
 
+    GradeRemote getMyGrade(Context context, String auth);
+
+    List<StudyMaterialRemote> getMyPendingStudyMaterial(Context context, String auth);
+
+    StudentRemote getMyStudent(Context context, String auth);
+
     List<Exercises> getExercises(Context context);
+
 
     List<Submissions> getSubmissions(Context context);
 
@@ -46,27 +64,25 @@ public interface Repository {
 
     List<Evaluations> getEvaluations(Context context);
 
-    String getIPEND(Context context);
 
     List<StudyMaterial> getStudyMaterial(Context context);
 
-    List<Subjects> getSubjects(Context context);
+    List<SubjectsRemote> getMySubjects(Context context, String authKey);
 
     List<Planning> getPlanning(Context context);
 
-    List<Teacher> getTeachers(Context context);
+    List<TeacherRemote> getTeachers(Context context, String authKey);
 
     List<Upload> getUploads(Context context);
 
-    List<Task> getTasks(Context context);
+    List<TaskRemote> getTasks(Context context, String authKey);
 
 
     //UPDATE - POST
 
-    List<Users> getUsers(ContentValues cv, Context context );
+    List<Users> getUsers(ContentValues cv, Context context);
 
-    void updateUser (ContentValues cv,Context context);
-
+    void updateUser(ContentValues cv, Context context);
 
 
     void updateVersion(float version, Context context);
@@ -108,4 +124,7 @@ public interface Repository {
     void postSubmissions(RequestBody requestBody);
 
     void postBlob(RequestBody requestBody);
+
+    TokenCustom postLogin(JsonObject requestBody);
+
 }

@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.tsg.tot.R;
 
-public class SubjectActivity extends AppCompatActivity {
+public class DetailSubjectActivity extends AppCompatActivity {
 
     TextView tv_studentCode, tv_studentName, tv_institutionName,
             tv_location, tv_pendingTask , tv_titleSubject;
@@ -21,7 +21,7 @@ public class SubjectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_subject);
 
         String titleSubject = getIntent().getExtras().getString("titleSubject");
-        String idSubject = getIntent().getExtras().getString("idSubject");
+        //String idSubject = getIntent().getExtras().getString("idSubject");
         String studentName = getIntent().getExtras().getString("student_name");
 
         tv_studentName = findViewById(R.id.tv_studentName);

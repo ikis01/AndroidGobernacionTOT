@@ -15,7 +15,7 @@ import com.tsg.tot.task.taskmvp.TaskMVP;
 
 import javax.inject.Inject;
 
-public class TaskActivity extends AppCompatActivity {
+public class TaskDetailActivity extends AppCompatActivity {
     @Inject
     TaskMVP.Presenter presenter;
 
@@ -32,7 +32,7 @@ public class TaskActivity extends AppCompatActivity {
         String taskName = getIntent().getExtras().getString("task_name");
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task);
+        setContentView(R.layout.activity_task_detail);
         btn_volver = (Button) findViewById(R.id.btn_volver);
 
         btn_volver.setOnClickListener(new View.OnClickListener() {

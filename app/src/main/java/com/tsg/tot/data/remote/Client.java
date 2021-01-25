@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.security.cert.CertificateException;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
@@ -83,7 +84,8 @@ public class Client {
 
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(ApiUtils.BASE_URL+":"+ApiUtils.PORT_URL+"/")
+                   // .baseUrl(ApiUtils.BASE_URL+":"+ApiUtils.PORT_URL+"/")
+                    .baseUrl(ApiUtils.BASE_URL)
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .client(httpClient)
@@ -107,7 +109,8 @@ public class Client {
     public boolean isClientOnline() {
         boolean isOnline = false;
         try {
-            Socket s = new Socket(ApiUtils.BASE_URL, Integer.parseInt(ApiUtils.PORT_URL));
+           // Socket s = new Socket(ApiUtils.BASE_URL, Integer.parseInt(ApiUtils.PORT_URL));
+            Socket s = new Socket(ApiUtils.BASE_URL, Integer.parseInt("6104"));
             if (s.isConnected()) {
                 isOnline = true;
                 System.out.println("Conexión establecida con la dirección: " + ApiUtils.BASE_URL);
