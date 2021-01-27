@@ -60,6 +60,9 @@ public interface LocalRepository {
 
     List<Subjects> getSubjects(Context context, Integer code);
 
+    List<FilesKiosco>getFileKioscos(Context context,Integer idEstudiante,Integer idMateria,Integer idTarea);
+
+
     List<Planning> getPlanning(Context context);
 
     List<Teacher> getTeachers(Context context);
@@ -140,4 +143,7 @@ public interface LocalRepository {
     Long updateMyUpload(Uploads upload, Context context);
 
     Long updateMyFileKiosco(List<FilesKiosco> filesKioscoList, Context context);
+    List<LessonsRemote> getLessons(Context context, Integer idEstudiante);
+    List<StudyMaterialRemote> getStudyMaterial(Context context,Integer idLesson);
+    List<Task> getTasks(Context context, Integer idEstudiante);
 }

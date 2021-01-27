@@ -194,6 +194,7 @@ public class DatabaseRepository implements LocalRepository {
         return subjectsList;
     }
 
+
     @Override
     public List<Planning> getPlanning(Context context) {
         return null;
@@ -780,7 +781,7 @@ public class DatabaseRepository implements LocalRepository {
 
     @Override
 
-    public Long updateMyFileKiosco (List<FilesKiosco> filesKioscoList ,Context context){
+    public Long updateMyFileKiosco(List<FilesKiosco> filesKioscoList, Context context) {
 
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -788,17 +789,18 @@ public class DatabaseRepository implements LocalRepository {
         Long id = new Long(0);
 
         if (filesKioscoList != null) {
-              for (FilesKiosco filesKiosco : filesKioscoList) {
-            //if (checkId(db, UPLOADS_TABLE_NAME, UPLOADS_ID, upload.getIdSubida().toString()) == 0) {
-            cv.put(KIOSCO_ARCHIVO_KIOSCO, filesKiosco.getArchivoKiosco());
-            cv.put(KIOSCO_CODIGO, filesKiosco.getCodigo());
-            cv.put(KIOSCO_RUTA, filesKiosco.getRuta());
-            cv.put(KIOSCO_ID_ENTREGA, filesKiosco.getIdEntrega());
-            cv.put(KIOSCO_ID_SUBIDA, filesKiosco.getSubida_idsubida());
+            for (FilesKiosco filesKiosco : filesKioscoList) {
+                //if (checkId(db, UPLOADS_TABLE_NAME, UPLOADS_ID, upload.getIdSubida().toString()) == 0) {
+                cv.put(KIOSCO_ARCHIVO_KIOSCO, filesKiosco.getArchivoKiosco());
+                cv.put(KIOSCO_CODIGO, filesKiosco.getCodigo());
+                cv.put(KIOSCO_RUTA, filesKiosco.getRuta());
+                cv.put(KIOSCO_ID_ENTREGA, filesKiosco.getIdEntrega());
+                cv.put(KIOSCO_NOMBRE, filesKiosco.getNombreArchivo());
+                cv.put(KIOSCO_ID_SUBIDA, filesKiosco.getSubida_idsubida());
 
 
-            id = db.insert(KIOSCO_TABLE_NAME, null, cv);
-            //    }
+                id = db.insert(KIOSCO_TABLE_NAME, null, cv);
+                //    }
 
             }
 
@@ -1003,5 +1005,168 @@ public class DatabaseRepository implements LocalRepository {
         }
         return upload;
     }
+
+
+    @Override
+    public List<LessonsRemote> getLessons(Context context, Integer idEstudiante) {
+        List<LessonsRemote> lessonsRemoteList = new ArrayList<>();
+
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String query = " SELECT  " + LESSONS_TABLE_NAME + ".*  FROM " + LESSONS_TABLE_NAME
+                + " , " + REL_STUDENT_SUBJECT_TABLE_NAME +
+                " , " + SUBJECTS_TABLE_NAME +
+                " WHERE " + LESSONS_SUBJECT_ID + " = " + SUBJECTS_ID +
+                " AND " + LESSONS_SUBJECT_ID + " = " + REL_STUDENT_SUBECT_FK_SUBJECT +
+                " AND " + REL_STUDENT_SUBJECT_FK_STUDENT + " = " + idEstudiante;
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        try {
+            if (cursor.getCount() > 0) {
+                do {
+                    //get columns
+
+                    //add row to list
+                    lessonsRemoteList.add(new LessonsRemote(
+                            Integer.parseInt(cursor.getString(cursor.getColumnIndex(LESSONS_ID))),
+                            cursor.getString(cursor.getColumnIndex(LESSONS_NAME)),
+                            cursor.getString(cursor.getColumnIndex(LESSONS_THEME)),
+                            cursor.getString(cursor.getColumnIndex(LESSONS_INIT_DATE)),
+                            Integer.parseInt(cursor.getString(cursor.getColumnIndex(LESSONS_SUBJECT_ID))),
+                            Integer.parseInt(cursor.getString(cursor.getColumnIndex(LESSONS_TEACHER_ID))),
+                            cursor.getString(cursor.getColumnIndex(LESSONS_CODIGO))
+
+                    ));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+
+        db.close();
+        dbHelper.close();
+        return lessonsRemoteList;
+    }
+
+    @Override
+   public List<StudyMaterialRemote> getStudyMaterial(Context context,Integer idLesson){
+        List<StudyMaterialRemote> studyMaterialRemoteList = new ArrayList<>();
+
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String query = " SELECT  *  FROM " + STUDYMATERIAL_TABLE_NAME +
+                " WHERE " + STUDYMATERIAL_CLASSES_ID + " =  " + idLesson;
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        try {
+            if (cursor.getCount() > 0) {
+                do {
+                    //add row to list
+                    studyMaterialRemoteList.add(new StudyMaterialRemote(
+                            Integer.parseInt(cursor.getString(cursor.getColumnIndex(STUDYMATERIAL_ID))),
+                            cursor.getString(cursor.getColumnIndex(STUDYMATERIAL_NAME)),
+                            cursor.getString(cursor.getColumnIndex(STUDYMATERIAL_DESCRIPTION)),
+                            cursor.getString(cursor.getColumnIndex(STUDYMATERIAL_NAME_FILE)),
+                            cursor.getString(cursor.getColumnIndex(STUDYMATERIAL_CLASSES_ID)),
+                            cursor.getString(cursor.getColumnIndex(STUDYMATERIAL_PATH))
+
+                    ));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+
+        db.close();
+        dbHelper.close();
+        return studyMaterialRemoteList;
+    }
+
+
+    @Override
+    public List<Task> getTasks(Context context, Integer idEstudiante) {
+        List<Task> taskList = new ArrayList<>();
+
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String query = "SELECT * FROM " + TASK_TABLE_NAME +
+                " WHERE " + TASK_STUDENT_ID + "  = "  + idEstudiante;
+
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        try {
+            if (cursor.getCount() > 0) {
+                do {
+                    //get columns
+                    int idTask = cursor.getColumnIndex(TASK_ID);
+                    int nameTask = cursor.getColumnIndex(TASK_NAME);
+                    int idSubjectTask = cursor.getColumnIndex(TASK_SUBJECT_ID);
+                    int idUploadTask = cursor.getColumnIndex(TASK_UPLOAD_ID);
+                    int codeTask = cursor.getColumnIndex(TASK_CODE);
+                    int idStudent = cursor.getColumnIndex(TASK_STUDENT_ID);
+
+                    //add row to list
+                    taskList.add(new Task(
+                            Integer.parseInt(cursor.getString(idTask)),
+                            getUpload(db, cursor.getString(idUploadTask)),
+                            cursor.getString(nameTask),
+                            cursor.getString(codeTask),
+                            Integer.parseInt(cursor.getString(idSubjectTask)),
+                            Integer.parseInt(cursor.getString(idStudent))
+                    ));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+
+        db.close();
+        dbHelper.close();
+        return taskList;
+    }
+
+    @Override
+   public List<FilesKiosco>getFileKioscos(Context context,Integer idEstudiante,Integer idMateria,Integer idTarea){
+        List<FilesKiosco> filesKioscoList = new ArrayList<>();
+
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String query = "SELECT ARCHIVOSKIOSCO.* FROM TAREAS,ARCHIVOSKIOSCO,REL_ESTUDIANTE_MATERIAS" +
+                " WHERE FK_ESTUDIANTE = " + idEstudiante+
+                " AND FK_MATERIA = " + idMateria+
+                " AND ID = " + idTarea +
+                " AND TAREAS.SUBIDA_IDSUBIDA= ARCHIVOSKIOSCO.subida_idsubida" +
+                " AND ARCHIVOSKIOSCO.codigo = ID";
+
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        try {
+            if (cursor.getCount() > 0) {
+                do {
+                    //add row to list
+                    filesKioscoList.add(new FilesKiosco(
+                            Integer.parseInt(cursor.getString(cursor.getColumnIndex(KIOSCO_ID_ARCHIVOS))),
+                            Integer.parseInt(cursor.getString(cursor.getColumnIndex(KIOSCO_ARCHIVO_KIOSCO))),
+                            cursor.getString(cursor.getColumnIndex(KIOSCO_CODIGO)),
+                            cursor.getString(cursor.getColumnIndex(KIOSCO_RUTA)),
+                            Integer.parseInt(cursor.getString(cursor.getColumnIndex(KIOSCO_ID_ENTREGA))==null?"0":cursor.getString(cursor.getColumnIndex(KIOSCO_ID_ENTREGA))),
+                            Integer.parseInt(cursor.getString(cursor.getColumnIndex(KIOSCO_ID_SUBIDA))),
+                            cursor.getString(cursor.getColumnIndex(KIOSCO_NOMBRE))
+                    ));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+
+        db.close();
+        dbHelper.close();
+        return filesKioscoList;
+    }
+
 
 }
