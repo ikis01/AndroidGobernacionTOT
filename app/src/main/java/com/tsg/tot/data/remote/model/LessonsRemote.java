@@ -39,6 +39,8 @@ public class LessonsRemote {
     private List<StudyMaterialRemote> materialEstudio;
 
 
+    private String codigo ;
+
     public Integer getId() {
         return id;
     }
@@ -101,5 +103,23 @@ public class LessonsRemote {
 
     public void setMaterialEstudio(List<StudyMaterialRemote> materialEstudio) {
         this.materialEstudio = materialEstudio;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public LessonsRemote(Integer id, String nombre, String tema, String fecha_inicio, Integer materiaId, Integer profesorId, String codigo) {
+        this.id = id;
+        this.nombre = nombre;
+        this.tema = tema;
+        this.fecha_inicio = fecha_inicio;
+        this.materiaId = materiaId;
+        this.profesorId = profesorId;
+        this.codigo = codigo;
     }
 }

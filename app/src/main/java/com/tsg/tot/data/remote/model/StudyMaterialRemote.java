@@ -99,4 +99,14 @@ public class StudyMaterialRemote {
     public void setRuta(String ruta) {
         this.ruta = ruta;
     }
+
+
+    public StudyMaterialRemote(Integer id, String tema, String descripcion, String nombreArchivo, String claseId, String ruta) {
+        this.id = id;
+        this.tema = tema;
+        this.descripcion = descripcion;
+        this.nombreArchivo = nombreArchivo;
+        this.claseId = claseId;
+        this.ruta = ruta;
+    }
 }
