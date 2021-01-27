@@ -2,6 +2,7 @@ package com.tsg.tot.task.taskmvp;
 
 import android.content.Context;
 
+import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
@@ -14,12 +15,16 @@ public interface TaskMVP {
         void setInfoStudent (List<Student> studentList);
         void setInfoSubject (Subjects subject);
         void notifyRefreh();
-
+        void setFileKiosco(FilesKiosco fileKiosco);
         void showLoadingDialog();
 
         void dismissLoadingDialog();
     }
     interface Presenter {
+
+
+        void setFileKiosco(FilesKiosco fileKiosco);
+
         void setView(TaskMVP.View view);
 
 
@@ -30,6 +35,8 @@ public interface TaskMVP {
         void setInfoSubject(Subjects subjects);
 
         void notifyRefresh();
+
+        List<FilesKiosco> getFileKioscos(Context context, int parseInt, int parseInt1, int i);
     }
     interface Model {
 

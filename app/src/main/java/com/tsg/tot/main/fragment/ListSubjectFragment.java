@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tsg.tot.R;
 import com.tsg.tot.adapter.SubjectsAdapter;
+import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.main.mainmvp.MainMVP;
 import com.tsg.tot.main.mainmvp.MainView;
+import com.tsg.tot.task.taskmvp.TaskMVP;
 
 import java.util.List;
 
@@ -106,5 +108,11 @@ public class  ListSubjectFragment extends Fragment implements FragmentsMVP.View 
     public void setTaskSubjects(List<Task> taskSubjects, Context context, MainMVP.Presenter presenter) {
 
     }
+
+    @Override
+    public void setFileKiosco(List<FilesKiosco> taskSubjects, Context context, TaskMVP.Presenter presenter) {
+
+    }
+
 
 }

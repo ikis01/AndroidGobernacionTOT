@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.tsg.tot.R;
+import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.main.fragment.CustomProgressDialog;
@@ -148,6 +149,11 @@ public class TaskView extends AppCompatActivity implements TaskMVP.View,View.OnC
 
     @Override
     public void notifyRefreh() {
+
+    }
+
+    @Override
+    public void setFileKiosco(FilesKiosco fileKiosco) {
 
     }
 

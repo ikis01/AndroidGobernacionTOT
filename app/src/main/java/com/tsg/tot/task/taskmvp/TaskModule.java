@@ -26,12 +26,12 @@ public class TaskModule {
     }
 
     @Provides
-    public TaskMVP.Presenter provideMainPresenter(TaskMVP.Model model) {
+    public TaskMVP.Presenter provideTaskPresenter(TaskMVP.Model model) {
         return new TaskPresenter(model);
     }
 
     @Provides
-    public TaskMVP.Model provideMainModel(ApiRepository apiRepository, DatabaseRepository databaseRepository) {
+    public TaskMVP.Model provideTaskModel(ApiRepository apiRepository, DatabaseRepository databaseRepository) {
         return new TaskModel(apiRepository, databaseRepository);
     }
 

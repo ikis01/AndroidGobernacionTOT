@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
 
@@ -21,6 +22,13 @@ public class TaskPresenter implements TaskMVP.Presenter, TaskMVP.Model.OnFinishe
 
     public TaskPresenter(TaskMVP.Model model) {
        this.model = model ;
+    }
+
+    @Override
+    public void setFileKiosco(FilesKiosco fileKiosco) {
+        if (view != null) {
+            view.setFileKiosco(fileKiosco);
+        }
     }
 
     @Override
@@ -71,6 +79,12 @@ public class TaskPresenter implements TaskMVP.Presenter, TaskMVP.Model.OnFinishe
             dismissLoadingDialog();
         }
     }
+
+    @Override
+    public List<FilesKiosco> getFileKioscos(Context context, int parseInt, int parseInt1, int i) {
+        return null;
+    }
+
 
     @Override
     public void onFailure(Throwable t) {

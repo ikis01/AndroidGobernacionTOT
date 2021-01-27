@@ -22,11 +22,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tsg.tot.R;
 import com.tsg.tot.adapter.TasksAdapter;
+import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.main.mainmvp.MainMVP;
 import com.tsg.tot.main.mainmvp.MainView;
 import com.tsg.tot.subject.DetailSubjectActivity;
+import com.tsg.tot.task.taskmvp.TaskMVP;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -58,6 +60,7 @@ public class InformationFragment extends Fragment implements FragmentsMVP.View{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
     }
 
@@ -145,8 +148,17 @@ public class InformationFragment extends Fragment implements FragmentsMVP.View{
         tasksAdapter.dataSet(taskSubjects, taskSubjects.size(), context, presenter);
     }
 
+    @Override
+    public void setFileKiosco(List<FilesKiosco> taskSubjects, Context context, TaskMVP.Presenter presenter) {
+
+    }
+
+
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }

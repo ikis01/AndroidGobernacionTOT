@@ -19,10 +19,14 @@ import androidx.core.app.ActivityCompat;
 
 import com.google.gson.JsonObject;
 import com.tsg.tot.R;
+import com.tsg.tot.data.model.FilesKiosco;
+import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.TokenCustom;
 import com.tsg.tot.data.model.Users;
 import com.tsg.tot.data.remote.ApiUtils;
 import com.tsg.tot.data.remote.Client;
+import com.tsg.tot.data.remote.model.LessonsRemote;
+import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.main.mainmvp.MainView;
 import com.tsg.tot.repository.ApiRepository;
 import com.tsg.tot.repository.DatabaseRepository;
@@ -204,6 +208,14 @@ public class LoginActivity extends AppCompatActivity {
 
             DatabaseRepository dbR = new DatabaseRepository();
             List<Users> usersList = dbR.getUsers(registro,this);
+
+            /// prueba de obtencion de datos
+
+            List <LessonsRemote> lessonsRemotesList = dbR.getLessons(this ,209);
+            List <StudyMaterialRemote> studyMaterialRemotes = dbR.getStudyMaterial(this,1);
+            List <Task> taskList = dbR.getTasks(this,209);
+            List <FilesKiosco> filesKioscoList = dbR.getFileKioscos(this,209,6763,601);
+            /// prueba de obtencion de datos
 
             //// verificar registro previo
             if(usersList.size()>0){
