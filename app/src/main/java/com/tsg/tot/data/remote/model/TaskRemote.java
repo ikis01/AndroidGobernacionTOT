@@ -29,6 +29,16 @@ public class TaskRemote {
     @Expose
     private FileTaskRemote file;
 
+    private Long idSubida ;
+
+    public Long getIdSubida() {
+        return idSubida;
+    }
+
+    public void setIdSubida(Long idSubida) {
+        this.idSubida = idSubida;
+    }
+
     public Integer getTareaId() {
         return tareaId;
     }

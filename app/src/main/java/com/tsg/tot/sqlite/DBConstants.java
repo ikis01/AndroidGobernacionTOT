@@ -18,6 +18,14 @@ public final class DBConstants {
     /**
      * Table Names
      */
+
+
+
+
+    public static final String KIOSCO_TABLE_NAME = "ARCHIVOSKIOSCO";
+
+
+
     public static final String VERSION_TABLE_NAME = "VERSION";
     public static final String TASK_TABLE_NAME = "Tareas";
     public static final String UPLOAD_TABLE_NAME = "Subida";
@@ -38,6 +46,30 @@ public final class DBConstants {
     public static final String STUDENT_TABLE_NAME = "ESTUDIANTE";
     public static final String TEACHER_TABLE_NAME = "PROFESOR";
     public static final String REL_STUDENT_SUBJECT_TABLE_NAME = "REL_ESTUDIANTE_MATERIAS";
+    public static final String UPLOADS_TABLE_NAME = "SUBIDA";
+
+    /****
+     * ARCHIVOSKIOSCO columns
+     */
+    public static final String KIOSCO_ID_ARCHIVOS = "idArchivosTOT";
+    public static final String KIOSCO_ARCHIVO_KIOSCO = "archivoKiosco";
+    public static final String KIOSCO_CODIGO ="codigo";
+    public static final String KIOSCO_RUTA ="ruta";
+    public static final String KIOSCO_ID_ENTREGA ="idEntrega";
+    public static final String KIOSCO_ID_SUBIDA ="subida_idsubida";
+
+
+    /**
+     *
+     * UPLOADS COLUMNS
+     *
+     * */
+    public static final String UPLOADS_ID = "idSubida";
+    public static final String UPLOADS_FECHA = "Fecha";
+    public static final String UPLOADS_FECHA_DESCARGA ="FechaDescarga";
+    public static final String UPLOADS_SUBIDA_KIOSCO ="SubidaKiosco";
+    public static final String UPLOADS_ID_ESTUDIANTE ="Estudiante_idEstudiante";
+
 
     /**
      *

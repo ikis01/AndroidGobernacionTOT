@@ -12,6 +12,7 @@ import com.tsg.tot.data.model.Blob;
 import com.tsg.tot.data.model.Device;
 import com.tsg.tot.data.model.Evaluations;
 import com.tsg.tot.data.model.Exercises;
+import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Grade;
 import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Planning;
@@ -23,6 +24,7 @@ import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
 import com.tsg.tot.data.model.TokenCustom;
 import com.tsg.tot.data.model.Upload;
+import com.tsg.tot.data.model.Uploads;
 import com.tsg.tot.data.model.Users;
 import com.tsg.tot.data.remote.model.GradeRemote;
 import com.tsg.tot.data.remote.model.LessonsRemote;
@@ -91,13 +93,13 @@ public class DatabaseRepository implements LocalRepository {
     }
 
     @Override
-    public List<Student> getStudent(Context context,Integer idUsuario) {
+    public List<Student> getStudent(Context context, Integer idUsuario) {
         List<Student> studentList = new ArrayList<>();
 
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String query = "SELECT * FROM " + STUDENTS_TABLE_NAME + " WHERE "
-                +STUDENT_FK_USUARIO + " = " +idUsuario ;
+                + STUDENT_FK_USUARIO + " = " + idUsuario;
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
 
@@ -145,15 +147,15 @@ public class DatabaseRepository implements LocalRepository {
     }
 
     @Override
-    public List<Subjects> getSubjects(Context context,Integer codeGrado) {
+    public List<Subjects> getSubjects(Context context, Integer codeGrado) {
         List<Subjects> subjectsList = new ArrayList<>();
 
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String query = "SELECT * FROM " + SUBJECTS_TABLE_NAME
-        +" , "+ REL_STUDENT_SUBJECT_TABLE_NAME +
-                   " WHERE " + REL_STUDENT_SUBJECT_FK_STUDENT+ " = " +codeGrado +
-                   " AND " + REL_STUDENT_SUBECT_FK_SUBJECT + " = "+ SUBJECTS_ID ;
+                + " , " + REL_STUDENT_SUBJECT_TABLE_NAME +
+                " WHERE " + REL_STUDENT_SUBJECT_FK_STUDENT + " = " + codeGrado +
+                " AND " + REL_STUDENT_SUBECT_FK_SUBJECT + " = " + SUBJECTS_ID;
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
 
@@ -208,7 +210,7 @@ public class DatabaseRepository implements LocalRepository {
     }
 
     @Override
-    public List<Task> getTasks(Context context,String authKey) {
+    public List<Task> getTasks(Context context, String authKey) {
         List<Task> taskList = new ArrayList<>();
 
         DbOpenHelper dbHelper = new DbOpenHelper(context);
@@ -251,7 +253,7 @@ public class DatabaseRepository implements LocalRepository {
     //UPDATE info of DB Tables
 
     @Override
-    public List<Users> getUsers(ContentValues cv, Context context ){
+    public List<Users> getUsers(ContentValues cv, Context context) {
 
         String userNameString = (String) cv.get("UserName");
         String passwordString = (String) cv.get("Password");
@@ -259,9 +261,9 @@ public class DatabaseRepository implements LocalRepository {
 
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String query = "SELECT * FROM " + USERS_TABLE_NAME+ " WHERE "
-                        +USERS_USER_NAME + " = '" + userNameString +"'"
-                        +" AND " + USERS_PASSWORD + " = '" +passwordString +"'";
+        String query = "SELECT * FROM " + USERS_TABLE_NAME + " WHERE "
+                + USERS_USER_NAME + " = '" + userNameString + "'"
+                + " AND " + USERS_PASSWORD + " = '" + passwordString + "'";
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
 
@@ -291,32 +293,32 @@ public class DatabaseRepository implements LocalRepository {
     }
 
     @Override
-    public void updateUser (ContentValues cv,Context context){
+    public void updateUser(ContentValues cv, Context context) {
 
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        db.insert("Usuarios",null,cv);
+        db.insert("Usuarios", null, cv);
         db.close();
         dbHelper.close();
     }
 
     @Override
     public void updateVersion(float version, Context context) {
-        try{
-        DbOpenHelper dbHelper = new DbOpenHelper(context);
-        SQLiteDatabase db = dbHelper    .getWritableDatabase();
-        ContentValues cv = new ContentValues();
+        try {
+            DbOpenHelper dbHelper = new DbOpenHelper(context);
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            ContentValues cv = new ContentValues();
 
-        cv.put(VERSION_NUMBER, version);
+            cv.put(VERSION_NUMBER, version);
 
-        db.update(VERSION_TABLE_NAME, cv, null, null);
+            db.update(VERSION_TABLE_NAME, cv, null, null);
 
-        db.close();
-        dbHelper.close();
-        }catch (SQLiteException ex){
+            db.close();
+            dbHelper.close();
+        } catch (SQLiteException ex) {
 
-            Log.d("exceptiom sqlite version ",ex.getMessage());
+            Log.d("exceptiom sqlite version ", ex.getMessage());
         }
     }
 
@@ -331,21 +333,21 @@ public class DatabaseRepository implements LocalRepository {
     }
 
     @Override
-    public void updateMyGrade(GradeRemote grade, Context context,StudentRemote student) {
+    public void updateMyGrade(GradeRemote grade, Context context, StudentRemote student) {
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        if ( grade != null) {
-           // for (GradeRemote grade : gradesList) {
-                if (checkId(db, INFO_GRADE_TABLE_NAME, INFO_GRADE_IDINFOGRADO, grade.getId().toString()) == 0) {
-                    cv.put(INFO_GRADE_IDINFOGRADO, grade.getId());
-                    cv.put(INFO_GRADE_CODIGOGRADO, grade.getCodigo());
-                    cv.put(INFO_GRADE_INSTITUCION, grade.getInstitucion().getNombre());
-                    cv.put(INFO_GRADE_NOMBRE, grade.getNombre());
-                    cv.put(INFO_GRADE_ESTUDIANTE_IDESTUDIANTE, student.getId());
-                    cv.put(INFO_GRADE_UBICACIONINSTITUCION, grade.getInstitucion().getDireccion());
-                    db.insert(INFO_GRADE_TABLE_NAME, null, cv);
-                }
+        if (grade != null) {
+            // for (GradeRemote grade : gradesList) {
+            if (checkId(db, INFO_GRADE_TABLE_NAME, INFO_GRADE_IDINFOGRADO, grade.getId().toString()) == 0) {
+                cv.put(INFO_GRADE_IDINFOGRADO, grade.getId());
+                cv.put(INFO_GRADE_CODIGOGRADO, grade.getCodigo());
+                cv.put(INFO_GRADE_INSTITUCION, grade.getInstitucion().getNombre());
+                cv.put(INFO_GRADE_NOMBRE, grade.getNombre());
+                cv.put(INFO_GRADE_ESTUDIANTE_IDESTUDIANTE, student.getId());
+                cv.put(INFO_GRADE_UBICACIONINSTITUCION, grade.getInstitucion().getDireccion());
+                db.insert(INFO_GRADE_TABLE_NAME, null, cv);
+            }
             //}
         }
 
@@ -354,11 +356,11 @@ public class DatabaseRepository implements LocalRepository {
     }
 
     @Override
-    public void updateMyStudent(StudentRemote studentRemote, Context context ,Integer idUsuario) {
+    public void updateMyStudent(StudentRemote studentRemote, Context context, Integer idUsuario) {
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        if ( studentRemote != null) {
+        if (studentRemote != null) {
             // for (GradeRemote grade : gradesList) {
             if (checkId(db, STUDENT_TABLE_NAME, STUDENT_IDESTUDIANTE, studentRemote.getId().toString()) == 0) {
                 cv.put(STUDENTS_ID, studentRemote.getId());
@@ -378,36 +380,35 @@ public class DatabaseRepository implements LocalRepository {
 
 
     @Override
-    public void updateMyTasks(List<TaskRemote> taskList, Context context,StudentRemote studentRemote,Integer regist) {
+    public void updateMyTasks(List<TaskRemote> taskList, Context context, StudentRemote studentRemote, Integer regist) {
 
-        try{
-        DbOpenHelper dbHelper = new DbOpenHelper(context);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        if (taskList != null) {
-            for (TaskRemote task : taskList) {
-                if (checkId(db, TASK_TABLE_NAME, TASK_KIOSCO, task.getTareaId().toString()) == 0) {
-                    cv.put(TASK_ID, task.getTareaId());
-                    cv.put(TASK_CODE, task.getIdArchivoD2L());
-                    cv.put(TASK_NAME, task.getNombreActividad());
-                    cv.put(TASK_REGISTER, regist);
-                    cv.put(TASK_KIOSCO, task.getTareaId());
-                    cv.put(TASK_STUDENT_ID, studentRemote.getId());
-                    cv.put(TASK_SUBJECT_ID, task.getMateriaId());
-                    cv.put(TASK_UPLOAD_ID, task.getFile().getIdDescarga());
-                    db.insert(TASK_TABLE_NAME, null, cv);
+        try {
+            DbOpenHelper dbHelper = new DbOpenHelper(context);
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            if (taskList != null) {
+                for (TaskRemote task : taskList) {
+                    if (checkId(db, TASK_TABLE_NAME, TASK_KIOSCO, task.getTareaId().toString()) == 0) {
+                        cv.put(TASK_ID, task.getTareaId());
+                        cv.put(TASK_CODE, task.getIdArchivoD2L());
+                        cv.put(TASK_NAME, task.getNombreActividad());
+                        cv.put(TASK_REGISTER, regist);
+                        cv.put(TASK_KIOSCO, task.getTareaId());
+                        cv.put(TASK_STUDENT_ID, studentRemote.getId());
+                        cv.put(TASK_SUBJECT_ID, task.getMateriaId());
+                        cv.put(TASK_UPLOAD_ID, task.getFile().getIdDescarga());
+                        cv.put(TASK_UPLOAD_ID, task.getIdSubida().intValue());
+                        db.insert(TASK_TABLE_NAME, null, cv);
+                    }
                 }
             }
-        }
 
-        db.close();
-         dbHelper.close();
-        }catch (SQLiteException wex){
-            Log.d("error al insertar ",wex.getMessage());
+            db.close();
+            dbHelper.close();
+        } catch (SQLiteException wex) {
+            Log.d("error al insertar ", wex.getMessage());
         }
     }
-
-
 
 
     @Override
@@ -419,7 +420,7 @@ public class DatabaseRepository implements LocalRepository {
             for (LessonsRemote lessons : lessonsRemoteList) {
                 if (checkId(db, LESSONS_TABLE_NAME, LESSONS_ID, lessons.getId().toString()) == 0) {
                     cv.put(LESSONS_ID, lessons.getId());
-                    cv.put(LESSONS_CODIGO,lessons.getId()); /// consultar dato
+                    cv.put(LESSONS_CODIGO, lessons.getId()); /// consultar dato
                     cv.put(LESSONS_THEME, lessons.getTema());
                     cv.put(LESSONS_SUBJECT_ID, lessons.getMateriaId());
                     cv.put(LESSONS_TEACHER_ID, lessons.getProfesorId());
@@ -433,7 +434,6 @@ public class DatabaseRepository implements LocalRepository {
         db.close();
         dbHelper.close();
     }
-
 
 
     @Override
@@ -458,7 +458,6 @@ public class DatabaseRepository implements LocalRepository {
         db.close();
         dbHelper.close();
     }
-
 
 
     @Override
@@ -591,7 +590,7 @@ public class DatabaseRepository implements LocalRepository {
 
 
     @Override
-    public void updateRelStudentSubjects(StudentRemote studentRemote, List<SubjectsRemote> subjectsRemoteList,Context context) {
+    public void updateRelStudentSubjects(StudentRemote studentRemote, List<SubjectsRemote> subjectsRemoteList, Context context) {
 
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -687,7 +686,7 @@ public class DatabaseRepository implements LocalRepository {
     }
 
     @Override
-    public void updateMYTeachers(List<TeacherRemote> teacherList, Context context) {
+    public void updateMyTeachers(List<TeacherRemote> teacherList, Context context) {
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -696,7 +695,7 @@ public class DatabaseRepository implements LocalRepository {
                 if (checkId(db, TEACHER_TABLE_NAME, TEACHER_ID, teacher.getId().toString()) == 0) {
                     cv.put(TEACHER_ID, teacher.getId());
                     cv.put(TEACHER_NAME, teacher.getNombres());
-                    cv.put(TEACHER_LAST_NAME,teacher.getApellidos());
+                    cv.put(TEACHER_LAST_NAME, teacher.getApellidos());
                     db.insert(TEACHER_TABLE_NAME, null, cv);
                 }
             }
@@ -749,6 +748,68 @@ public class DatabaseRepository implements LocalRepository {
         db.close();
         dbHelper.close();
     }
+
+    @Override
+    public Long updateMyUpload(Uploads upload, Context context) {
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        Long id = new Long(0);
+
+        if (upload != null) {
+            //  for (Uploads upload : uploadsList) {
+            //if (checkId(db, UPLOADS_TABLE_NAME, UPLOADS_ID, upload.getIdSubida().toString()) == 0) {
+            //cv.put(UPLOAD_ID, upload.getId());
+            cv.put(UPLOADS_FECHA, upload.getFecha());
+            cv.put(UPLOADS_FECHA_DESCARGA, upload.getFechaDescarga());
+            cv.put(UPLOADS_SUBIDA_KIOSCO, upload.getSubidaKiosco());
+            cv.put(UPLOADS_ID_ESTUDIANTE, upload.getEstudiante_idEstudiante());
+            id = db.insert(UPLOAD_TABLE_NAME, null, cv);
+            //    }
+
+            //}
+
+
+        }
+
+        db.close();
+        dbHelper.close();
+        return id;
+    }
+
+
+    @Override
+
+    public Long updateMyFileKiosco (List<FilesKiosco> filesKioscoList ,Context context){
+
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        Long id = new Long(0);
+
+        if (filesKioscoList != null) {
+              for (FilesKiosco filesKiosco : filesKioscoList) {
+            //if (checkId(db, UPLOADS_TABLE_NAME, UPLOADS_ID, upload.getIdSubida().toString()) == 0) {
+            cv.put(KIOSCO_ARCHIVO_KIOSCO, filesKiosco.getArchivoKiosco());
+            cv.put(KIOSCO_CODIGO, filesKiosco.getCodigo());
+            cv.put(KIOSCO_RUTA, filesKiosco.getRuta());
+            cv.put(KIOSCO_ID_ENTREGA, filesKiosco.getIdEntrega());
+            cv.put(KIOSCO_ID_SUBIDA, filesKiosco.getSubida_idsubida());
+
+
+            id = db.insert(KIOSCO_TABLE_NAME, null, cv);
+            //    }
+
+            }
+
+
+        }
+
+        db.close();
+        dbHelper.close();
+        return id;
+    }
+
 
     @Override
     public void updateTasks(List<Task> taskList, Context context) {
@@ -843,7 +904,7 @@ public class DatabaseRepository implements LocalRepository {
     }
 
 
-    public int checkRelStudentSubject (SQLiteDatabase db, String tableName, String fk_student, String studentValue ,String fk_subject ,String subjectValue) {
+    public int checkRelStudentSubject(SQLiteDatabase db, String tableName, String fk_student, String studentValue, String fk_subject, String subjectValue) {
         Cursor c = null;
         String query = "SELECT count(*) FROM " + tableName
                 + " WHERE " + fk_student + " = " + studentValue
@@ -919,7 +980,7 @@ public class DatabaseRepository implements LocalRepository {
         return teacher;
     }
 
-    public Upload getUpload (SQLiteDatabase db, String id){
+    public Upload getUpload(SQLiteDatabase db, String id) {
         Upload upload = null;
         String query = "SELECT * FROM " + UPLOAD_TABLE_NAME + " WHERE " + UPLOAD_ID + " = " + id;
         Cursor cursor = db.rawQuery(query, null);

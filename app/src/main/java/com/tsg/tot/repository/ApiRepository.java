@@ -464,7 +464,7 @@ public class ApiRepository implements RemoteRepository {
 
             @Override
             public void onFailure(Call<List<SubjectsRemote>> call, Throwable t) {
-                Log.d("onFailure getSubjects", t.toString());
+                Log.d("onFailure getMySubjects", t.toString());
             }
         });
 

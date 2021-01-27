@@ -25,7 +25,7 @@ import java.util.List;
  * Use the {@link ListSubjectFragment} factory method to
  * create an instance of this fragment.
  */
-public class ListSubjectFragment extends Fragment implements FragmentsMVP.View {
+public class  ListSubjectFragment extends Fragment implements FragmentsMVP.View {
 
     private OnFragmentInteractionListener mListener;
 

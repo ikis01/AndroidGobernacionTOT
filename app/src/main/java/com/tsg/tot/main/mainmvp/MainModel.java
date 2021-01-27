@@ -12,6 +12,7 @@ import androidx.core.app.ActivityCompat;
 import com.tsg.tot.data.model.Device;
 import com.tsg.tot.data.model.Evaluations;
 import com.tsg.tot.data.model.Exercises;
+import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Grade;
 import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Planning;
@@ -22,6 +23,7 @@ import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
 import com.tsg.tot.data.model.Upload;
+import com.tsg.tot.data.model.Uploads;
 import com.tsg.tot.data.remote.model.GradeRemote;
 import com.tsg.tot.data.remote.model.LessonsRemote;
 import com.tsg.tot.data.remote.model.StudentRemote;
@@ -35,22 +37,16 @@ import com.tsg.tot.repository.DatabaseRepository;
 import com.tsg.tot.sqlite.DbOpenHelper;
 
 import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import kotlin.io.FilePathComponents;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
@@ -102,6 +98,8 @@ public class MainModel implements MainMVP.Model {
         File storageDirMaterialRemote = null;
         File storageDirectoryStudent = null;
         File storageDirTask = null ;
+        List<TaskRemote> taskRemoteListAux = new ArrayList<>();
+        List<FilesKiosco> filesKioscoList = new ArrayList<>();
 
         databaseRepository.updateMyStudent(studentRemote, context, Integer.parseInt(idUsusario));
         databaseRepository.updateMySubjects(subjectsRemoteList, context);
@@ -110,13 +108,9 @@ public class MainModel implements MainMVP.Model {
         databaseRepository.updateVersion(version, context);
         databaseRepository.updateMyGrade(gradeRemote, context, studentRemote);
 
-        databaseRepository.updateMYTeachers(teacherRemoteList, context);
+        databaseRepository.updateMyTeachers(teacherRemoteList, context);
 
-
-        databaseRepository.updateMyTasks(taskRemoteList, context, studentRemote, 0);
-        databaseRepository.updateMyStudyMaterial(materialRemoteList, context);
         databaseRepository.updateMyLessons(lessonsRemoteList,context );
-
 
         if (studentRemote != null) {
 
@@ -134,6 +128,7 @@ public class MainModel implements MainMVP.Model {
         }
 
         if (taskRemoteList!=null && studentRemote !=null){
+
             for(TaskRemote taskRemote : taskRemoteList){
 
                 if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
@@ -142,10 +137,32 @@ public class MainModel implements MainMVP.Model {
                         //storageDirMaterialRemote = new File(storageDirectoryStudent.getPath(), material.getIdD2L()+"BLOB");
                         storageDirTask = new File(storageDirectoryStudent.getPath(), taskRemote.getTareaId()+"BLOB");
 
-                        if (storageDirTask.mkdir()){
+                        if (!storageDirTask.exists()){
+                            storageDirTask.mkdir();
+                        }
 
-                            if (Download (taskRemote.getFile().getUrl(),storageDirTask, taskRemote.getNombreArchivo(),"Tarea_")){
 
+                        if (storageDirTask.exists()){
+                                String tareaPath = null ;
+                                tareaPath = Download (taskRemote.getFile().getUrl(),storageDirTask, taskRemote.getNombreArchivo(),"Tarea_");
+                            if (tareaPath!=null){
+                                /// insertar registro en SUBIDA
+                                 TaskRemote  taskAux = taskRemote;
+                                 FilesKiosco filesKiosco = new FilesKiosco();
+                                java.util.Date fecha = new Date();
+                                Uploads upload = new Uploads();
+                                upload.setFecha(fecha.toString());
+                                upload.setFechaDescarga(fecha.toString());
+                                upload.setSubidaKiosco(taskRemote.getFile().getId());
+                                upload.setEstudiante_idEstudiante(studentRemote.getId());
+                                Long id = databaseRepository.updateMyUpload(upload,context);
+                                taskRemote.setIdSubida(id);
+                                taskRemoteListAux.add(taskRemote);
+                                filesKiosco.setArchivoKiosco(taskRemote.getFile().getId());
+                                filesKiosco.setCodigo(taskRemote.getFile().getId().toString());
+                                filesKiosco.setRuta(tareaPath);
+                                filesKiosco.setSubida_idsubida(id.intValue());
+                                filesKioscoList.add(filesKiosco);
 
                             }
 
@@ -159,10 +176,14 @@ public class MainModel implements MainMVP.Model {
 
             }
 
+            databaseRepository.updateMyFileKiosco(filesKioscoList,context);
+            databaseRepository.updateMyTasks(taskRemoteListAux, context, studentRemote, 0);
+
+
+
         }
 
-
-
+         List <StudyMaterialRemote> materialSList = new ArrayList<StudyMaterialRemote>();
         if (materialRemoteList != null) {
             for (StudyMaterialRemote material : materialRemoteList) {
 
@@ -172,12 +193,28 @@ public class MainModel implements MainMVP.Model {
                         //storageDirMaterialRemote = new File(storageDirectoryStudent.getPath(), material.getIdD2L()+"BLOB");
                         storageDirMaterialRemote = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+"/Data", material.getIdD2L()+"BLOB");
 
-                       if (storageDirMaterialRemote.mkdir()){
+                       if (storageDirMaterialRemote.exists()){
+                           String pathMaterial = null;
+                           pathMaterial = Download (material.getUrl(),storageDirMaterialRemote,material.getNombreArchivo(),"Material_");
+                             if (pathMaterial !=null){
+                                 material.setRuta(pathMaterial);
+                                 materialSList.add(material);
+                             }
+                             ///// INSERTAR MATERIAL DE ESTUDIO
 
-                             Download (material.getUrl(),storageDirMaterialRemote,material.getNombreArchivo(),"Material_");
+
+                        }else {
+                           storageDirMaterialRemote.mkdir();
+                           String pathMaterial = null;
+                           pathMaterial = Download (material.getUrl(),storageDirMaterialRemote,material.getNombreArchivo(),"Material_");
+                           if (pathMaterial !=null){
+                               material.setRuta(pathMaterial);
+                               materialSList.add(material);
+                           }
+                           ///// INSERTAR MATERIAL DE ESTUDIO
 
 
-                        }
+                       }
 
 
                     }
@@ -186,8 +223,9 @@ public class MainModel implements MainMVP.Model {
 
 
             }
-
+            databaseRepository.updateMyStudyMaterial(materialSList, context);
         }
+
 
 
     }
@@ -657,7 +695,9 @@ public class MainModel implements MainMVP.Model {
     }
 
 
-    public static Boolean Download (String urlStr,File filePath ,String nombreArchivo ,String tipo )  {
+    public static String Download (String urlStr,File filePath ,String nombreArchivo ,String tipo )  {
+
+        String rutaGuardada = null;
         try{
         URL url = new URL (urlStr);
 
@@ -665,6 +705,7 @@ public class MainModel implements MainMVP.Model {
         File file = new File (filePath,tipo+fileAppend+nombreArchivo);
             if(!file.exists()){ // Si no existe, crea el archivo.
                 file.createNewFile();
+                rutaGuardada= file.getAbsolutePath();
             }
 
         BufferedInputStream bis = new BufferedInputStream(url.openStream());
@@ -678,12 +719,12 @@ public class MainModel implements MainMVP.Model {
         fis.close();
         bis.close();
 
-        return true ;
+        return rutaGuardada ;
 
         } catch(FileNotFoundException e) {
-            return false; // swallow a 404
+            return null; // swallow a 404
         } catch (IOException e) {
-            return false; // swallow a 404
+            return null; // swallow a 404
         }
     }
 

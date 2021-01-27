@@ -106,7 +106,10 @@ public class LoginActivity extends AppCompatActivity {
                 //RUNTIME PERMISSION Android M
                 if(PackageManager.PERMISSION_GRANTED==ActivityCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)){
                     storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "Data");
-                    storageDir.mkdir();
+                    if (!storageDir.exists()){
+                        storageDir.mkdir();
+                    }
+
                 }else{
                     requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
                 }

@@ -46,7 +46,8 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             "  `Upp` INTEGER," +
             "  `Creado` DATETIME)";*/
 
-            "  `idEntrega` INTEGER," +
+            "  `idEntrega` INTEGER constraint `Entregas_PK`" +
+            "primary key autoincrement,"+
             "  `CodigoEntrega` TEXT, "+
             "  `CodigoTarea` TEXT,"+
             "  `Creado` DATETIME,"+
@@ -108,7 +109,8 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             "`FK_MATERIA` INTEGER) ";
 
     private static final String UPLOAD_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS `SUBIDA` (" +
-            "`idSubida` INTEGER," +
+            "`idSubida` INTEGER constraint `Subida_PK`" +
+            "primary key autoincrement,"+
             "`Fecha` TEXT,"+
             "`FechaDescarga` TEXT,"+
             "`SubidaKiosco` INTEGER,"+
