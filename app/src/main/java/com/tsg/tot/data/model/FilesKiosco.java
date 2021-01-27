@@ -3,7 +3,9 @@ package com.tsg.tot.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class FilesKiosco {
+import java.io.Serializable;
+
+public class FilesKiosco  implements Serializable  {
 
     @SerializedName("idArchivosTOT")
     @Expose
@@ -28,6 +30,8 @@ public class FilesKiosco {
     @SerializedName("subida_idsubida")
     @Expose
     private Integer subida_idsubida;
+
+    private String nombreArchivo;
 
     public Integer getIdArchivosTOT() {
         return idArchivosTOT;
@@ -75,5 +79,26 @@ public class FilesKiosco {
 
     public void setSubida_idsubida(Integer subida_idsubida) {
         this.subida_idsubida = subida_idsubida;
+    }
+
+    public String getNombreArchivo() {
+        return nombreArchivo;
+    }
+
+    public void setNombreArchivo(String nombreArchivo) {
+        this.nombreArchivo = nombreArchivo;
+    }
+
+    public FilesKiosco(Integer idArchivosTOT, Integer archivoKiosco, String codigo, String ruta, Integer idEntrega, Integer subida_idsubida, String nombreArchivo) {
+        this.idArchivosTOT = idArchivosTOT;
+        this.archivoKiosco = archivoKiosco;
+        this.codigo = codigo;
+        this.ruta = ruta;
+        this.idEntrega = idEntrega;
+        this.subida_idsubida = subida_idsubida;
+        this.nombreArchivo = nombreArchivo;
+    }
+
+    public FilesKiosco() {
     }
 }
