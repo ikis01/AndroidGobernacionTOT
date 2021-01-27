@@ -24,6 +24,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             "`archivoKiosco`  INTEGER,"+
             "`codigo` TEXT," +
             "`ruta` TEXT," +
+            "`nombreArchivo` TEXT," +
             "`idEntrega` INTEGER," +
             "`subida_idsubida` INTEGER)";
 

@@ -55,6 +55,7 @@ public final class DBConstants {
     public static final String KIOSCO_ARCHIVO_KIOSCO = "archivoKiosco";
     public static final String KIOSCO_CODIGO ="codigo";
     public static final String KIOSCO_RUTA ="ruta";
+    public static final String KIOSCO_NOMBRE ="nombreArchivo";
     public static final String KIOSCO_ID_ENTREGA ="idEntrega";
     public static final String KIOSCO_ID_SUBIDA ="subida_idsubida";
 
@@ -161,7 +162,7 @@ public final class DBConstants {
     public static final String STUDYMATERIAL_ID = "idMaterialEstudio";
     public static final String STUDYMATERIAL_DESCRIPTION = "Descripcion";
     public static final String STUDYMATERIAL_NAME = "Nombre";
-    public static final String STUDYMATERIAL_NAME_FILE = "NOMBREARCHIVO";
+    public static final String STUDYMATERIAL_NAME_FILE = "NombreArchivo";
     public static final String STUDYMATERIAL_PATH = "Ruta";
     public static final String STUDYMATERIAL_CLASSES_ID = "Clase_idClases";
 
