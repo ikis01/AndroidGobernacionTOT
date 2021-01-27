@@ -25,7 +25,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             "`codigo` TEXT," +
             "`ruta` TEXT," +
             "`nombreArchivo` TEXT," +
-            "`idEntrega` INTEGER," +
+            "`idEntrega` INTEGER,"  +
             "`subida_idsubida` INTEGER)";
 
     private static final String CLASSES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS `CLASES` (" +

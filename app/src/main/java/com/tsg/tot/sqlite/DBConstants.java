@@ -54,7 +54,7 @@ public final class DBConstants {
     public static final String KIOSCO_ID_ARCHIVOS = "idArchivosTOT";
     public static final String KIOSCO_ARCHIVO_KIOSCO = "archivoKiosco";
     public static final String KIOSCO_CODIGO ="codigo";
-    public static final String KIOSCO_RUTA ="ruta";
+    public static final String KIOSCO_RUTA ="ruta" ;
     public static final String KIOSCO_NOMBRE ="nombreArchivo";
     public static final String KIOSCO_ID_ENTREGA ="idEntrega";
     public static final String KIOSCO_ID_SUBIDA ="subida_idsubida";
