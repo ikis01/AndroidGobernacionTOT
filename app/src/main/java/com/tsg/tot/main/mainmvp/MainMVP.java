@@ -5,6 +5,7 @@ import android.content.Context;
 import com.tsg.tot.data.model.Device;
 import com.tsg.tot.data.model.Evaluations;
 import com.tsg.tot.data.model.Exercises;
+import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Grade;
 import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Planning;
@@ -24,6 +25,7 @@ import com.tsg.tot.data.remote.model.TaskRemote;
 import com.tsg.tot.data.remote.model.TeacherRemote;
 import com.tsg.tot.main.fragment.CustomProgressDialog;
 
+import java.io.File;
 import java.util.List;
 
 public interface MainMVP {
@@ -34,11 +36,15 @@ public interface MainMVP {
 
         void setInfoSubject(Subjects subjects);
 
+
         void notifyRefresh();
 
         void showLoadingDialog();
 
         void dismissLoadingDialog();
+
+        void setFileKiosco(FilesKiosco fileKiosco);
+
     }
 
     interface Presenter {
@@ -52,12 +58,16 @@ public interface MainMVP {
         void checkVersions(Context context, CustomProgressDialog dialog,String token,String idUsuario);
 
         List<Subjects> getSubjects(Context context,String token,Integer code);
+        List<FilesKiosco>getFileKioscos(Context context,Integer idEstudiante,Integer idMateria,Integer idTarea);
 
         List<Task> getTaskSubject(Context context, int idSubject,String token);
 
         void setInfoStudent(Context context, Integer idUsuario);
 
         void setInfoSubject(Subjects subjects);
+
+
+        void setFileKiosco(FilesKiosco fileKiosco);
 
         void notifyRefresh();
         void updateEverything (Context context, CustomProgressDialog dialog,String token);
@@ -152,7 +162,7 @@ public interface MainMVP {
 
         List<StudyMaterialRemote> checkMyPendingStudyMaterials(Context context,int from ,String token);
 
-
+        List<FilesKiosco> checkMyFileskioscos (Context  context, Integer idEstudiante,  Integer idMateria,Integer idTarea);
 
         //Methods for POST data on Endpoints
 

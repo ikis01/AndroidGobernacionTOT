@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.TokenCustom;
@@ -33,6 +34,8 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
     public MainPresenter(MainMVP.Model model) {
         this.model = model;
     }
+
+
 
     @Override
     public void setView(MainMVP.View view) {
@@ -139,6 +142,11 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
     }
 
     @Override
+    public List<FilesKiosco> getFileKioscos(Context context, Integer idEstudiante, Integer idMateria,Integer idTarea) {
+        return model.checkMyFileskioscos ( context,  idEstudiante,  idMateria, idTarea);
+    }
+
+    @Override
     public List<Task> getTaskSubject(Context context, int idSubject, String token) {
         List<Task> taskList = model.checkTasks(context, DATABASE_REPOSITORY, token);
         List<Task> taskListFinal = new ArrayList<>();
@@ -171,6 +179,14 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
             view.setInfoSubject(subjects);
         }
     }
+
+    @Override
+    public void setFileKiosco(FilesKiosco fileKiosco) {
+        if (view != null) {
+            view.setFileKiosco(fileKiosco);
+        }
+    }
+
 
     @Override
     public void onFailure(Throwable t) {

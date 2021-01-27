@@ -1,33 +1,30 @@
 package com.tsg.tot.main.mainmvp;
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Looper;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.tsg.tot.R;
+import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.main.fragment.CustomProgressDialog;
 import com.tsg.tot.main.fragment.InformationFragment;
+import com.tsg.tot.main.fragment.ListFileKioscoFragment;
 import com.tsg.tot.main.fragment.ListSubjectFragment;
 import com.tsg.tot.root.App;
+import com.tsg.tot.task.taskmvp.TaskMVP;
 
 import java.util.List;
 
@@ -41,9 +38,12 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
     @Inject
     MainMVP.Presenter presenter;
 
+    //TaskMVP.Presenter presenterTask;
+    ListFileKioscoFragment listFileKioscoFragment;
     ListSubjectFragment listSubjectFragment;
     InformationFragment informationFragment;
     FragmentTransaction fragmentTransaction;
+    ListFileKioscoFragment listFileKioscFragment;
 
     public TextView tv_studentCode, tv_studentName, tv_institutionName,
             tv_location, tv_pendingTask;
@@ -64,7 +64,7 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
         ((App) getApplication()).getComponent().inject(this);
 
         //Permissions
-        requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
+        //        requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
 
         presenter.createDB(this);
 
@@ -78,6 +78,7 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
 
         //Init Fragment
         listSubjectFragment = new ListSubjectFragment(presenter);
+      //  listFileKioscoFragment = new ListFileKioscoFragment(presenterTask);
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.contentList, listSubjectFragment);
         fragmentTransaction.commit();
@@ -141,6 +142,9 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
         tv_pendingTask.setText(getResources().getString(R.string.main_view_PendingTasks) + ": ");
     }
 
+
+
+
     @Override
     public void setInfoSubject(Subjects subjects) {
         informationFragment = (InformationFragment) this.getSupportFragmentManager().
@@ -189,6 +193,11 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
+    }
+
+    @Override
+    public void setFileKiosco( FilesKiosco fileKiosco) {
+
     }
 
     public void update(View view)  {

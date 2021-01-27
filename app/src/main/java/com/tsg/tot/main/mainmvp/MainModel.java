@@ -112,6 +112,7 @@ public class MainModel implements MainMVP.Model {
 
         databaseRepository.updateMyLessons(lessonsRemoteList,context );
 
+
         if (studentRemote != null) {
 
             if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
@@ -159,9 +160,10 @@ public class MainModel implements MainMVP.Model {
                                 taskRemote.setIdSubida(id);
                                 taskRemoteListAux.add(taskRemote);
                                 filesKiosco.setArchivoKiosco(taskRemote.getFile().getId());
-                                filesKiosco.setCodigo(taskRemote.getFile().getId().toString());
+                                filesKiosco.setCodigo(taskRemote.getTareaId().toString());
                                 filesKiosco.setRuta(tareaPath);
                                 filesKiosco.setSubida_idsubida(id.intValue());
+                                filesKiosco.setNombreArchivo(taskRemote.getNombreArchivo());
                                 filesKioscoList.add(filesKiosco);
 
                             }
@@ -560,6 +562,14 @@ public class MainModel implements MainMVP.Model {
         }
 
         return teacherRemoteList;
+    }
+
+
+    @Override
+   public  List<FilesKiosco> checkMyFileskioscos (Context  context, Integer idEstudiante,  Integer idMateria,Integer idTarea){
+        List<FilesKiosco> filesKioscoList = null;
+        filesKioscoList = databaseRepository.getFileKioscos(context,idEstudiante,idMateria,idTarea);
+        return filesKioscoList;
     }
 
     @Override
