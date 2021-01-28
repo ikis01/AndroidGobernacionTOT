@@ -40,11 +40,14 @@ import javax.inject.Inject;
 /**
  * A fragment representing a list of Items.
  */
-public class ListFileKioscoFragment extends Fragment implements FragmentsMVP.View{
+public class ListFileKioscoFragment extends Fragment implements TaskMVP.Presenter ,FragmentsMVP.View{
     private ListFileKioscoFragment.OnFragmentInteractionListener mListener;
 
     RecyclerView recyclerList;
     FileKioscoAdapter fileKioscoAdapter;
+    Integer idMateria = 0;
+    Integer idTarea = 0;
+    Integer idEstudiante = 0;
 
     //@Inject
    // MainMVP.Presenter presenter;
@@ -53,13 +56,16 @@ public class ListFileKioscoFragment extends Fragment implements FragmentsMVP.Vie
     TaskMVP.Presenter presenter;
 
 
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ListFileKioscoFragment(TaskMVP.Presenter presenter) {
+    public ListFileKioscoFragment(TaskMVP.Presenter presenter,int idMateria,int idTarea,int idEstudiante) {
         this.presenter = presenter;
-
+        this.idEstudiante = idEstudiante;
+        this.idTarea= idTarea;
+        this.idMateria = idMateria;
     }
 
 
@@ -67,6 +73,8 @@ public class ListFileKioscoFragment extends Fragment implements FragmentsMVP.Vie
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+
     }
 
 
@@ -79,7 +87,6 @@ public class ListFileKioscoFragment extends Fragment implements FragmentsMVP.Vie
         recyclerList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerList.setLayoutManager(linearLayoutManager);
-
         fileKioscoAdapter = new FileKioscoAdapter();
         recyclerList.setAdapter(fileKioscoAdapter);
 
@@ -107,17 +114,12 @@ public class ListFileKioscoFragment extends Fragment implements FragmentsMVP.Vie
     @Override
     public void onResume() {
 
+
+
         Integer intCode = 0;
         super.onResume();
-        String code = "";//((MainView)getContext()).tv_studentCode.getText().toString();
-        code = "209";// code.replace("Código:","");
-        String materia = "6763";
-        if (code != ""){
-            intCode= Integer.parseInt(code);
-        }else{
 
-        }
-        setFileKiosco(presenter.getFileKioscos(getContext(), Integer.parseInt(code),Integer.parseInt(materia),601),  getContext(),  presenter);
+         setFileKiosco(presenter.getFileKioscos(getContext(), idEstudiante,idMateria,idTarea),  getContext(),  presenter);
     }
 
     @Override
@@ -135,6 +137,41 @@ public class ListFileKioscoFragment extends Fragment implements FragmentsMVP.Vie
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void setFileKiosco(FilesKiosco fileKiosco) {
+
+    }
+
+    @Override
+    public void setView(TaskMVP.View view) {
+
+    }
+
+    @Override
+    public List<Task> getTaskSubject(Context context, int idSubject, String token) {
+        return null;
+    }
+
+    @Override
+    public void setInfoStudent(Context context) {
+
+    }
+
+    @Override
+    public void setInfoSubject(Subjects subjects) {
+
+    }
+
+    @Override
+    public void notifyRefresh() {
+
+    }
+
+    @Override
+    public List<FilesKiosco> getFileKioscos(Context context, int parseInt, int parseInt1, int i) {
+        return null;
     }
 
     public interface OnFragmentInteractionListener {

@@ -68,6 +68,8 @@ public class Client {
             }
         }
     }
+
+
     static Retrofit getClient() {
         Gson gson = new GsonBuilder()
                 .setLenient()
@@ -78,7 +80,7 @@ public class Client {
 
         OkHttpClient httpClient = new UnsafeOkHttpClient().getUnsafeOkHttpClient()
                 .newBuilder()
-                .readTimeout(120, TimeUnit.SECONDS)
+                .readTimeout(180, TimeUnit.SECONDS)
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .addInterceptor(logging).build();
 

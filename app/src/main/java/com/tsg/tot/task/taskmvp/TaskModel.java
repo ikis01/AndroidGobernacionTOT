@@ -13,9 +13,11 @@ import com.tsg.tot.sqlite.DbOpenHelper;
 
 import java.util.List;
 
+import dagger.Module;
+
 import static com.tsg.tot.sqlite.DBConstants.API_REPOSITORY;
 import static com.tsg.tot.sqlite.DBConstants.DATABASE_REPOSITORY;
-
+@Module
 public class TaskModel implements TaskMVP.Model {
     DbOpenHelper dbHelper;
     private ApiRepository apiRepository;
@@ -27,6 +29,12 @@ public class TaskModel implements TaskMVP.Model {
     }
 
 
+    @Override
+    public List<FilesKiosco> checkMyFileskioscos(Context context, Integer idEstudiante, Integer idMateria, Integer idTarea) {
+        List<FilesKiosco> filesKioscoList = null;
+        filesKioscoList = databaseRepository.getFileKioscos(context,idEstudiante,idMateria,idTarea);
+        return filesKioscoList;
+    }
 
     @Override
     public List<Student> checkStudents(Context context, int from,Integer idUsuario) {

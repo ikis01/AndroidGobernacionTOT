@@ -58,7 +58,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
 
                     //Waiting time between queries
                     try {
-                        Thread.sleep(1 *1000);
+                        Thread.sleep(25 *1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -113,7 +113,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
                                 context,dialog);
 */
                         try {
-                            Thread.sleep(20 * 1000);
+                            Thread.sleep(12 * 1000);
                            // dialog.setIcon(dialog.getProgress() + 10);
                         } catch (InterruptedException e) {
                             e.printStackTrace();

@@ -9,6 +9,8 @@ import com.tsg.tot.data.model.Task;
 
 import java.util.List;
 
+import dagger.Provides;
+
 public interface TaskMVP {
     interface View {
         void notifyRefresh();
@@ -20,6 +22,7 @@ public interface TaskMVP {
 
         void dismissLoadingDialog();
     }
+
     interface Presenter {
 
 
@@ -36,13 +39,16 @@ public interface TaskMVP {
 
         void notifyRefresh();
 
-        List<FilesKiosco> getFileKioscos(Context context, int parseInt, int parseInt1, int i);
+        List<FilesKiosco> getFileKioscos(Context context, int idEstudiante, int idMateria, int idTarea);
     }
     interface Model {
 
         interface OnFinishedListener {
             void onFailure(Throwable t);
         }
+
+        List<FilesKiosco> checkMyFileskioscos (Context  context, Integer idEstudiante,  Integer idMateria,Integer idTarea);
+
 
         List<Student> checkStudents(Context context, int from,Integer idUsuario);
 

@@ -230,7 +230,7 @@ public class DatabaseRepository implements LocalRepository {
                     int idUploadTask = cursor.getColumnIndex(TASK_UPLOAD_ID);
                     int codeTask = cursor.getColumnIndex(TASK_CODE);
                     int idStudent = cursor.getColumnIndex(TASK_STUDENT_ID);
-
+                    int tareaKiosc = cursor.getColumnIndex(TASK_KIOSCO);
                     //add row to list
                     taskList.add(new Task(
                             Integer.parseInt(cursor.getString(idTask)),
@@ -238,7 +238,8 @@ public class DatabaseRepository implements LocalRepository {
                             cursor.getString(nameTask),
                             cursor.getString(codeTask),
                             Integer.parseInt(cursor.getString(idSubjectTask)),
-                            Integer.parseInt(cursor.getString(idStudent))
+                            Integer.parseInt(cursor.getString(idStudent)),
+                            Integer.parseInt(cursor.getString(tareaKiosc))
                     ));
                 } while (cursor.moveToNext());
             }
@@ -422,7 +423,7 @@ public class DatabaseRepository implements LocalRepository {
             for (LessonsRemote lessons : lessonsRemoteList) {
                 if (checkId(db, LESSONS_TABLE_NAME, LESSONS_ID, lessons.getId().toString()) == 0) {
                     cv.put(LESSONS_ID, lessons.getId());
-                    cv.put(LESSONS_CODIGO, lessons.getIdD2L()); /// consultar dato
+                    cv.put(LESSONS_CODIGO, lessons.getId()); /// consultar dato
                     cv.put(LESSONS_THEME, lessons.getTema());
                     cv.put(LESSONS_SUBJECT_ID, lessons.getMateriaId());
                     cv.put(LESSONS_TEACHER_ID, lessons.getProfesorId());
@@ -1139,9 +1140,9 @@ public class DatabaseRepository implements LocalRepository {
         String query = "SELECT ARCHIVOSKIOSCO.* FROM TAREAS,ARCHIVOSKIOSCO,REL_ESTUDIANTE_MATERIAS" +
                 " WHERE FK_ESTUDIANTE = " + idEstudiante+
                 " AND FK_MATERIA = " + idMateria+
-                " AND ID = " + idTarea +
-                " AND TAREAS.SUBIDA_IDSUBIDA= ARCHIVOSKIOSCO.subida_idsubida" +
-                " AND ARCHIVOSKIOSCO.codigo = ID";
+                " AND TAREAKIOSCO = " + idTarea +
+                " AND TAREAS.SUBIDA_IDSUBIDA = ARCHIVOSKIOSCO.subida_idsubida" +
+                " AND ARCHIVOSKIOSCO.archivoKiosco = tareas.TAREAKIOSCO";
 
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();

@@ -81,8 +81,8 @@ public class TaskPresenter implements TaskMVP.Presenter, TaskMVP.Model.OnFinishe
     }
 
     @Override
-    public List<FilesKiosco> getFileKioscos(Context context, int parseInt, int parseInt1, int i) {
-        return null;
+    public List<FilesKiosco> getFileKioscos(Context context, int idEstudiante, int idMateria, int idTarea) {
+        return model.checkMyFileskioscos ( context,  idEstudiante,  idMateria, idTarea);
     }
 
 

@@ -3,6 +3,7 @@ package com.tsg.tot.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tsg.tot.R;
 import com.tsg.tot.data.model.Task;
+import com.tsg.tot.main.fragment.ListFileKioscoFragment;
 import com.tsg.tot.main.mainmvp.MainMVP;
 import com.tsg.tot.main.mainmvp.MainView;
 import com.tsg.tot.task.TaskDetailActivity;
@@ -90,6 +92,9 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
             intent.putExtra( "holder",String.valueOf(holder.adapterTask));
             intent.putExtra("task_name",taskList.get(position).getNombre());
             intent.putExtra("student_name",((AppCompatTextView)((MainView)context).tv_studentName).getText());
+            intent.putExtra("tareakiosco",taskList.get(position).getTareakiosco());
+            intent.putExtra("idMateria",taskList.get(position).getMaterias());
+            intent.putExtra("idEstudiante",taskList.get(position).getEstudiante());
 
             context.startActivity(intent);
             notifyDataSetChanged();

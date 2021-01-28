@@ -1,9 +1,12 @@
 package com.tsg.tot.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Task {
+public class Task  {
 
     @SerializedName("id")
     @Expose
@@ -24,10 +27,24 @@ public class Task {
     @Expose
     private Integer estudiante;
 
+    @SerializedName("tareakiosco")
+    @Expose
+    private Integer tareakiosco;
+
     /**
      * No args constructor for use in serialization
      */
     public Task() {
+    }
+
+    public Task(Integer id, Upload subida, String nombre, String codigo, Integer materias, Integer estudiante, Integer tareakiosco) {
+        this.id = id;
+        this.subida = subida;
+        this.nombre = nombre;
+        this.codigo = codigo;
+        this.materias = materias;
+        this.estudiante = estudiante;
+        this.tareakiosco = tareakiosco;
     }
 
     /**
@@ -47,6 +64,27 @@ public class Task {
         this.materias = materias;
         this.estudiante = estudiante;
     }
+
+    protected Task(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readInt();
+        }
+        nombre = in.readString();
+        codigo = in.readString();
+        if (in.readByte() == 0) {
+            materias = null;
+        } else {
+            materias = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            estudiante = null;
+        } else {
+            estudiante = in.readInt();
+        }
+    }
+
 
     public Integer getId() {
         return id;
@@ -96,4 +134,11 @@ public class Task {
         this.estudiante = estudiante;
     }
 
+    public Integer getTareakiosco() {
+        return tareakiosco;
+    }
+
+    public void setTareakiosco(Integer tareakiosco) {
+        this.tareakiosco = tareakiosco;
+    }
 }

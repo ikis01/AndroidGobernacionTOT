@@ -33,7 +33,8 @@ import javax.inject.Inject;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.READ_PHONE_STATE;
 
-public class MainView extends AppCompatActivity implements MainMVP.View, ListSubjectFragment.OnFragmentInteractionListener, View.OnClickListener {
+public class MainView extends AppCompatActivity
+        implements MainMVP.View, ListSubjectFragment.OnFragmentInteractionListener, View.OnClickListener {
 
     @Inject
     MainMVP.Presenter presenter;

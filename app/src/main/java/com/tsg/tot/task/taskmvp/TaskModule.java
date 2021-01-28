@@ -6,6 +6,7 @@ import android.content.Context;
 import com.tsg.tot.repository.ApiRepository;
 import com.tsg.tot.repository.DatabaseRepository;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -31,17 +32,20 @@ public class TaskModule {
     }
 
     @Provides
+
     public TaskMVP.Model provideTaskModel(ApiRepository apiRepository, DatabaseRepository databaseRepository) {
         return new TaskModel(apiRepository, databaseRepository);
     }
-
-    @Provides
-    public ApiRepository provideApiRepository() {
-        return new ApiRepository();
-    }
-
-    @Provides
-    public DatabaseRepository provideDatabaseRepository() {
-        return new DatabaseRepository();
-    }
+//
+//    @Provides
+//    @Named("provideTaskApiRepository")
+//    public ApiRepository provideApiRepository() {
+//        return new ApiRepository();
+//    }
+//
+//    @Provides
+//    @Named("provideTaskDatabaseRepository")
+//    public DatabaseRepository provideDatabaseRepository() {
+//        return new DatabaseRepository();
+//    }
 }

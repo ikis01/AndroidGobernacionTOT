@@ -19,13 +19,16 @@ import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.main.fragment.ListFileKioscoFragment;
 import com.tsg.tot.main.fragment.ListSubjectFragment;
 import com.tsg.tot.main.mainmvp.MainMVP;
+import com.tsg.tot.root.App;
 import com.tsg.tot.task.taskmvp.TaskMVP;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class TaskDetailActivity extends AppCompatActivity implements MainMVP.View, ListFileKioscoFragment.OnFragmentInteractionListener,View.OnClickListener {
+public class TaskDetailActivity extends AppCompatActivity
+        implements TaskMVP.View, ListFileKioscoFragment.OnFragmentInteractionListener,View.OnClickListener {
+
     @Inject
     TaskMVP.Presenter presenter;
 
@@ -43,6 +46,7 @@ public class TaskDetailActivity extends AppCompatActivity implements MainMVP.Vie
     protected void onResume(){
 
         super.onResume();
+        presenter.setView(this);
 
        // if (presenter!=null){}
        // presenter.setView((TaskMVP.View) this);
@@ -54,6 +58,12 @@ public class TaskDetailActivity extends AppCompatActivity implements MainMVP.Vie
         String studentName = getIntent().getExtras().getString("student_name");
         String taskName = getIntent().getExtras().getString("task_name");
 
+        Integer idMateria,tareakiosco ,idEstudiante = 0;
+         idMateria = getIntent().getExtras().getInt("idMateria");
+        tareakiosco = getIntent().getExtras().getInt("tareakiosco");
+        idEstudiante = getIntent().getExtras().getInt("idEstudiante");
+
+       ((App) getApplication()).getComponent().injectTask(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
         btn_volver = (Button) findViewById(R.id.btn_volver);
@@ -73,7 +83,7 @@ public class TaskDetailActivity extends AppCompatActivity implements MainMVP.Vie
 
 
         //Init Fragment
-        listFileKioscoFragment = new ListFileKioscoFragment(presenter);
+        listFileKioscoFragment = new ListFileKioscoFragment(presenter,idMateria,tareakiosco ,idEstudiante);
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.contentMaterialTareaList, listFileKioscoFragment);
         fragmentTransaction.commit();
@@ -92,17 +102,27 @@ public class TaskDetailActivity extends AppCompatActivity implements MainMVP.Vie
     }
 
     @Override
+    public void notifyRefresh() {
+
+    }
+
+    @Override
     public void setInfoStudent(List<Student> studentList) {
 
     }
 
     @Override
-    public void setInfoSubject(Subjects subjects) {
+    public void setInfoSubject(Subjects subject) {
 
     }
 
     @Override
-    public void notifyRefresh() {
+    public void notifyRefreh() {
+
+    }
+
+    @Override
+    public void setFileKiosco(FilesKiosco fileKiosco) {
 
     }
 
@@ -113,11 +133,6 @@ public class TaskDetailActivity extends AppCompatActivity implements MainMVP.Vie
 
     @Override
     public void dismissLoadingDialog() {
-
-    }
-
-    @Override
-    public void setFileKiosco(FilesKiosco fileKiosco) {
 
     }
 }

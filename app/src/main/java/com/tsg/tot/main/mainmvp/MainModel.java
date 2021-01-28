@@ -95,6 +95,7 @@ public class MainModel implements MainMVP.Model {
                                List<StudyMaterialRemote> materialRemoteList,
                                List<LessonsRemote> lessonsRemoteList
     )  {
+
         File storageDirMaterialRemote = null;
         File storageDirectoryStudent = null;
         File storageDirTask = null ;

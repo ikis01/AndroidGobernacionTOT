@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tsg.tot.R;
@@ -31,12 +34,13 @@ public class FileKioscoAdapter extends RecyclerView.Adapter<FileKioscoAdapter.Vi
     static class ViewHolder extends RecyclerView.ViewHolder{
         private  TextView nameFile ;
         private  TextView statusFile;
+        private RelativeLayout adapterFileKiosco;
 
         ViewHolder(View itemView){
             super(itemView);
             nameFile = itemView.findViewById(R.id.tv_file_name_kiosco);
             statusFile = itemView.findViewById(R.id.tv_file_estatus_kisoco);
-
+            adapterFileKiosco = itemView.findViewById(R.id.adapterFileKiosco);
         }
     }
     public FileKioscoAdapter() {
@@ -63,6 +67,11 @@ public class FileKioscoAdapter extends RecyclerView.Adapter<FileKioscoAdapter.Vi
     @Override
     public void onBindViewHolder( ViewHolder holder, int position) {
 
+        if (position % 2 == 0) {
+            holder.adapterFileKiosco.setBackgroundColor(Color.parseColor("#FFF1EF"));
+        } else {
+            holder.adapterFileKiosco.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
 
         holder.nameFile.setText(filesKioscoList.get(position).getNombreArchivo());
         holder.statusFile.setText("ARCHIVO TAREA");

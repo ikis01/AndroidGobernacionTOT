@@ -52,7 +52,7 @@ public interface ApiService {
     String GET_SUBMISSIONS = "api/entregas";
 
     String GET_STUDENT = "api/estudiantes";
-    String GET_MY_STUDENT = "api/Estudiantes/miidentificacion";
+    String GET_MY_STUDENT = "api/estudiantes/miidentificacion";
 
     String GET_EVALUATIONS = "api/gobernacion/cursos/evaluaciones";
     String GET_STUDY_MATERIAL = "api/materialestudio";

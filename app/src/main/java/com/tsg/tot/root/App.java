@@ -3,6 +3,7 @@ package com.tsg.tot.root;
 import android.app.Application;
 
 import com.tsg.tot.main.mainmvp.MainModule;
+import com.tsg.tot.task.taskmvp.TaskModule;
 
 public class App extends Application {
 
@@ -15,6 +16,7 @@ public class App extends Application {
         component = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this))
                 .mainModule(new MainModule(this))
+                .taskModule(new TaskModule(this))
                 .build();
     }
 
