@@ -14,6 +14,11 @@ public class TaskRemote {
     @SerializedName("nombreArchivo")
     @Expose
     private String nombreArchivo;
+
+    @SerializedName("idD2L")
+    @Expose
+    private Integer idD2L;
+
     @SerializedName("idArchivoD2L")
     @Expose
     private Integer idArchivoD2L;
@@ -21,13 +26,16 @@ public class TaskRemote {
     @Expose
     private String fechaDescarga;
     @SerializedName("materiaId")
-
     @Expose
     private Integer materiaId;
 
     @SerializedName("file")
     @Expose
     private FileTaskRemote file;
+
+    @SerializedName("materia")
+    @Expose
+    private SubjectsRemote materia;
 
     private Long idSubida ;
 
@@ -93,5 +101,21 @@ public class TaskRemote {
 
     public void setFile(FileTaskRemote file) {
         this.file = file;
+    }
+
+    public Integer getIdD2L() {
+        return idD2L;
+    }
+
+    public void setIdD2L(Integer idD2L) {
+        this.idD2L = idD2L;
+    }
+
+    public SubjectsRemote getMateria() {
+        return materia;
+    }
+
+    public void setMateria(SubjectsRemote materia) {
+        this.materia = materia;
     }
 }

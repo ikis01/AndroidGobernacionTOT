@@ -118,8 +118,10 @@ public class MainModel implements MainMVP.Model {
             if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
                 //RUNTIME PERMISSION Android M
                 if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    storageDirectoryStudent = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Data", studentRemote.getNombre().replace(" ", "") + studentRemote.getId());
-                    storageDirectoryStudent.mkdir();
+                    storageDirectoryStudent = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Data", studentRemote.getNombre().replace(" ", "") + studentRemote.getIdD2L());
+                    if(!storageDirectoryStudent.exists()){
+                        storageDirectoryStudent.mkdir();
+                    }
                 } else {
                     // requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
                 }
@@ -136,7 +138,7 @@ public class MainModel implements MainMVP.Model {
                     //RUNTIME PERMISSION Android M
                     if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                         //storageDirMaterialRemote = new File(storageDirectoryStudent.getPath(), material.getIdD2L()+"BLOB");
-                        storageDirTask = new File(storageDirectoryStudent.getPath(), taskRemote.getTareaId()+"BLOB");
+                        storageDirTask = new File(storageDirectoryStudent.getPath(), taskRemote.getIdD2L()+"BLOB");
 
                         if (!storageDirTask.exists()){
                             storageDirTask.mkdir();
@@ -158,6 +160,7 @@ public class MainModel implements MainMVP.Model {
                                 upload.setEstudiante_idEstudiante(studentRemote.getId());
                                 Long id = databaseRepository.updateMyUpload(upload,context);
                                 taskRemote.setIdSubida(id);
+                                taskRemote.setMateriaId(taskRemote.getMateria().getId());
                                 taskRemoteListAux.add(taskRemote);
                                 filesKiosco.setArchivoKiosco(taskRemote.getFile().getId());
                                 filesKiosco.setCodigo(taskRemote.getTareaId().toString());
@@ -195,18 +198,11 @@ public class MainModel implements MainMVP.Model {
                         //storageDirMaterialRemote = new File(storageDirectoryStudent.getPath(), material.getIdD2L()+"BLOB");
                         storageDirMaterialRemote = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+"/Data", material.getIdD2L()+"BLOB");
 
-                       if (storageDirMaterialRemote.exists()){
-                           String pathMaterial = null;
-                           pathMaterial = Download (material.getUrl(),storageDirMaterialRemote,material.getNombreArchivo(),"Material_");
-                             if (pathMaterial !=null){
-                                 material.setRuta(pathMaterial);
-                                 materialSList.add(material);
-                             }
-                             ///// INSERTAR MATERIAL DE ESTUDIO
+                        if (!storageDirMaterialRemote.exists()){
+                            storageDirMaterialRemote.mkdir();
+                        }
 
 
-                        }else {
-                           storageDirMaterialRemote.mkdir();
                            String pathMaterial = null;
                            pathMaterial = Download (material.getUrl(),storageDirMaterialRemote,material.getNombreArchivo(),"Material_");
                            if (pathMaterial !=null){
@@ -216,7 +212,7 @@ public class MainModel implements MainMVP.Model {
                            ///// INSERTAR MATERIAL DE ESTUDIO
 
 
-                       }
+
 
 
                     }

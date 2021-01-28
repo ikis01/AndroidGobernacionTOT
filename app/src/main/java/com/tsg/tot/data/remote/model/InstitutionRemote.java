@@ -13,13 +13,14 @@ public class InstitutionRemote {
     @Expose
     private String nombre;
 
-    @SerializedName("webURL")
+    @SerializedName("url")
     @Expose
-    private String webURL;
+    private String url;
 
-    @SerializedName("direccion")
+    @SerializedName("idD2L")
     @Expose
-    private String direccion;
+    private String idD2L;
+
 
 
     public Integer getId() {
@@ -38,19 +39,19 @@ public class InstitutionRemote {
         this.nombre = nombre;
     }
 
-    public String getWebURL() {
-        return webURL;
+    public String getUrl() {
+        return url;
     }
 
-    public void setWebURL(String webURL) {
-        this.webURL = webURL;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public String getDireccion() {
-        return direccion;
+    public String getIdD2L() {
+        return idD2L;
     }
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
+    public void setIdD2L(String idD2L) {
+        this.idD2L = idD2L;
     }
 }

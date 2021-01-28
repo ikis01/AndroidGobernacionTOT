@@ -122,6 +122,10 @@ public final class DBConstants {
     public static final String SUBJECTS_SUBTITLE = "Subtitulo";
     public static final String SUBJECTS_TITLE = "Titulo";
     public static final String SUBJECTS_TEACHER_ID = "Profesor_idProfesor";
+    public static final String SUBJECTS_INSTITUTE = "idInstitucion";
+
+
+
 
 
     /**

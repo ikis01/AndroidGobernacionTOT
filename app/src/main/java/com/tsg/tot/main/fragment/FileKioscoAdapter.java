@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tsg.tot.R;
-import com.tsg.tot.main.fragment.dummy.DummyContent.DummyItem;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.main.mainmvp.MainMVP;
 import com.tsg.tot.task.taskmvp.TaskMVP;
@@ -18,7 +17,6 @@ import com.tsg.tot.task.taskmvp.TaskMVP;
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class FileKioscoAdapter extends RecyclerView.Adapter<FileKioscoAdapter.ViewHolder> {

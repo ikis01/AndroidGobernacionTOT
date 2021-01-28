@@ -21,7 +21,7 @@ import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.main.fragment.CustomProgressDialog;
 import com.tsg.tot.main.fragment.InformationFragment;
-import com.tsg.tot.main.fragment.ListFileKioscoFragment;
+
 import com.tsg.tot.main.fragment.ListSubjectFragment;
 import com.tsg.tot.root.App;
 import com.tsg.tot.task.taskmvp.TaskMVP;
@@ -39,11 +39,9 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
     MainMVP.Presenter presenter;
 
     //TaskMVP.Presenter presenterTask;
-    ListFileKioscoFragment listFileKioscoFragment;
     ListSubjectFragment listSubjectFragment;
     InformationFragment informationFragment;
     FragmentTransaction fragmentTransaction;
-    ListFileKioscoFragment listFileKioscFragment;
 
     public TextView tv_studentCode, tv_studentName, tv_institutionName,
             tv_location, tv_pendingTask;
@@ -78,7 +76,6 @@ public class MainView extends AppCompatActivity implements MainMVP.View, ListSub
 
         //Init Fragment
         listSubjectFragment = new ListSubjectFragment(presenter);
-      //  listFileKioscoFragment = new ListFileKioscoFragment(presenterTask);
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.contentList, listSubjectFragment);
         fragmentTransaction.commit();

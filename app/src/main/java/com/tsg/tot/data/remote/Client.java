@@ -78,7 +78,7 @@ public class Client {
 
         OkHttpClient httpClient = new UnsafeOkHttpClient().getUnsafeOkHttpClient()
                 .newBuilder()
-                .readTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(120, TimeUnit.SECONDS)
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .addInterceptor(logging).build();
 

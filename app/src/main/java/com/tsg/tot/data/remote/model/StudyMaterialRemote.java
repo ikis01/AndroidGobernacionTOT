@@ -25,13 +25,12 @@ public class StudyMaterialRemote {
     @Expose
     private String idD2L;
 
-    @SerializedName("claseId")
-    @Expose
     private String claseId;
 
     @SerializedName("url")
     @Expose
     private String url;
+
 
     private String ruta ;
 

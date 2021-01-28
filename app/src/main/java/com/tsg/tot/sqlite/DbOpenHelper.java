@@ -95,6 +95,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             "`Imagen` TEXT, " +
             "`Subtitulo` TEXT, " +
             "`Titulo` TEXT, " +
+            "`idInstitucion` INTEGER," +
             "`Profesor_idProfesor` INTEGER" +
             //"`Cursos_idCursos` INTEGER, " +
             ")";

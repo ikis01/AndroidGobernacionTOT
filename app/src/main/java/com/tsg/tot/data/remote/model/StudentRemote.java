@@ -9,6 +9,7 @@ public class StudentRemote {
     @Expose
     private Integer id;
 
+
     @SerializedName("nombre")
     @Expose
     private String nombre;
@@ -20,6 +21,10 @@ public class StudentRemote {
     @SerializedName("fecha_nacimiento")
     @Expose
     private String fecha_nacimiento;
+
+    @SerializedName("idD2L")
+    @Expose
+    private Integer idD2L;
 
     @SerializedName("gradoId")
     @Expose
@@ -76,5 +81,13 @@ public class StudentRemote {
 
     public void setInstitucionId(Integer institucionId) {
         this.institucionId = institucionId;
+    }
+
+    public Integer getIdD2L() {
+        return idD2L;
+    }
+
+    public void setIdD2L(Integer idD2L) {
+        this.idD2L = idD2L;
     }
 }

@@ -1,7 +1,6 @@
 package com.tsg.tot.main.mainmvp;
 
 import android.content.Context;
-import android.media.session.MediaSession;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -9,18 +8,10 @@ import androidx.annotation.Nullable;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
-import com.tsg.tot.data.model.TokenCustom;
-import com.tsg.tot.data.remote.model.GradeRemote;
-import com.tsg.tot.data.remote.model.StudentRemote;
-import com.tsg.tot.data.remote.model.SubjectsRemote;
-import com.tsg.tot.data.remote.model.TaskRemote;
-import com.tsg.tot.data.remote.model.TeacherRemote;
 import com.tsg.tot.main.fragment.CustomProgressDialog;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import kotlin.reflect.TypeOfKt;
 
 import static com.tsg.tot.sqlite.DBConstants.API_REPOSITORY;
 import static com.tsg.tot.sqlite.DBConstants.DATABASE_REPOSITORY;
@@ -67,7 +58,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
 
                     //Waiting time between queries
                     try {
-                        Thread.sleep(15 * 1000);
+                        Thread.sleep(1 *1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -122,7 +113,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
                                 context,dialog);
 */
                         try {
-                            Thread.sleep(25 * 1000);
+                            Thread.sleep(20 * 1000);
                            // dialog.setIcon(dialog.getProgress() + 10);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -235,7 +226,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
                         context, dialog);
 
                 try {
-                    Thread.sleep(15 * 1000);
+                    Thread.sleep(20 * 1000);
                     dialog.setProgress(dialog.getProgress() + 10);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

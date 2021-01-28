@@ -346,7 +346,7 @@ public class DatabaseRepository implements LocalRepository {
                 cv.put(INFO_GRADE_INSTITUCION, grade.getInstitucion().getNombre());
                 cv.put(INFO_GRADE_NOMBRE, grade.getNombre());
                 cv.put(INFO_GRADE_ESTUDIANTE_IDESTUDIANTE, student.getId());
-                cv.put(INFO_GRADE_UBICACIONINSTITUCION, grade.getInstitucion().getDireccion());
+                //cv.put(INFO_GRADE_UBICACIONINSTITUCION, grade.getInstitucion().getDireccion());
                 db.insert(INFO_GRADE_TABLE_NAME, null, cv);
             }
             //}
@@ -368,6 +368,7 @@ public class DatabaseRepository implements LocalRepository {
                 cv.put(STUDENT_APELLIDOS, studentRemote.getApellidos());
                 cv.put(STUDENT_EDAD, studentRemote.getFecha_nacimiento());
                 cv.put(STUDENT_NOMBRES, studentRemote.getNombre());
+                cv.put(STUDENTS_CODE, studentRemote.getIdD2L());
                 cv.put(STUDENT_FK_USUARIO, idUsuario);
                 db.insert(STUDENT_TABLE_NAME, null, cv);
             }
@@ -390,7 +391,7 @@ public class DatabaseRepository implements LocalRepository {
             if (taskList != null) {
                 for (TaskRemote task : taskList) {
                     if (checkId(db, TASK_TABLE_NAME, TASK_KIOSCO, task.getTareaId().toString()) == 0) {
-                        cv.put(TASK_ID, task.getTareaId());
+                        cv.put(TASK_ID, task.getIdD2L());
                         cv.put(TASK_CODE, task.getIdArchivoD2L());
                         cv.put(TASK_NAME, task.getNombreActividad());
                         cv.put(TASK_REGISTER, regist);
@@ -421,7 +422,7 @@ public class DatabaseRepository implements LocalRepository {
             for (LessonsRemote lessons : lessonsRemoteList) {
                 if (checkId(db, LESSONS_TABLE_NAME, LESSONS_ID, lessons.getId().toString()) == 0) {
                     cv.put(LESSONS_ID, lessons.getId());
-                    cv.put(LESSONS_CODIGO, lessons.getId()); /// consultar dato
+                    cv.put(LESSONS_CODIGO, lessons.getIdD2L()); /// consultar dato
                     cv.put(LESSONS_THEME, lessons.getTema());
                     cv.put(LESSONS_SUBJECT_ID, lessons.getMateriaId());
                     cv.put(LESSONS_TEACHER_ID, lessons.getProfesorId());
@@ -715,9 +716,10 @@ public class DatabaseRepository implements LocalRepository {
             for (SubjectsRemote subjects : subjectsList) {
                 if (checkId(db, SUBJECTS_TABLE_NAME, SUBJECTS_ID, subjects.getId().toString()) == 0) {
                     cv.put(SUBJECTS_ID, subjects.getId());
-                    cv.put(SUBJECTS_CODE, subjects.getSubtitulo());
+                    cv.put(SUBJECTS_CODE, subjects.getIdD2L());
                     cv.put(SUBJECTS_DESCRIPTION, subjects.getDescripcion());
                     cv.put(SUBJECTS_SUBTITLE, subjects.getSubtitulo());
+                    cv.put(SUBJECTS_INSTITUTE, subjects.getInstitucionId());
                     cv.put(SUBJECTS_TITLE, subjects.getTitulo());
                     cv.put(SUBJECTS_TEACHER_ID, subjects.getProfesorId());
 

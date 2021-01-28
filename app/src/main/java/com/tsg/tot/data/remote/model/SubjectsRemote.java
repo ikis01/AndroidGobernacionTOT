@@ -21,6 +21,10 @@ public class SubjectsRemote {
     @Expose
     private String descripcion;
 
+    @SerializedName("idD2L")
+    @Expose
+    private Integer idD2L;
+
     @SerializedName("institucionId")
     @Expose
     private String institucionId;
@@ -75,5 +79,13 @@ public class SubjectsRemote {
 
     public void setProfesorId(Integer profesorId) {
         this.profesorId = profesorId;
+    }
+
+    public Integer getIdD2L() {
+        return idD2L;
+    }
+
+    public void setIdD2L(Integer idD2L) {
+        this.idD2L = idD2L;
     }
 }
