@@ -1,5 +1,7 @@
 package com.tsg.tot.data.remote;
 
+import android.content.Context;
+
 public class ApiUtils {
 
     private ApiUtils() {
@@ -15,7 +17,7 @@ public class ApiUtils {
     //static final String BASE_URL = "http://192.168.1.134";
     static final String BASE_URL = "http://192.168.1.73:6104";
     //static final String PORT_URL = "6104";
-    public static ApiService getAPIService() {
+    public static ApiService getAPIService( ) {
         return Client.getClient().create(ApiService.class);
     }
 }

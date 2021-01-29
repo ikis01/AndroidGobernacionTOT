@@ -1,5 +1,7 @@
 package com.tsg.tot.data.remote;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -82,7 +84,9 @@ public class Client {
                 .newBuilder()
                 .readTimeout(180, TimeUnit.SECONDS)
                 .connectTimeout(60, TimeUnit.SECONDS)
-                .addInterceptor(logging).build();
+                .addInterceptor(logging)
+               // .addInterceptor(new  NetworkConnectionInterceptor())
+                .build();
 
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
