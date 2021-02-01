@@ -3,6 +3,7 @@ package com.tsg.tot.task.taskmvp;
 import android.content.Context;
 
 import com.tsg.tot.data.model.FilesKiosco;
+import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
@@ -34,6 +35,13 @@ public class TaskModel implements TaskMVP.Model {
         List<FilesKiosco> filesKioscoList = null;
         filesKioscoList = databaseRepository.getFileKioscos(context,idEstudiante,idMateria,idTarea);
         return filesKioscoList;
+    }
+
+    @Override
+    public    List<Lessons> checkMyLessons (Context context, Integer idEstudiante,Integer idMateria){
+        List<Lessons> lessonsList = null;
+        lessonsList = databaseRepository.getLessons(context,idEstudiante,idMateria);
+        return lessonsList;
     }
 
     @Override
@@ -72,6 +80,9 @@ public class TaskModel implements TaskMVP.Model {
 
         return taskList;
     }
+
+
+
 
 
 

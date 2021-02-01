@@ -3,6 +3,7 @@ package com.tsg.tot.main.fragment;
 import android.content.Context;
 
 import com.tsg.tot.data.model.FilesKiosco;
+import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.main.mainmvp.MainMVP;
@@ -17,5 +18,6 @@ public interface FragmentsMVP {
 
         void setTaskSubjects(List<Task> taskSubjects, Context context, MainMVP.Presenter presenter);
         void setFileKiosco(List<FilesKiosco> taskSubjects, Context context, TaskMVP.Presenter presenter);
+        void setLessons(List<Lessons> taskSubjects, Context context, TaskMVP.Presenter presenter);
     }
 }

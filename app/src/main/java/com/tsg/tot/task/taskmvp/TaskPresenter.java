@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.tsg.tot.data.model.FilesKiosco;
+import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
 
@@ -14,7 +15,7 @@ import java.util.List;
 
 import static com.tsg.tot.sqlite.DBConstants.DATABASE_REPOSITORY;
 
-public class TaskPresenter implements TaskMVP.Presenter, TaskMVP.Model.OnFinishedListener {
+public  class TaskPresenter implements TaskMVP.Presenter, TaskMVP.Model.OnFinishedListener {
 
     @Nullable
     private TaskMVP.View view;
@@ -22,6 +23,11 @@ public class TaskPresenter implements TaskMVP.Presenter, TaskMVP.Model.OnFinishe
 
     public TaskPresenter(TaskMVP.Model model) {
        this.model = model ;
+    }
+
+    @Override
+    public void setLessons(Lessons lessons) {
+
     }
 
     @Override
@@ -83,6 +89,11 @@ public class TaskPresenter implements TaskMVP.Presenter, TaskMVP.Model.OnFinishe
     @Override
     public List<FilesKiosco> getFileKioscos(Context context, int idEstudiante, int idMateria, int idTarea) {
         return model.checkMyFileskioscos ( context,  idEstudiante,  idMateria, idTarea);
+    }
+
+    @Override
+    public List<Lessons> getLessons(Context context, int idEstudiante, int idMateria){
+        return model.checkMyLessons (context,idEstudiante,idMateria);
     }
 
 

@@ -1,39 +1,28 @@
 package com.tsg.tot.main.fragment;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.tsg.tot.R;
-import com.tsg.tot.adapter.TasksAdapter;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.main.mainmvp.MainMVP;
-import com.tsg.tot.main.mainmvp.MainPresenter;
-import com.tsg.tot.main.mainmvp.MainView;
-import com.tsg.tot.subject.DetailSubjectActivity;
+import com.tsg.tot.storage.TOTPreferences;
 import com.tsg.tot.task.taskmvp.TaskMVP;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.InputStream;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -41,18 +30,17 @@ import javax.inject.Inject;
 /**
  * A fragment representing a list of Items.
  */
-public class ListFileKioscoFragment extends Fragment implements
-        TaskMVP.Presenter ,FragmentsMVP.View{
-    private ListFileKioscoFragment.OnFragmentInteractionListener mListener;
+public class ListLessonsFragment extends Fragment implements
+        TaskMVP.Presenter ,FragmentsMVP.View {
+    private ListLessonsFragment.OnFragmentInteractionListener mListener;
 
     RecyclerView recyclerList;
-    FileKioscoAdapter fileKioscoAdapter;
+
+    LessonsAdapter lessonsAdapter;
     Integer idMateria = 0;
-    Integer idTarea = 0;
-    Integer idEstudiante = 0;
 
     //@Inject
-   // MainMVP.Presenter presenter;
+    // MainMVP.Presenter presenter;
 
     @Inject
     TaskMVP.Presenter presenter;
@@ -63,10 +51,11 @@ public class ListFileKioscoFragment extends Fragment implements
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ListFileKioscoFragment(TaskMVP.Presenter presenter,Integer idMateria,Integer idTarea,Integer idEstudiante) {
+
+
+    public ListLessonsFragment(TaskMVP.Presenter presenter, Integer idMateria) {
         this.presenter = presenter;
-        this.idEstudiante = idEstudiante;
-        this.idTarea= idTarea;
+
         this.idMateria = idMateria;
     }
 
@@ -83,14 +72,14 @@ public class ListFileKioscoFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_fie_kiosco, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_lessons, container, false);
 
-        recyclerList = view.findViewById(R.id.recyclerFileKiosco);
+        recyclerList = view.findViewById(R.id.recyclerLessons);
         recyclerList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerList.setLayoutManager(linearLayoutManager);
-        fileKioscoAdapter = new FileKioscoAdapter();
-        recyclerList.setAdapter(fileKioscoAdapter);
+        lessonsAdapter = new LessonsAdapter();
+        recyclerList.setAdapter(lessonsAdapter);
 
         return view;
     }
@@ -109,31 +98,27 @@ public class ListFileKioscoFragment extends Fragment implements
     @Override
     public void setFileKiosco(List<FilesKiosco> filesKioscoList, Context context, TaskMVP.Presenter presenter) {
 
-        fileKioscoAdapter.dataSet(filesKioscoList,filesKioscoList.size(),context,presenter);
-
     }
 
     @Override
-    public void setLessons(List<Lessons> taskSubjects, Context context, TaskMVP.Presenter presenter) {
-
+    public void setLessons(List<Lessons> lessonsList, Context context, TaskMVP.Presenter presenter) {
+        lessonsAdapter.dataSet(lessonsList,lessonsList.size(),context,presenter);
     }
 
 
     @Override
     public void onResume() {
 
-
-
-        Integer intCode = 0;
         super.onResume();
-        setFileKiosco(presenter.getFileKioscos(getContext(), idEstudiante,idMateria,idTarea),  getContext(),  presenter);
+        Integer idEstudianteI = Integer.parseInt(TOTPreferences.getInstance(getContext()).getIdUsuario());
+        setLessons(presenter.getLessons(getContext(),idEstudianteI,idMateria),getContext(),presenter);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof ListFileKioscoFragment.OnFragmentInteractionListener) {
-            mListener = (ListFileKioscoFragment.OnFragmentInteractionListener) context;
+        if (context instanceof ListLessonsFragment.OnFragmentInteractionListener) {
+            mListener = (ListLessonsFragment.OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -200,7 +185,5 @@ public class ListFileKioscoFragment extends Fragment implements
         super.onActivityCreated(savedInstanceState);
 
     }
-
-
 
 }

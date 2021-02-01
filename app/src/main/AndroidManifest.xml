@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
 
+
     <application
         android:name=".root.App"
         android:allowBackup="true"
@@ -22,7 +23,8 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:allowClearUserData="true">
 
         <provider
             android:name="androidx.core.content.FileProvider"

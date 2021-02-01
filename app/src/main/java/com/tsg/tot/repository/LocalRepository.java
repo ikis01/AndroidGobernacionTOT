@@ -146,4 +146,5 @@ public interface LocalRepository {
     List<LessonsRemote> getLessons(Context context, Integer idEstudiante);
     List<StudyMaterialRemote> getStudyMaterial(Context context,Integer idLesson);
     List<Task> getTasks(Context context, Integer idEstudiante);
+    List<Lessons>getLessons(Context context, Integer idEstudiante,Integer idMateria);
 }

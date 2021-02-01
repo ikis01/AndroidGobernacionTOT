@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -31,9 +32,15 @@ import com.tsg.tot.main.mainmvp.MainView;
 import com.tsg.tot.repository.ApiRepository;
 import com.tsg.tot.repository.DatabaseRepository;
 import com.tsg.tot.root.App;
+import com.tsg.tot.storage.TOTPreferences;
 import com.tsg.tot.utils.UtilsTot;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -62,14 +69,17 @@ public class LoginActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                .permitNetwork().build());
 
+        boolean conectado = ejecutaCliente();
         setContentView(R.layout.activity_login);
 
 
 
         tv_estatus_kiosko = (TextView) findViewById(R.id.tv_estatus_kiosko);
 
-        if (client.isClientOnline()){
+        if (conectado){
             tv_estatus_kiosko.setText("ONLINE");
             //Toast.makeText(this,"Kiosko Online ",Toast.LENGTH_LONG).show();
         }
@@ -150,7 +160,7 @@ public class LoginActivity extends AppCompatActivity {
                            // intent.putExtra("token", tokenCustom.getToken());
                             intent.putExtra("token", "Bearer "+ token.body().getToken());
                             intent.putExtra("idUsuario",idUsuario.toString());
-
+                            TOTPreferences.getInstance(view.getContext()).setIdUsuario(idUsuario.toString());
                             view.getContext().startActivity(intent);
 
                             //// token de authenticacion para todos los servicios
@@ -234,6 +244,30 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
+    }
+
+
+    private boolean ejecutaCliente(){
+        String ip = ApiUtils.BASE_URL;
+        String puerto = ApiUtils.PORT_URL;
+        //log(" socket " + ip + " " + puerto);
+        try{
+            Socket sk = new Socket(ip,Integer.parseInt(puerto));
+
+            BufferedReader entrada = new BufferedReader(new
+                    InputStreamReader(sk.getInputStream()));
+            PrintWriter salida = new PrintWriter(
+                    new OutputStreamWriter(sk.getOutputStream()),true);
+            //log("enviando ... Hola Mundo!");
+            salida.println("Hola mundo");
+           // log("recibiendo ... " + entrada.readLine());
+            sk.close();
+            return true;
+        }
+        catch (Exception e){
+           // log("error: " + e.toString());
+            return false;
+        }
     }
 
 }

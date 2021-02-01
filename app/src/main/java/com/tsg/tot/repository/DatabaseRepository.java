@@ -625,7 +625,7 @@ public class DatabaseRepository implements LocalRepository {
             for (StudyMaterialRemote studyMaterial : studyMaterialList) {
                 if (checkId(db, STUDYMATERIAL_TABLE_NAME, STUDYMATERIAL_ID, studyMaterial.getId().toString()) == 0) {
                     cv.put(STUDYMATERIAL_ID, studyMaterial.getId());
-                    cv.put(STUDYMATERIAL_DESCRIPTION, studyMaterial.getId());
+                    cv.put(STUDYMATERIAL_DESCRIPTION, studyMaterial.getDescripcion());
                     cv.put(STUDYMATERIAL_NAME, studyMaterial.getTema());
                     cv.put(STUDYMATERIAL_NAME_FILE, studyMaterial.getNombreArchivo());
                     cv.put(STUDYMATERIAL_PATH, studyMaterial.getRuta());
@@ -1129,6 +1129,44 @@ public class DatabaseRepository implements LocalRepository {
         db.close();
         dbHelper.close();
         return taskList;
+    }
+
+    @Override
+    public List<Lessons>getLessons(Context context, Integer idEstudiante,Integer idMateria){
+        List<Lessons> lessonsList = new ArrayList<>();
+
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String query = "SELECT "+ LESSONS_TABLE_NAME +".* FROM  "+LESSONS_TABLE_NAME+" ," + REL_STUDENT_SUBJECT_TABLE_NAME +
+                " WHERE "+ LESSONS_SUBJECT_ID +" = " + idMateria+
+                " AND " + REL_STUDENT_SUBJECT_FK_STUDENT +" = " + idEstudiante +
+                " AND " + REL_STUDENT_SUBECT_FK_SUBJECT +" = " + LESSONS_SUBJECT_ID;
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        try {
+            if (cursor.getCount() > 0) {
+                do {
+                    //add row to list
+                    lessonsList.add(new Lessons(
+                            Integer.parseInt(cursor.getString(cursor.getColumnIndex(LESSONS_ID))),
+                            cursor.getString(cursor.getColumnIndex(LESSONS_NAME)),
+                            cursor.getString(cursor.getColumnIndex(LESSONS_THEME)),
+                            cursor.getString(cursor.getColumnIndex(LESSONS_INIT_DATE)),
+                            Integer.parseInt(cursor.getString(cursor.getColumnIndex(LESSONS_SUBJECT_ID))),
+                            Integer.parseInt(cursor.getString(cursor.getColumnIndex(LESSONS_TEACHER_ID))==null?"0":cursor.getString(cursor.getColumnIndex(LESSONS_TEACHER_ID)))
+                    ));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+
+        db.close();
+        dbHelper.close();
+        return lessonsList;
+
+
     }
 
     @Override

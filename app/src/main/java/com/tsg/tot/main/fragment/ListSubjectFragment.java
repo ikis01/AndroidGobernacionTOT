@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tsg.tot.R;
 import com.tsg.tot.adapter.SubjectsAdapter;
 import com.tsg.tot.data.model.FilesKiosco;
+import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.main.mainmvp.MainMVP;
@@ -111,6 +112,11 @@ public class  ListSubjectFragment extends Fragment implements FragmentsMVP.View 
 
     @Override
     public void setFileKiosco(List<FilesKiosco> taskSubjects, Context context, TaskMVP.Presenter presenter) {
+
+    }
+
+    @Override
+    public void setLessons(List<Lessons> taskSubjects, Context context, TaskMVP.Presenter presenter) {
 
     }
 

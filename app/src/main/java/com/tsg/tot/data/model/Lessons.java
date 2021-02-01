@@ -71,4 +71,17 @@ public class Lessons {
     public void setProfesor(Integer profesor) {
         this.profesor = profesor;
     }
+
+    public Lessons(Integer id, String nombre, String tema, String fechaInicio, Integer materias, Integer profesor) {
+        this.id = id;
+        this.nombre = nombre;
+        this.tema = tema;
+        this.fechaInicio = fechaInicio;
+        this.materias = materias;
+        this.profesor = profesor;
+    }
+
+    public Lessons() {
+
+    }
 }

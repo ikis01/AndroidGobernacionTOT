@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.tsg.tot.R;
 import com.tsg.tot.data.model.FilesKiosco;
+import com.tsg.tot.data.remote.ApiUtils;
 import com.tsg.tot.main.mainmvp.MainMVP;
 import com.tsg.tot.task.TaskDetailActivity;
 import com.tsg.tot.task.taskmvp.TaskMVP;
@@ -98,15 +99,9 @@ public class FileKioscoAdapter extends RecyclerView.Adapter<FileKioscoAdapter.Vi
             presenter.setFileKiosco(filesKiosco);
             notifyDataSetChanged();
 
-//            TableRow tablerow = (TableRow) view;
-//            TextView sample = (TextView) tablerow.getChildAt(1);
-            String result = "archivo";//sample.getText().toString();
-
             File newFile = new File(filesKioscoList.get(position).getRuta());
-            //File filePaths = new File(context.getFilesDir().toString());
-            //File newFile = new File(filePaths, result);
             Uri contentUri = getUriForFile(context.getApplicationContext(), "com.mydomain.fileprovider", newFile);
-            openFile(contentUri);
+            ApiUtils.openFile(contentUri,context);
 
         });
     }
@@ -116,12 +111,12 @@ public class FileKioscoAdapter extends RecyclerView.Adapter<FileKioscoAdapter.Vi
         return size;
     }
 
-    private void openFile(Uri uri){
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(uri);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
-    }
+//    private void openFile(Uri uri){
+//        Intent intent = new Intent(Intent.ACTION_VIEW);
+//        intent.setData(uri);
+//        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
+//        context.startActivity(intent);
+//    }
 
 
 }

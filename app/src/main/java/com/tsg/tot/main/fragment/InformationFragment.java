@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tsg.tot.R;
 import com.tsg.tot.adapter.TasksAdapter;
 import com.tsg.tot.data.model.FilesKiosco;
+import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.main.mainmvp.MainMVP;
@@ -108,7 +109,6 @@ public class InformationFragment extends Fragment implements FragmentsMVP.View{
             intent.putExtra("titleSubject",subjects.getTitulo());
             intent.putExtra("student_name",((AppCompatTextView)((MainView)getContext()).tv_studentName).getText());
 
-
             getContext().startActivity(intent);
 
 
@@ -153,6 +153,10 @@ public class InformationFragment extends Fragment implements FragmentsMVP.View{
 
     }
 
+    @Override
+    public void setLessons(List<Lessons> taskSubjects, Context context, TaskMVP.Presenter presenter) {
+
+    }
 
 
     public interface OnFragmentInteractionListener {
