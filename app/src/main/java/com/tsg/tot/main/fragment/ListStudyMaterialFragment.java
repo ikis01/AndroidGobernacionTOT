@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tsg.tot.R;
-import com.tsg.tot.adapter.StudyMaterialRecyclerAdapter;
+import com.tsg.tot.adapter.StudyMaterialAdapter;
 import com.tsg.tot.main.fragment.dummy.DummyContent;
 
 /**
@@ -66,7 +66,7 @@ public class ListStudyMaterialFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new StudyMaterialRecyclerAdapter(DummyContent.ITEMS));
+            recyclerView.setAdapter(new StudyMaterialAdapter(DummyContent.ITEMS));
         }
         return view;
     }

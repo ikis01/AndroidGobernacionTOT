@@ -16,11 +16,11 @@ import java.util.List;
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class StudyMaterialRecyclerAdapter extends RecyclerView.Adapter<StudyMaterialRecyclerAdapter.ViewHolder> {
+public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdapter.ViewHolder> {
 
     private final List<DummyItem> mValues;
 
-    public StudyMaterialRecyclerAdapter(List<DummyItem> items) {
+    public StudyMaterialAdapter(List<DummyItem> items) {
         mValues = items;
     }
 
