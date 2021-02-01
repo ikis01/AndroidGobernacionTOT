@@ -170,5 +170,7 @@ public class InformationFragment extends Fragment implements FragmentsMVP.View{
         void onFragmentInteraction(Uri uri);
     }
 
+    public InformationFragment() {
 
+    }
 }

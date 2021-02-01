@@ -169,17 +169,25 @@ implements TaskMVP.Presenter , FragmentsMVP.View {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof ListStudyMaterialFragment.OnFragmentInteractionListener) {
+/*        if (context instanceof ListStudyMaterialFragment.OnFragmentInteractionListener) {
             mListener = (ListStudyMaterialFragment.OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
-        }
+        }*/
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public ListStudyMaterialFragment() {
+
+    }
+
+    public ListStudyMaterialFragment(TaskMVP.Presenter presenter) {
+        this.presenter = presenter;
     }
 }

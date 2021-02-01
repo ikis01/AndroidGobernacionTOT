@@ -1,6 +1,7 @@
 package com.tsg.tot.adapter;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 
 import com.tsg.tot.R;
 import com.tsg.tot.data.model.Lessons;
+import com.tsg.tot.main.fragment.ListStudyMaterialFragment;
+import com.tsg.tot.storage.TOTPreferences;
 import com.tsg.tot.task.taskmvp.TaskMVP;
 
 import java.util.List;
@@ -83,7 +86,10 @@ public class LessonsAdapter extends RecyclerView.Adapter<LessonsAdapter.ViewHold
                     lessonsList.get(position).getProfesor()
 
             );
-
+            TOTPreferences.getInstance(view.getContext()).setIdClase(lessonsList.get(position).getId().toString());
+            AppCompatActivity activity  =  (AppCompatActivity) view.getContext();
+            ListStudyMaterialFragment listStudyMaterialFragment = new ListStudyMaterialFragment(presenter);
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.contentMaterialList,listStudyMaterialFragment).addToBackStack(null).commit();
             presenter.setLessons(lessons);
             notifyDataSetChanged();
 

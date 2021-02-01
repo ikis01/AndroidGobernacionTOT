@@ -126,5 +126,7 @@ public class  ListSubjectFragment extends Fragment implements FragmentsMVP.View 
 
     }
 
+    public ListSubjectFragment() {
 
+    }
 }

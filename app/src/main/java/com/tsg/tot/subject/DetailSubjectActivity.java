@@ -3,7 +3,6 @@ package com.tsg.tot.subject;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +15,6 @@ import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.main.fragment.ListLessonsFragment;
 import com.tsg.tot.root.App;
-import com.tsg.tot.storage.TOTPreferences;
 import com.tsg.tot.task.taskmvp.TaskMVP;
 
 import java.util.List;
@@ -84,7 +82,7 @@ public class DetailSubjectActivity extends AppCompatActivity
         //Init Fragment
         listLessonsFragment = new ListLessonsFragment(presenter,idMateria);
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.contentMaterialList, listLessonsFragment);
+        fragmentTransaction.replace(R.id.contentClaseList, listLessonsFragment);
         fragmentTransaction.commit();
 
     }
