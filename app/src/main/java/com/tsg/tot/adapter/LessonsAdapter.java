@@ -1,4 +1,4 @@
-package com.tsg.tot.main.fragment;
+package com.tsg.tot.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,8 +15,6 @@ import android.widget.TextView;
 import com.tsg.tot.R;
 import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.task.taskmvp.TaskMVP;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 

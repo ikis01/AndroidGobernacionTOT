@@ -1,39 +1,27 @@
 package com.tsg.tot.main.fragment;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.tsg.tot.R;
-import com.tsg.tot.adapter.TasksAdapter;
+import com.tsg.tot.adapter.FileKioscoAdapter;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.main.mainmvp.MainMVP;
-import com.tsg.tot.main.mainmvp.MainPresenter;
-import com.tsg.tot.main.mainmvp.MainView;
-import com.tsg.tot.subject.DetailSubjectActivity;
 import com.tsg.tot.task.taskmvp.TaskMVP;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.InputStream;
 import java.util.List;
 
 import javax.inject.Inject;

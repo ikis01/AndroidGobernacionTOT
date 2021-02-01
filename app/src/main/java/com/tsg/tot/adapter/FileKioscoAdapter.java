@@ -1,27 +1,20 @@
-package com.tsg.tot.main.fragment;
+package com.tsg.tot.adapter;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.tsg.tot.R;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.remote.ApiUtils;
-import com.tsg.tot.main.mainmvp.MainMVP;
-import com.tsg.tot.task.TaskDetailActivity;
 import com.tsg.tot.task.taskmvp.TaskMVP;
 
 import java.io.File;
