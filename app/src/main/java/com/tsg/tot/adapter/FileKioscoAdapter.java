@@ -93,7 +93,7 @@ public class FileKioscoAdapter extends RecyclerView.Adapter<FileKioscoAdapter.Vi
             notifyDataSetChanged();
 
             File newFile = new File(filesKioscoList.get(position).getRuta());
-            Uri contentUri = getUriForFile(context.getApplicationContext(), "com.mydomain.fileprovider", newFile);
+            Uri contentUri = getUriForFile(context.getApplicationContext(), "com.tot.fileprovider", newFile);
             ApiUtils.openFile(contentUri,context);
 
         });
