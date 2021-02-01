@@ -108,4 +108,8 @@ public class StudyMaterialRemote {
         this.claseId = claseId;
         this.ruta = ruta;
     }
+
+    public StudyMaterialRemote() {
+
+    }
 }

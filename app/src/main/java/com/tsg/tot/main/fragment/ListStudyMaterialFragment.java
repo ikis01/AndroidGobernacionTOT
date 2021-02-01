@@ -1,10 +1,11 @@
 package com.tsg.tot.main.fragment;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,43 +14,47 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tsg.tot.R;
+import com.tsg.tot.adapter.LessonsAdapter;
 import com.tsg.tot.adapter.StudyMaterialAdapter;
-import com.tsg.tot.main.fragment.dummy.DummyContent;
+import com.tsg.tot.data.model.FilesKiosco;
+import com.tsg.tot.data.model.Lessons;
+import com.tsg.tot.data.model.Subjects;
+import com.tsg.tot.data.model.Task;
+import com.tsg.tot.data.remote.model.StudyMaterialRemote;
+import com.tsg.tot.main.mainmvp.MainMVP;
+import com.tsg.tot.storage.TOTPreferences;
+import com.tsg.tot.task.taskmvp.TaskMVP;
+
+import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * A fragment representing a list of Items.
  */
-public class ListStudyMaterialFragment extends Fragment {
+public class ListStudyMaterialFragment extends Fragment
+implements TaskMVP.Presenter , FragmentsMVP.View {
+    private ListStudyMaterialFragment.OnFragmentInteractionListener mListener;
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
+    RecyclerView recyclerList;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public ListStudyMaterialFragment() {
+    StudyMaterialAdapter studyMaterialAdapter;
+    Integer idClase = 0;
+
+    @Inject
+    TaskMVP.Presenter presenter;
+
+
+    public ListStudyMaterialFragment(TaskMVP.Presenter presenter,Integer idClase) {
+        this.presenter= presenter;
+        this.idClase = idClase;
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static ListStudyMaterialFragment newInstance(int columnCount) {
-        ListStudyMaterialFragment fragment = new ListStudyMaterialFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
@@ -57,17 +62,124 @@ public class ListStudyMaterialFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_study_material_, container, false);
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new StudyMaterialAdapter(DummyContent.ITEMS));
-        }
+        recyclerList = view.findViewById(R.id.recyclerStudyMaterial);
+        recyclerList.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerList.setLayoutManager(linearLayoutManager);
+        studyMaterialAdapter = new StudyMaterialAdapter();
+        recyclerList.setAdapter(studyMaterialAdapter);
+
         return view;
+    }
+
+    @Override
+    public void setSubjects(List<Subjects> subjectsList, Context context, MainMVP.Presenter presenter) {
+
+    }
+
+    @Override
+    public void setTaskSubjects(List<Task> taskSubjects, Context context, MainMVP.Presenter presenter) {
+
+    }
+
+    @Override
+    public void setFileKiosco(List<FilesKiosco> filesKioscoList, Context context, TaskMVP.Presenter presenter) {
+
+    }
+
+    @Override
+    public void setLessons(List<Lessons> lessonsList, Context context, TaskMVP.Presenter presenter) {
+
+    }
+
+    @Override
+    public void setStudyMaterials(List<StudyMaterialRemote> studyMaterialRemoteList, Context context, TaskMVP.Presenter presenter) {
+        studyMaterialAdapter.dataSet(studyMaterialRemoteList,studyMaterialRemoteList.size(),context,presenter);
+    }
+
+    @Override
+    public void setLessons(Lessons lessons) {
+
+    }
+
+    @Override
+    public void setFileKiosco(FilesKiosco fileKiosco) {
+
+    }
+
+    @Override
+    public void setView(TaskMVP.View view) {
+
+    }
+
+    @Override
+    public List<Task> getTaskSubject(Context context, int idSubject, String token) {
+        return null;
+    }
+
+    @Override
+    public void setInfoStudent(Context context) {
+
+    }
+
+    @Override
+    public void setInfoSubject(Subjects subjects) {
+
+    }
+
+    @Override
+    public void notifyRefresh() {
+
+    }
+
+    @Override
+    public List<FilesKiosco> getFileKioscos(Context context, int idEstudiante, int idMateria, int idTarea) {
+        return null;
+    }
+
+    @Override
+    public List<Lessons> getLessons(Context context, int idEstudiante, int idMateria) {
+        return null;
+    }
+
+    @Override
+    public List<StudyMaterialRemote> getStudyMaterials(Context context, int idClase) {
+        return null;
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(Uri uri);
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        Integer idClaseI = Integer.parseInt(TOTPreferences.getInstance(getContext()).getIdclase());
+        setStudyMaterials(presenter.getStudyMaterials(getContext(),idClaseI),getContext(),presenter);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof ListStudyMaterialFragment.OnFragmentInteractionListener) {
+            mListener = (ListStudyMaterialFragment.OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 }

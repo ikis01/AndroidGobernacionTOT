@@ -9,6 +9,7 @@ import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
+import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +95,11 @@ public  class TaskPresenter implements TaskMVP.Presenter, TaskMVP.Model.OnFinish
     @Override
     public List<Lessons> getLessons(Context context, int idEstudiante, int idMateria){
         return model.checkMyLessons (context,idEstudiante,idMateria);
+    }
+
+    @Override
+    public List<StudyMaterialRemote> getStudyMaterials(Context context, int idClase){
+        return model.checkMyStudyMaterial (context,idClase);
     }
 
 

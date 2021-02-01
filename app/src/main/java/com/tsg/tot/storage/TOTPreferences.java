@@ -78,4 +78,16 @@ public class TOTPreferences {
         return pref.getString(IDUSUARIO,"");
     }
 
+
+    private static final String IDCLASE = "IDCLASE";
+
+    public void setIdClase(String idClase) {
+        editor.putString(IDCLASE, idClase);
+        editor.commit();
+    }
+
+    public String getIdclase() {
+        return pref.getString(IDCLASE,"");
+    }
+
 }

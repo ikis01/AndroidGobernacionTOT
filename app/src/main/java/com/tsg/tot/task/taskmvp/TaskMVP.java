@@ -7,6 +7,7 @@ import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
+import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 
 import java.util.List;
 
@@ -45,6 +46,7 @@ public interface TaskMVP {
 
         List<FilesKiosco> getFileKioscos(Context context, int idEstudiante, int idMateria, int idTarea);
         List<Lessons> getLessons(Context context, int idEstudiante, int idMateria);
+        List<StudyMaterialRemote> getStudyMaterials(Context context, int idClase);
     }
     interface Model {
 
@@ -59,7 +61,7 @@ public interface TaskMVP {
 
         List<Task> checkTasks(Context context, int from,String Token);
 
-
+        List<StudyMaterialRemote> checkMyStudyMaterial (Context context , Integer idClase);
 
     }
 }

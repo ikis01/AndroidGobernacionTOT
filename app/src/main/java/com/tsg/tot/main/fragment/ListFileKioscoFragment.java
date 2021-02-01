@@ -19,6 +19,7 @@ import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
+import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.main.mainmvp.MainMVP;
 import com.tsg.tot.task.taskmvp.TaskMVP;
 
@@ -102,7 +103,12 @@ public class ListFileKioscoFragment extends Fragment implements
     }
 
     @Override
-    public void setLessons(List<Lessons> taskSubjects, Context context, TaskMVP.Presenter presenter) {
+    public void setLessons(List<Lessons> lessonsList, Context context, TaskMVP.Presenter presenter) {
+
+    }
+
+    @Override
+    public void setStudyMaterials(List<StudyMaterialRemote> studyMaterialRemoteList, Context context, TaskMVP.Presenter presenter) {
 
     }
 
@@ -176,6 +182,11 @@ public class ListFileKioscoFragment extends Fragment implements
 
     @Override
     public List<Lessons> getLessons(Context context, int idEstudiante, int idMateria) {
+        return null;
+    }
+
+    @Override
+    public List<StudyMaterialRemote> getStudyMaterials(Context context, int idClase) {
         return null;
     }
 

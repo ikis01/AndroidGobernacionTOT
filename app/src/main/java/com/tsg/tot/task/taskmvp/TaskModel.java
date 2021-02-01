@@ -7,6 +7,7 @@ import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
+import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.data.remote.model.TaskRemote;
 import com.tsg.tot.repository.ApiRepository;
 import com.tsg.tot.repository.DatabaseRepository;
@@ -61,6 +62,13 @@ public class TaskModel implements TaskMVP.Model {
         return studentList;
     }
 
+
+    @Override
+    public List<StudyMaterialRemote> checkMyStudyMaterial (Context context , Integer idClase){
+        List<StudyMaterialRemote> studyMaterialRemoteList = null;
+        studyMaterialRemoteList= databaseRepository.getStudyMaterial(context,idClase);
+        return studyMaterialRemoteList;
+    }
 
     @Override
     public List<Task> checkTasks(Context context, int from,String token) {

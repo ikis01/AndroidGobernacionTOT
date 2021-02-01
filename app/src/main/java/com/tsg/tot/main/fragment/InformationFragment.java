@@ -26,6 +26,7 @@ import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
+import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.main.mainmvp.MainMVP;
 import com.tsg.tot.main.mainmvp.MainView;
 import com.tsg.tot.subject.DetailSubjectActivity;
@@ -149,12 +150,17 @@ public class InformationFragment extends Fragment implements FragmentsMVP.View{
     }
 
     @Override
-    public void setFileKiosco(List<FilesKiosco> taskSubjects, Context context, TaskMVP.Presenter presenter) {
+    public void setFileKiosco(List<FilesKiosco> filesKioscoList, Context context, TaskMVP.Presenter presenter) {
 
     }
 
     @Override
-    public void setLessons(List<Lessons> taskSubjects, Context context, TaskMVP.Presenter presenter) {
+    public void setLessons(List<Lessons> lessonsList, Context context, TaskMVP.Presenter presenter) {
+
+    }
+
+    @Override
+    public void setStudyMaterials(List<StudyMaterialRemote> studyMaterialRemoteList, Context context, TaskMVP.Presenter presenter) {
 
     }
 
