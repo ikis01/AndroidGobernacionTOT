@@ -89,7 +89,7 @@ public interface LocalRepository {
 
     void updateExercises(List<Exercises> exercisesList, android.content.Context context);
 
-    void updateSubmissions(List<Submissions> submissionsList, android.content.Context context);
+    Long updateSubmissions(List<Submissions> submissionsList, android.content.Context context);
 
     void updateStudent(List<Student> studentList, android.content.Context context);
 

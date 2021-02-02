@@ -504,7 +504,7 @@ public class DatabaseRepository implements LocalRepository {
     }
 
     @Override
-    public void updateSubmissions(List<Submissions> submissionsList, Context context) {
+    public Long updateSubmissions(List<Submissions> submissionsList, Context context) {
         Long id =0L;
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -532,6 +532,7 @@ public class DatabaseRepository implements LocalRepository {
         db.close();
         dbHelper.close();
 
+        return id;
 
     }
 

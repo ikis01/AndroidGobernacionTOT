@@ -1,5 +1,6 @@
 package com.tsg.tot.task;
 
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.net.Uri;
@@ -196,22 +197,35 @@ public class TaskDetailActivity extends AppCompatActivity
                         List<Submissions> submissionsList = new ArrayList<>();
 
                         DatabaseRepository dbR = new DatabaseRepository();
-                        String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+                         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
                         submissions.setUpp(0);
                         submissions.setEstudiante(idEstudiante);
                         submissions.setSubida(idSubida);
                         submissions.setTarea(idTarea);
                         submissions.setCreado(date);
-
+                        String fileAppend = new SimpleDateFormat("yyyyMMddHHmm").format(new Date()).concat("_");
                         submissionsList.add(submissions);
-                        dbR.updateSubmissions(submissionsList,TaskDetailActivity.this);
+                        Long idSubmission = dbR.updateSubmissions(submissionsList,TaskDetailActivity.this);
 
                         /// Archivo Destino
-                        File dstFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Data/Tareas/"+nombreTarea+"/"+file.getName());
+                        File dstFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Data/Tareas/"+nombreTarea+"/"+idEstudiante+"_"+ fileAppend+"_"+file.getName());
                        ///Archivo Origen
                         File srcFile = new File(srcName);
                         try {
                             copy(srcFile,dstFile);
+
+                            List<FilesKiosco> filesKioscoList = new ArrayList<>();
+                            FilesKiosco filesKiosco = new FilesKiosco();
+                            filesKiosco.setArchivoKiosco(0);
+                            filesKiosco.setCodigo("0");
+                            filesKiosco.setRuta(dstFile.getAbsolutePath());
+                            filesKiosco.setSubida_idsubida(idSubida);
+                            filesKiosco.setIdEntrega(idSubmission.intValue());
+                            filesKiosco.setNombreArchivo(file.getName());
+                            filesKioscoList.add(filesKiosco);
+                            dbR.updateMyFileKiosco(filesKioscoList,TaskDetailActivity.this);
+
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
