@@ -505,26 +505,34 @@ public class DatabaseRepository implements LocalRepository {
 
     @Override
     public void updateSubmissions(List<Submissions> submissionsList, Context context) {
+        Long id =0L;
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         if (submissionsList != null) {
             for (Submissions submissions : submissionsList) {
-                if (checkId(db, SUBMISSIONS_TABLE_NAME, SUBMISSIONS_ID, submissions.getId().toString()) == 0) {
-                    cv.put(SUBMISSIONS_ID, submissions.getId());
-                    cv.put(SUBMISSIONS_EXERCISES_ID, submissions.getEjercios());
-                    cv.put(SUBMISSIONS_TASK_ID, submissions.getTarea());
-                    cv.put(SUBMISSIONS_EVALUATION_ID, submissions.getEvaluacion());
-                    cv.put(SUBMISSIONS_UPLOAD_ID, submissions.getSubida());
-                    cv.put(SUBMISSIONS_UPP, submissions.getUpp());
+                //if (checkId(db, SUBMISSIONS_TABLE_NAME, SUBMISSIONS_ID, submissions.getId().toString()) == 0) {
+                   // cv.put(SUBMISSIONS_ID, submissions.getId());
+                    cv.put(SUBMISSIONS_CODE, submissions.getCodigoEntrega());
+                    cv.put(SUBMISSIONS_CODE_TASK, submissions.getCodigoTarea());
                     cv.put(SUBMISSIONS_CREATED, submissions.getCreado());
-                    db.insert(SUBMISSIONS_TABLE_NAME, null, cv);
-                }
+                    cv.put(SUBMISSIONS_RT_SUBMISSION, submissions.getRtEntrega()== null ? 0:submissions.getRtEntrega());
+                    cv.put(SUBMISSIONS_UPP, submissions.getUpp()== null ? 0:submissions.getUpp());
+                    cv.put(SUBMISSIONS_STUDENT_ID, submissions.getEstudiante()== null ? 0:submissions.getEstudiante());
+                    cv.put(SUBMISSIONS_UPLOAD_ID, submissions.getSubida()== null ? 0 :submissions.getSubida());
+                    cv.put(SUBMISSIONS_TASK_ID, submissions.getTarea() == null ? 0 : submissions.getTarea());
+
+
+
+                    id =  db.insert(SUBMISSIONS_TABLE_NAME, null, cv);
+                //}
             }
         }
 
         db.close();
         dbHelper.close();
+
+
     }
 
     @Override

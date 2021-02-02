@@ -185,6 +185,22 @@ public class MainModel implements MainMVP.Model {
             databaseRepository.updateMyFileKiosco(filesKioscoList,context);
             databaseRepository.updateMyTasks(taskRemoteListAux, context, studentRemote, 0);
 
+            if (taskRemoteListAux!=null){
+                for (TaskRemote task : taskRemoteListAux){
+                    File storageAllTask = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Data", "Tareas");
+                    if(!storageAllTask.exists()){
+                        storageAllTask.mkdir();
+                    }else{
+
+                        File storageDirectory = new File(storageAllTask.getAbsolutePath(),task.getNombreActividad());
+                        if(!storageDirectory.exists()){
+                            storageDirectory.mkdir();
+                        }
+                    }
+
+                }
+
+            }
 
 
         }

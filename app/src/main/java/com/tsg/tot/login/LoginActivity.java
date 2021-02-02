@@ -124,6 +124,13 @@ public class LoginActivity extends AppCompatActivity {
                         storageDir.mkdir();
                     }
 
+                    File storageHomework = null;
+
+                    storageHomework = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+"/Data", "Tareas");
+                    if (!storageHomework.exists()){
+                        storageHomework.mkdir();
+                    }
+
                 }else{
                     requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
                 }

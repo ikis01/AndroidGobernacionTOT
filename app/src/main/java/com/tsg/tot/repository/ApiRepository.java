@@ -310,9 +310,7 @@ public class ApiRepository implements RemoteRepository {
                                 Log.d("Debug submissions id ", submission.getId().toString());
                                 Log.d("Debug submissions created at ", submission.getCreado());
                                 Log.d("Debug submissions upp", submission.getUpp().toString());
-                                Log.d("Debug submissions exercises ", submission.getEjercios().toString());
                                 Log.d("Debug submissions task ", submission.getTarea().toString());
-                                Log.d("Debug submissions evaluation", submission.getEvaluacion().toString());
                                 Log.d("Debug submissions upload ", submission.getSubida().toString());
                                 Log.d("Debug submissions student", submission.getEstudiante().toString());
                             } catch (NullPointerException e) {

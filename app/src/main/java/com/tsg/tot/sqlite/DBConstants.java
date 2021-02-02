@@ -36,7 +36,7 @@ public final class DBConstants {
     public static final String IPEND_TABLE_NAME = "IPEND";
     public static final String EVALUATION_TABLE_NAME = "Evaluacion";
     public static final String STUDENTS_TABLE_NAME = "Estudiante";
-    public static final String SUBMISSIONS_TABLE_NAME = "Entrega";
+    public static final String SUBMISSIONS_TABLE_NAME = "ENTREGAS";
     public static final String EXERCISES_TABLE_NAME = "Ejercicios";
     public static final String LESSONS_TABLE_NAME = "Clases";
     public static final String BLOB_TABLE_NAME = "Blob";
@@ -199,12 +199,14 @@ public final class DBConstants {
      * Entrega table columns
      */
     public static final String SUBMISSIONS_ID = "idEntrega";
-    public static final String SUBMISSIONS_EXERCISES_ID = "Ejercicios_idEjercicios";
-    public static final String SUBMISSIONS_TASK_ID = "Tarea_idTarea";
-    public static final String SUBMISSIONS_EVALUATION_ID = "Evaluacion_idEvaluacion";
+    public static final String SUBMISSIONS_CODE ="CodigoEntrega";
+    public static final String SUBMISSIONS_CODE_TASK ="CodigoTarea";
+    public static final String SUBMISSIONS_CREATED ="Creado";
+    public static final String SUBMISSIONS_RT_SUBMISSION ="RTentrega";
+    public static final String SUBMISSIONS_UPP ="Upp";
+    public static final String SUBMISSIONS_STUDENT_ID ="Estudiante_IdEstudiante";
     public static final String SUBMISSIONS_UPLOAD_ID = "Subida_idSubida";
-    public static final String SUBMISSIONS_UPP = "Upp";
-    public static final String SUBMISSIONS_CREATED = "Creado";
+    public static final String SUBMISSIONS_TASK_ID = "Tarea_idTarea";
 
     /**
      * Ejercicios table columns

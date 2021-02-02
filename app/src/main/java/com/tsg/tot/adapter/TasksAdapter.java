@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,6 +96,10 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
             intent.putExtra("tareakiosco",taskList.get(position).getTareakiosco());
             intent.putExtra("idMateria",taskList.get(position).getMaterias());
             intent.putExtra("idEstudiante",taskList.get(position).getEstudiante());
+            intent.putExtra("nombreTarea",taskList.get(position).getNombre());
+            intent.putExtra("idSubida",taskList.get(position).getSubida().getId());
+            intent.putExtra("idTarea",taskList.get(position).getId());
+
 
             context.startActivity(intent);
             notifyDataSetChanged();

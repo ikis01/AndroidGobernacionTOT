@@ -83,35 +83,6 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
                                 model.checkMyLessons(context,API_REPOSITORY,token));
 
 
-                        /*
-                         // model.checkMyGrade(context,API_REPOSITORY, token);inserto
-                         model.checkMyStudent(context,API_REPOSITORY,token);inserto
-                         model.checkTeachers(context, API_REPOSITORY,token); inserto
-                         model.checkMySubjects(context,API_REPOSITORY,token); inserto
-
-                        model.checkTasks(context, API_REPOSITORY,token);/// inserto correcto
-
-
-
-                        model.checkMyPendingStudyMaterials(context,API_REPOSITORY, token);
-
-                        model.checkMyLessons(context,API_REPOSITORY,token);
-
-
-                        model.updateAllDb(model.checkAPIVersion(context),
-                                model.checkTasks(context, API_REPOSITORY,token),//ok
-                                model.checkUploads(context, API_REPOSITORY),/// no aply
-                                model.checkTeachers(context, API_REPOSITORY,token),//ok
-                                model.checkSubjects(context, API_REPOSITORY,token),//ok
-                                model.checkGrades(context, API_REPOSITORY),//ok
-                                model.checkStudyMaterials(context, API_REPOSITORY),//ok pending
-                                model.checkEvaluations(context, API_REPOSITORY),// no aplica
-                                model.checkStudents(context, API_REPOSITORY),// solo info del estudiante registrado
-                                model.checkSubmissions(context, API_REPOSITORY),// por el momento no aplica
-                                model.checkExercises(context, API_REPOSITORY),// No aplica ya no existe
-                                model.checkLessons(context, API_REPOSITORY),// Probado y obtenido
-                                context,dialog);
-*/
                         try {
                             Thread.sleep(12 * 1000);
                            // dialog.setIcon(dialog.getProgress() + 10);

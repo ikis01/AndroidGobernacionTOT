@@ -8,21 +8,22 @@ public class Submissions {
     @SerializedName("id")
     @Expose
     private Integer id;
+
+    private String codigoEntrega ;
+    private String codigoTarea ;
+    private Integer rtEntrega;
+
     @SerializedName("creado")
     @Expose
     private String creado;
     @SerializedName("upp")
     @Expose
     private Integer upp;
-    @SerializedName("ejercios")
-    @Expose
-    private Integer ejercios;
+
     @SerializedName("tarea")
     @Expose
     private Integer tarea;
-    @SerializedName("evaluacion")
-    @Expose
-    private Integer evaluacion;
+
     @SerializedName("subida")
     @Expose
     private Integer subida;
@@ -54,13 +55,7 @@ public class Submissions {
         this.upp = upp;
     }
 
-    public Integer getEjercios() {
-        return ejercios;
-    }
 
-    public void setEjercios(Integer ejercios) {
-        this.ejercios = ejercios;
-    }
 
     public Integer getTarea() {
         return tarea;
@@ -70,13 +65,7 @@ public class Submissions {
         this.tarea = tarea;
     }
 
-    public Integer getEvaluacion() {
-        return evaluacion;
-    }
 
-    public void setEvaluacion(Integer evaluacion) {
-        this.evaluacion = evaluacion;
-    }
 
     public Integer getSubida() {
         return subida;
@@ -98,10 +87,35 @@ public class Submissions {
         this.id = id;
         this.creado = creado;
         this.upp = upp;
-        this.ejercios = ejercios;
         this.tarea = tarea;
-        this.evaluacion = evaluacion;
         this.subida = subida;
         this.estudiante = estudiante;
+    }
+
+    public Submissions() {
+    }
+
+    public String getCodigoEntrega() {
+        return codigoEntrega;
+    }
+
+    public void setCodigoEntrega(String codigoEntrega) {
+        this.codigoEntrega = codigoEntrega;
+    }
+
+    public String getCodigoTarea() {
+        return codigoTarea;
+    }
+
+    public void setCodigoTarea(String codigoTarea) {
+        this.codigoTarea = codigoTarea;
+    }
+
+    public Integer getRtEntrega() {
+        return rtEntrega;
+    }
+
+    public void setRtEntrega(Integer rtEntrega) {
+        this.rtEntrega = rtEntrega;
     }
 }
