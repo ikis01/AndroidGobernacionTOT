@@ -3,7 +3,7 @@ package com.tsg.tot.data.remote.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class TaskRegrister {
+public class TaskRegristerRemote {
     @SerializedName("id")
     @Expose
     private Integer id;

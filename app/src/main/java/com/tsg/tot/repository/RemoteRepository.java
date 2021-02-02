@@ -121,7 +121,7 @@ public interface RemoteRepository {
 
     void postExercises(RequestBody requestBody);
 
-    void postSubmissions(RequestBody requestBody);
+    void postSubmissions(String auth,RequestBody requestBody);
 
     void postBlob(RequestBody requestBody);
 

@@ -29,6 +29,7 @@ import com.tsg.tot.data.remote.model.LessonsRemote;
 import com.tsg.tot.data.remote.model.StudentRemote;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.data.remote.model.SubjectsRemote;
+import com.tsg.tot.data.remote.model.TaskRegristerRemote;
 import com.tsg.tot.data.remote.model.TaskRemote;
 import com.tsg.tot.data.remote.model.TeacherRemote;
 
@@ -814,10 +815,10 @@ public class ApiRepository implements RemoteRepository {
     }
 
     @Override
-    public void postSubmissions(RequestBody requestBody) {
-        mApiService.postSubmissions(requestBody).enqueue(new Callback<Submissions>() {
+    public void postSubmissions(String auth,RequestBody requestBody) {
+        mApiService.postSubmissions(auth,requestBody).enqueue(new Callback<TaskRegristerRemote>() {
             @Override
-            public void onResponse(Call<Submissions> call, Response<Submissions> response) {
+            public void onResponse(Call<TaskRegristerRemote> call, Response<TaskRegristerRemote> response) {
                 if (response.isSuccessful()) {
                     //TODO POST Blob
                     Log.d("POST", "post submitted to API." + response.body());
@@ -825,7 +826,7 @@ public class ApiRepository implements RemoteRepository {
             }
 
             @Override
-            public void onFailure(Call<Submissions> call, Throwable t) {
+            public void onFailure(Call<TaskRegristerRemote> call, Throwable t) {
                 Log.d("POST", "Unable to submit post to API.");
             }
         });

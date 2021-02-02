@@ -22,6 +22,7 @@ import com.tsg.tot.data.remote.model.LessonsRemote;
 import com.tsg.tot.data.remote.model.StudentRemote;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.data.remote.model.SubjectsRemote;
+import com.tsg.tot.data.remote.model.TaskRegristerRemote;
 import com.tsg.tot.data.remote.model.TaskRemote;
 import com.tsg.tot.data.remote.model.TeacherRemote;
 
@@ -140,7 +141,7 @@ public interface ApiService {
     Call<Exercises> postExercises(@Body RequestBody body);
 
     @POST(POST_SUBMISSIONS)
-    Call<Submissions> postSubmissions(@Body RequestBody body);
+    Call<TaskRegristerRemote> postSubmissions(@Header("Authorization") String authKey, @Body RequestBody body);
 
     @POST(POST_BLOB)
     Call<Blob> postBlob(@Body RequestBody body);
