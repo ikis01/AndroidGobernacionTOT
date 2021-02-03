@@ -6,6 +6,7 @@ import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Subjects;
+import com.tsg.tot.data.model.SubmissionDisplay;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 
@@ -47,6 +48,7 @@ public interface TaskMVP {
         List<FilesKiosco> getFileKioscos(Context context, int idEstudiante, int idMateria, int idTarea);
         List<Lessons> getLessons(Context context, int idEstudiante, int idMateria);
         List<StudyMaterialRemote> getStudyMaterials(Context context, int idClase);
+        List<SubmissionDisplay> getSubmissionDisplay (Context context ,int idEstudiante,int idMateria,int idTarea);
     }
     interface Model {
 
@@ -55,6 +57,8 @@ public interface TaskMVP {
         }
 
         List<FilesKiosco> checkMyFileskioscos (Context  context, Integer idEstudiante,  Integer idMateria,Integer idTarea);
+        List<SubmissionDisplay> checkMySubmissionDisplay (Context  context, Integer idEstudiante,  Integer idMateria,Integer idTarea);
+
         List<Lessons> checkMyLessons (Context context, Integer idEstudiante,Integer idMateria);
 
         List<Student> checkStudents(Context context, int from,Integer idUsuario);

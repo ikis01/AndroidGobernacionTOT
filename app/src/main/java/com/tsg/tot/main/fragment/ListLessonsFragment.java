@@ -18,6 +18,7 @@ import com.tsg.tot.adapter.LessonsAdapter;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Subjects;
+import com.tsg.tot.data.model.SubmissionDisplay;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.main.mainmvp.MainMVP;
@@ -111,6 +112,11 @@ public class ListLessonsFragment extends Fragment implements
 
     }
 
+    @Override
+    public void setSubmissionDisplay(List<SubmissionDisplay> submissionDisplayList, Context context, TaskMVP.Presenter presenter) {
+
+    }
+
 
     @Override
     public void onResume() {
@@ -184,6 +190,11 @@ public class ListLessonsFragment extends Fragment implements
 
     @Override
     public List<StudyMaterialRemote> getStudyMaterials(Context context, int idClase) {
+        return null;
+    }
+
+    @Override
+    public List<SubmissionDisplay> getSubmissionDisplay(Context context, int idEstudiante, int idMateria, int idTarea) {
         return null;
     }
 

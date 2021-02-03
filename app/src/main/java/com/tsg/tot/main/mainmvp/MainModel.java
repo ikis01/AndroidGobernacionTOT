@@ -9,6 +9,7 @@ import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 
+import com.google.gson.JsonObject;
 import com.tsg.tot.data.model.Device;
 import com.tsg.tot.data.model.Evaluations;
 import com.tsg.tot.data.model.Exercises;
@@ -22,19 +23,25 @@ import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
+import com.tsg.tot.data.model.TokenCustom;
 import com.tsg.tot.data.model.Upload;
 import com.tsg.tot.data.model.Uploads;
+import com.tsg.tot.data.remote.ApiUtils;
 import com.tsg.tot.data.remote.model.GradeRemote;
 import com.tsg.tot.data.remote.model.LessonsRemote;
 import com.tsg.tot.data.remote.model.StudentRemote;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.data.remote.model.SubjectsRemote;
+import com.tsg.tot.data.remote.model.TaskRegristerRemote;
 import com.tsg.tot.data.remote.model.TaskRemote;
 import com.tsg.tot.data.remote.model.TeacherRemote;
 import com.tsg.tot.main.fragment.CustomProgressDialog;
 import com.tsg.tot.repository.ApiRepository;
 import com.tsg.tot.repository.DatabaseRepository;
 import com.tsg.tot.sqlite.DbOpenHelper;
+import com.tsg.tot.storage.TOTPreferences;
+
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -49,6 +56,9 @@ import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.tsg.tot.sqlite.DBConstants.API_REPOSITORY;
 import static com.tsg.tot.sqlite.DBConstants.DATABASE_REPOSITORY;
@@ -93,12 +103,13 @@ public class MainModel implements MainMVP.Model {
                                List<SubjectsRemote> subjectsRemoteList,
                                List<TaskRemote> taskRemoteList,
                                List<StudyMaterialRemote> materialRemoteList,
-                               List<LessonsRemote> lessonsRemoteList
-    )  {
+                               List<LessonsRemote> lessonsRemoteList,
+                               String token
+    ) {
 
         File storageDirMaterialRemote = null;
         File storageDirectoryStudent = null;
-        File storageDirTask = null ;
+        File storageDirTask = null;
         List<TaskRemote> taskRemoteListAux = new ArrayList<>();
         List<FilesKiosco> filesKioscoList = new ArrayList<>();
 
@@ -111,7 +122,7 @@ public class MainModel implements MainMVP.Model {
 
         databaseRepository.updateMyTeachers(teacherRemoteList, context);
 
-        databaseRepository.updateMyLessons(lessonsRemoteList,context );
+        databaseRepository.updateMyLessons(lessonsRemoteList, context);
 
 
         if (studentRemote != null) {
@@ -120,7 +131,7 @@ public class MainModel implements MainMVP.Model {
                 //RUNTIME PERMISSION Android M
                 if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     storageDirectoryStudent = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Data", studentRemote.getNombre().replace(" ", "") + studentRemote.getIdD2L());
-                    if(!storageDirectoryStudent.exists()){
+                    if (!storageDirectoryStudent.exists()) {
                         storageDirectoryStudent.mkdir();
                     }
                 } else {
@@ -131,37 +142,52 @@ public class MainModel implements MainMVP.Model {
 
         }
 
-        if (taskRemoteList!=null && studentRemote !=null){
+        if (taskRemoteList != null && studentRemote != null) {
 
-            for(TaskRemote taskRemote : taskRemoteList){
+            for (TaskRemote taskRemote : taskRemoteList) {
 
                 if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
                     //RUNTIME PERMISSION Android M
                     if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                         //storageDirMaterialRemote = new File(storageDirectoryStudent.getPath(), material.getIdD2L()+"BLOB");
-                        storageDirTask = new File(storageDirectoryStudent.getPath(), taskRemote.getIdD2L()+"BLOB");
+                        storageDirTask = new File(storageDirectoryStudent.getPath(), taskRemote.getIdD2L() + "BLOB");
 
-                        if (!storageDirTask.exists()){
+                        if (!storageDirTask.exists()) {
                             storageDirTask.mkdir();
                         }
 
 
-                        if (storageDirTask.exists()){
-                                String tareaPath = null ;
-                                tareaPath = Download (taskRemote.getFile().getUrl(),storageDirTask, taskRemote.getNombreArchivo(),"Tarea_");
-                            if (tareaPath!=null){
+                        if (storageDirTask.exists()) {
+                            String tareaPath = null;
+                            tareaPath = Download(taskRemote.getFile().getUrl(), storageDirTask, taskRemote.getNombreArchivo(), "Tarea_");
+                            if (tareaPath != null) {
                                 /// insertar registro en SUBIDA
-                                 TaskRemote  taskAux = taskRemote;
-                                 FilesKiosco filesKiosco = new FilesKiosco();
+                                TaskRemote taskAux = taskRemote;
+                                FilesKiosco filesKiosco = new FilesKiosco();
                                 java.util.Date fecha = new Date();
                                 Uploads upload = new Uploads();
                                 upload.setFecha(fecha.toString());
                                 upload.setFechaDescarga(fecha.toString());
                                 upload.setSubidaKiosco(taskRemote.getFile().getId());
                                 upload.setEstudiante_idEstudiante(studentRemote.getId());
-                                Long id = databaseRepository.updateMyUpload(upload,context);
+                                Long id = databaseRepository.updateMyUpload(upload, context);
                                 taskRemote.setIdSubida(id);
                                 taskRemote.setMateriaId(taskRemote.getMateria().getId());
+
+
+                                JsonObject jsonObject = new JsonObject();
+                                jsonObject.addProperty("tareaId", taskRemote.getTareaId());
+
+
+                                TaskRegristerRemote taskRegristerRemote=  registerTask( context, taskRemote.getTareaId(), token, jsonObject);
+
+                                //if (taskRegristerRemote!=null) {
+//                                    Log.d("resultado Registrar TaskRemote ",taskRegristerRemote.toString());
+//                                    Log.d("TaskIdRegistro result  --> ",taskRegristerRemote.getId().toString());
+                                 //   taskRemote.setIdRegistro(taskRegristerRemote.getId());
+                                //} else {
+                                    taskRemote.setIdRegistro(0);
+                              //  }
                                 taskRemoteListAux.add(taskRemote);
                                 filesKiosco.setArchivoKiosco(taskRemote.getFile().getId());
                                 filesKiosco.setCodigo(taskRemote.getTareaId().toString());
@@ -182,18 +208,18 @@ public class MainModel implements MainMVP.Model {
 
             }
 
-            databaseRepository.updateMyFileKiosco(filesKioscoList,context);
+            databaseRepository.updateMyFileKiosco(filesKioscoList, context);
             databaseRepository.updateMyTasks(taskRemoteListAux, context, studentRemote, 0);
 
-            if (taskRemoteListAux!=null){
-                for (TaskRemote task : taskRemoteListAux){
+            if (taskRemoteListAux != null) {
+                for (TaskRemote task : taskRemoteListAux) {
                     File storageAllTask = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Data", "Tareas");
-                    if(!storageAllTask.exists()){
+                    if (!storageAllTask.exists()) {
                         storageAllTask.mkdir();
-                    }else{
+                    } else {
 
-                        File storageDirectory = new File(storageAllTask.getAbsolutePath(),task.getNombreActividad());
-                        if(!storageDirectory.exists()){
+                        File storageDirectory = new File(storageAllTask.getAbsolutePath(), task.getNombreActividad());
+                        if (!storageDirectory.exists()) {
                             storageDirectory.mkdir();
                         }
                     }
@@ -205,7 +231,7 @@ public class MainModel implements MainMVP.Model {
 
         }
 
-         List <StudyMaterialRemote> materialSList = new ArrayList<StudyMaterialRemote>();
+        List<StudyMaterialRemote> materialSList = new ArrayList<StudyMaterialRemote>();
         if (materialRemoteList != null) {
             for (StudyMaterialRemote material : materialRemoteList) {
 
@@ -213,23 +239,20 @@ public class MainModel implements MainMVP.Model {
                     //RUNTIME PERMISSION Android M
                     if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                         //storageDirMaterialRemote = new File(storageDirectoryStudent.getPath(), material.getIdD2L()+"BLOB");
-                        storageDirMaterialRemote = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+"/Data", material.getIdD2L()+"BLOB");
+                        storageDirMaterialRemote = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Data", material.getIdD2L() + "BLOB");
 
-                        if (!storageDirMaterialRemote.exists()){
+                        if (!storageDirMaterialRemote.exists()) {
                             storageDirMaterialRemote.mkdir();
                         }
 
 
-                           String pathMaterial = null;
-                           pathMaterial = Download (material.getUrl(),storageDirMaterialRemote,material.getNombreArchivo(),"Material_");
-                           if (pathMaterial !=null){
-                               material.setRuta(pathMaterial);
-                               materialSList.add(material);
-                           }
-                           ///// INSERTAR MATERIAL DE ESTUDIO
-
-
-
+                        String pathMaterial = null;
+                        pathMaterial = Download(material.getUrl(), storageDirMaterialRemote, material.getNombreArchivo(), "Material_");
+                        if (pathMaterial != null) {
+                            material.setRuta(pathMaterial);
+                            materialSList.add(material);
+                        }
+                        ///// INSERTAR MATERIAL DE ESTUDIO
 
 
                     }
@@ -240,7 +263,6 @@ public class MainModel implements MainMVP.Model {
             }
             databaseRepository.updateMyStudyMaterial(materialSList, context);
         }
-
 
 
     }
@@ -440,6 +462,7 @@ public class MainModel implements MainMVP.Model {
         return student;
     }
 
+
     @Override
     public List<StudyMaterialRemote> checkMyPendingStudyMaterials(Context context, int from, String token) {
 
@@ -449,8 +472,6 @@ public class MainModel implements MainMVP.Model {
         switch (from) {
             case API_REPOSITORY:
                 studyMaterialList = apiRepository.getMyPendingStudyMaterial(context, token);
-
-
 
 
                 //// AQUI SE TENDRIAN QUE DESCARGAR LOS ARCHIVOS DE MATERIAL ESTUDIO
@@ -579,12 +600,11 @@ public class MainModel implements MainMVP.Model {
 
 
     @Override
-   public  List<FilesKiosco> checkMyFileskioscos (Context  context, Integer idEstudiante,  Integer idMateria,Integer idTarea){
+    public List<FilesKiosco> checkMyFileskioscos(Context context, Integer idEstudiante, Integer idMateria, Integer idTarea) {
         List<FilesKiosco> filesKioscoList = null;
-        filesKioscoList = databaseRepository.getFileKioscos(context,idEstudiante,idMateria,idTarea);
+        filesKioscoList = databaseRepository.getFileKioscos(context, idEstudiante, idMateria, idTarea);
         return filesKioscoList;
     }
-
 
 
     @Override
@@ -642,6 +662,11 @@ public class MainModel implements MainMVP.Model {
         return taskList;
     }
 
+    @Override
+    public TaskRegristerRemote registerTask(Context context, Integer idTarea, String token, JsonObject body) {
+        TaskRegristerRemote taskRegristerRemote = apiRepository.postRegisterTask(token, body);
+        return taskRegristerRemote;
+    }
 
     @Override
     public List<TaskRemote> checkMyTasks(Context context, int from, String token) {
@@ -695,6 +720,7 @@ public class MainModel implements MainMVP.Model {
         apiRepository.postExercises(body);
     }
 
+
     @Override
     public void postSubmissions(String upp, String exercisesId, String taskId, String evaluationId, String uploadId, String studentId) {
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
@@ -705,7 +731,7 @@ public class MainModel implements MainMVP.Model {
                 .addFormDataPart("subida", uploadId)
                 .addFormDataPart("estudiante", studentId)
                 .build();
-      //  apiRepository.postSubmissions(body);
+        //  apiRepository.postSubmissions(body);
     }
 
     @Override
@@ -720,33 +746,33 @@ public class MainModel implements MainMVP.Model {
     }
 
 
-    public static String Download (String urlStr,File filePath ,String nombreArchivo ,String tipo )  {
+    public static String Download(String urlStr, File filePath, String nombreArchivo, String tipo) {
 
         String rutaGuardada = null;
-        try{
-        URL url = new URL (urlStr);
+        try {
+            URL url = new URL(urlStr);
 
-        String fileAppend = new SimpleDateFormat("yyyyMMddHHmm").format(new Date()).concat("_");
-        File file = new File (filePath,tipo+fileAppend+nombreArchivo);
-            if(!file.exists()){ // Si no existe, crea el archivo.
+            String fileAppend = new SimpleDateFormat("yyyyMMddHHmm").format(new Date()).concat("_");
+            File file = new File(filePath, tipo + fileAppend + nombreArchivo);
+            if (!file.exists()) { // Si no existe, crea el archivo.
                 file.createNewFile();
-                rutaGuardada= file.getAbsolutePath();
+                rutaGuardada = file.getAbsolutePath();
             }
 
-        BufferedInputStream bis = new BufferedInputStream(url.openStream());
-        FileOutputStream fis = new FileOutputStream (file);
-        byte[] buffer = new byte[1024];
-        int count = 0;
-        while ((count = bis.read(buffer,0,1024))!=-1 ){
-            fis.write(buffer,0,count);
-        }
+            BufferedInputStream bis = new BufferedInputStream(url.openStream());
+            FileOutputStream fis = new FileOutputStream(file);
+            byte[] buffer = new byte[1024];
+            int count = 0;
+            while ((count = bis.read(buffer, 0, 1024)) != -1) {
+                fis.write(buffer, 0, count);
+            }
 
-        fis.close();
-        bis.close();
+            fis.close();
+            bis.close();
 
-        return rutaGuardada ;
+            return rutaGuardada;
 
-        } catch(FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             return null; // swallow a 404
         } catch (IOException e) {
             return null; // swallow a 404

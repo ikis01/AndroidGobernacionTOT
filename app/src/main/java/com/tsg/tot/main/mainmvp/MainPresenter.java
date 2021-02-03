@@ -58,7 +58,8 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
 
                     //Waiting time between queries
                     try {
-                        Thread.sleep(25 *1000);
+                        //Thread.sleep(25 *1000);
+                        Thread.sleep(5 *1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -80,7 +81,8 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
                                 model.checkMySubjects(context, API_REPOSITORY, token),
                                 model.checkMyTasks(context, API_REPOSITORY,token),
                                 model.checkMyPendingStudyMaterials(context, API_REPOSITORY,token),
-                                model.checkMyLessons(context,API_REPOSITORY,token));
+                                model.checkMyLessons(context,API_REPOSITORY,token),
+                                token);
 
 
                         try {

@@ -1,5 +1,7 @@
 package com.tsg.tot.data.remote;
 
+import android.provider.CallLog;
+
 import com.google.gson.JsonObject;
 import com.tsg.tot.data.model.Blob;
 import com.tsg.tot.data.model.Device;
@@ -58,7 +60,7 @@ public interface ApiService {
     String GET_EVALUATIONS = "api/gobernacion/cursos/evaluaciones";
     String GET_STUDY_MATERIAL = "api/materialestudio";
     String GET_MY_STUDY_MATERIAL = "api/MaterialEstudioRegistros/misMaterialesPendientesPorDescargar";
-
+    String POST_REGISTER_TASK = "api/tarearegistro/RegistrarMiTareaDescargada";
     String GET_MY_SUBJECTS = "api/materias/mismaterias";
     String GET_PLANNING = "api/gobernacion/cursos/planeacion";
     String GET_TEACHERS = "api/profesores";
@@ -72,6 +74,8 @@ public interface ApiService {
     String POST_SUBMISSIONS = "api/gobernacion/cursos/entregas/";
     String POST_BLOB = "upload";
 
+    @POST(POST_REGISTER_TASK)
+    Call<TaskRegristerRemote> postRegisterTask(@Header("Authorization") String authKey, @Body JsonObject body );
     @GET(GET_VERSION)
     Call<List<Version>> getVersion();
 

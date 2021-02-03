@@ -25,6 +25,7 @@ import com.tsg.tot.data.remote.model.LessonsRemote;
 import com.tsg.tot.data.remote.model.StudentRemote;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.data.remote.model.SubjectsRemote;
+import com.tsg.tot.data.remote.model.TaskRegristerRemote;
 import com.tsg.tot.data.remote.model.TaskRemote;
 import com.tsg.tot.data.remote.model.TeacherRemote;
 
@@ -126,5 +127,7 @@ public interface RemoteRepository {
     void postBlob(RequestBody requestBody);
 
     TokenCustom postLogin(JsonObject requestBody);
+
+    TaskRegristerRemote postRegisterTask (String token , JsonObject requestBody);
 
 }

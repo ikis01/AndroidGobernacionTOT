@@ -2,6 +2,7 @@ package com.tsg.tot.main.mainmvp;
 
 import android.content.Context;
 
+import com.google.gson.JsonObject;
 import com.tsg.tot.data.model.Device;
 import com.tsg.tot.data.model.Evaluations;
 import com.tsg.tot.data.model.Exercises;
@@ -21,6 +22,7 @@ import com.tsg.tot.data.remote.model.LessonsRemote;
 import com.tsg.tot.data.remote.model.StudentRemote;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.data.remote.model.SubjectsRemote;
+import com.tsg.tot.data.remote.model.TaskRegristerRemote;
 import com.tsg.tot.data.remote.model.TaskRemote;
 import com.tsg.tot.data.remote.model.TeacherRemote;
 import com.tsg.tot.main.fragment.CustomProgressDialog;
@@ -98,7 +100,8 @@ public interface MainMVP {
                             List<SubjectsRemote> subjectsRemoteList,
                             List<TaskRemote>taskRemoteList,
                             List<StudyMaterialRemote> materialRemoteList,
-                            List<LessonsRemote> lessonsRemoteList);
+                            List<LessonsRemote> lessonsRemoteList,
+                            String token);
 
 
 
@@ -161,8 +164,9 @@ public interface MainMVP {
 
 
         List<StudyMaterialRemote> checkMyPendingStudyMaterials(Context context,int from ,String token);
+         TaskRegristerRemote registerTask(Context context, Integer idTarea, String token, JsonObject body);
 
-        List<FilesKiosco> checkMyFileskioscos (Context  context, Integer idEstudiante,  Integer idMateria,Integer idTarea);
+            List<FilesKiosco> checkMyFileskioscos (Context  context, Integer idEstudiante,  Integer idMateria,Integer idTarea);
 
         //Methods for POST data on Endpoints
 

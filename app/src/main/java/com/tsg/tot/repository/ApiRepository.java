@@ -48,6 +48,7 @@ public class ApiRepository implements RemoteRepository {
     private ApiService mApiService = ApiUtils.getAPIService();
     public float apiVersion;
     TokenCustom tokenCustom = new TokenCustom("", "");
+    TaskRegristerRemote taskRegristerRemote = new TaskRegristerRemote();
 
     //List final for uptade DB
     List<Device> deviceListFinal;
@@ -833,6 +834,28 @@ public class ApiRepository implements RemoteRepository {
     }
 
     @Override
+    public TaskRegristerRemote postRegisterTask (String token , JsonObject requestBody) {
+        mApiService.postRegisterTask(token, requestBody).enqueue(new Callback<TaskRegristerRemote>() {
+            @Override
+            public void onResponse(Call<TaskRegristerRemote> call, Response<TaskRegristerRemote> response) {
+                if (response.isSuccessful()) {
+                    taskRegristerRemote = response.body();
+
+                    Log.d("Debug Registro de Tarea id ", taskRegristerRemote.getId().toString());
+                    Log.d("Debug Registro de Tarea tareaId : ", taskRegristerRemote.getTareaId().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TaskRegristerRemote> call, Throwable t) {
+                Log.d("onFailure RegisterTask ", t.toString());
+            }
+        });
+        return taskRegristerRemote;
+    }
+
+
+    @Override
     public TokenCustom postLogin(JsonObject requestBody) {
 
         mApiService.postLogin(requestBody).enqueue(new Callback<TokenCustom>() {
@@ -846,7 +869,7 @@ public class ApiRepository implements RemoteRepository {
 
             @Override
             public void onFailure(Call<TokenCustom> call, Throwable t) {
-                Log.d("onFailure getVersion", t.toString());
+                Log.d("onFailure Login ", t.toString());
             }
         });
 

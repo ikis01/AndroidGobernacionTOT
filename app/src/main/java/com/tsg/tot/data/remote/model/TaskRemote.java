@@ -37,6 +37,8 @@ public class TaskRemote {
     @Expose
     private SubjectsRemote materia;
 
+    private Integer idRegistro;
+
     private Long idSubida ;
 
     public Long getIdSubida() {
@@ -117,5 +119,13 @@ public class TaskRemote {
 
     public void setMateria(SubjectsRemote materia) {
         this.materia = materia;
+    }
+
+    public Integer getIdRegistro() {
+        return idRegistro;
+    }
+
+    public void setIdRegistro(Integer idRegistro) {
+        this.idRegistro = idRegistro;
     }
 }

@@ -31,6 +31,8 @@ public class Task  {
     @Expose
     private Integer tareakiosco;
 
+    private Integer registroTarea;
+
     /**
      * No args constructor for use in serialization
      */
@@ -140,5 +142,13 @@ public class Task  {
 
     public void setTareakiosco(Integer tareakiosco) {
         this.tareakiosco = tareakiosco;
+    }
+
+    public Integer getRegistroTarea() {
+        return registroTarea;
+    }
+
+    public void setRegistroTarea(Integer registroTarea) {
+        this.registroTarea = registroTarea;
     }
 }

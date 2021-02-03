@@ -21,6 +21,7 @@ import androidx.core.app.ActivityCompat;
 import com.google.gson.JsonObject;
 import com.tsg.tot.R;
 import com.tsg.tot.data.model.FilesKiosco;
+import com.tsg.tot.data.model.SubmissionDisplay;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.TokenCustom;
 import com.tsg.tot.data.model.Users;
@@ -232,6 +233,8 @@ public class LoginActivity extends AppCompatActivity {
             List <StudyMaterialRemote> studyMaterialRemotes = dbR.getStudyMaterial(this,1);
             List <Task> taskList = dbR.getTasks(this,209);
             List <FilesKiosco> filesKioscoList = dbR.getFileKioscos(this,209,6763,601);
+
+            List<SubmissionDisplay> submissionDisplayList = dbR.getSubmissionsDisplay(this,1,1,1);
             /// prueba de obtencion de datos
 
             //// verificar registro previo

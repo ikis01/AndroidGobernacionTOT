@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:id="@+id/adapterSubmissionDisplay">
+
+
+    <TextView
+        android:id="@+id/tv_file_name_submission_display"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="left"
+        android:textAppearance="@android:style/TextAppearance"
+        android:textColor="@color/colorGray"
+        android:textSize="24sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tv_file_estatus_submission_display"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="left"
+        android:padding="5dp"
+        android:textAppearance="@android:style/TextAppearance"
+        android:textColor="@color/colorGray"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+</RelativeLayout>

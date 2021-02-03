@@ -26,6 +26,7 @@ import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.main.fragment.ListFileKioscoFragment;
 import com.tsg.tot.main.fragment.ListSubjectFragment;
+import com.tsg.tot.main.fragment.ListSubmissionDisplayFragment;
 import com.tsg.tot.main.mainmvp.MainMVP;
 import com.tsg.tot.repository.DatabaseRepository;
 import com.tsg.tot.root.App;
@@ -55,6 +56,7 @@ public class TaskDetailActivity extends AppCompatActivity
     FragmentTransaction fragmentTransaction;
 
     ListFileKioscoFragment listFileKioscoFragment;
+    ListSubmissionDisplayFragment listSubmissionDisplayFragment;
 
     TextView tv_studentCode, tv_studentName, tv_institutionName,
             tv_location, tv_pendingTask , tv_taskName;
@@ -115,8 +117,10 @@ public class TaskDetailActivity extends AppCompatActivity
 
         //Init Fragment
         listFileKioscoFragment = new ListFileKioscoFragment(presenter,idMateria,tareakiosco ,idEstudiante);
+        listSubmissionDisplayFragment = new ListSubmissionDisplayFragment(presenter,idMateria,idTarea,idEstudiante);
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.contentMaterialTareaList, listFileKioscoFragment);
+        fragmentTransaction.replace(R.id.contentEntregasList,listSubmissionDisplayFragment);
         fragmentTransaction.commit();
 
         btn_subir_archivo.setOnClickListener(new View.OnClickListener() {
@@ -208,7 +212,7 @@ public class TaskDetailActivity extends AppCompatActivity
                         Long idSubmission = dbR.updateSubmissions(submissionsList,TaskDetailActivity.this);
 
                         /// Archivo Destino
-                        File dstFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Data/Tareas/"+nombreTarea+"/"+idEstudiante+"_"+ fileAppend+"_"+file.getName());
+                        File dstFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Data/Tareas/"+nombreTarea+"/"+idEstudiante+"_"+ fileAppend+file.getName());
                        ///Archivo Origen
                         File srcFile = new File(srcName);
                         try {

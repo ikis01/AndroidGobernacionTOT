@@ -19,6 +19,7 @@ import com.tsg.tot.data.model.Planning;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.StudyMaterial;
 import com.tsg.tot.data.model.Subjects;
+import com.tsg.tot.data.model.SubmissionDisplay;
 import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
@@ -152,7 +153,7 @@ public class DatabaseRepository implements LocalRepository {
 
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String query = "SELECT * FROM " + SUBJECTS_TABLE_NAME
+        String query = "SELECT DISTINCT * FROM " + SUBJECTS_TABLE_NAME
                 + " , " + REL_STUDENT_SUBJECT_TABLE_NAME +
                 " WHERE " + REL_STUDENT_SUBJECT_FK_STUDENT + " = " + codeGrado +
                 " AND " + REL_STUDENT_SUBECT_FK_SUBJECT + " = " + SUBJECTS_ID;
@@ -384,7 +385,7 @@ public class DatabaseRepository implements LocalRepository {
 
     @Override
     public void updateMyTasks(List<TaskRemote> taskList, Context context, StudentRemote studentRemote, Integer regist) {
-
+            Log.d("updateMyTasks : ","inicio DatabaseRepository updateMyTasks");
         try {
             DbOpenHelper dbHelper = new DbOpenHelper(context);
             SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -392,10 +393,12 @@ public class DatabaseRepository implements LocalRepository {
             if (taskList != null) {
                 for (TaskRemote task : taskList) {
                     if (checkId(db, TASK_TABLE_NAME, TASK_KIOSCO, task.getTareaId().toString()) == 0) {
-                        cv.put(TASK_ID, task.getIdD2L());
-                        cv.put(TASK_CODE, task.getIdArchivoD2L());
+                        //cv.put(TASK_ID, task.getIdD2L());
+                        cv.put(TASK_ID, task.getTareaId());
+                        //cv.put(TASK_CODE, task.getIdArchivoD2L());
+                        cv.put(TASK_CODE, task.getIdD2L());
                         cv.put(TASK_NAME, task.getNombreActividad());
-                        cv.put(TASK_REGISTER, regist);
+                        cv.put(TASK_REGISTER, task.getIdRegistro());
                         cv.put(TASK_KIOSCO, task.getTareaId());
                         cv.put(TASK_STUDENT_ID, studentRemote.getId());
                         cv.put(TASK_SUBJECT_ID, task.getMateriaId());
@@ -837,6 +840,7 @@ public class DatabaseRepository implements LocalRepository {
                     cv.put(TASK_NAME, task.getNombre());
                     cv.put(TASK_SUBJECT_ID, task.getMaterias());
                     cv.put(TASK_UPLOAD_ID, task.getSubida().getId());
+                    cv.put(TASK_REGISTER,task.getRegistroTarea());
                     cv.put(TASK_CODE, task.getCodigo());
                     cv.put(TASK_STUDENT_ID, task.getEstudiante());
                     db.insert(TASK_TABLE_NAME, null, cv);
@@ -1218,5 +1222,50 @@ public class DatabaseRepository implements LocalRepository {
         return filesKioscoList;
     }
 
+
+    public List<SubmissionDisplay> getSubmissionsDisplay (Context context, Integer idEstudiante, Integer idMateria, Integer idTarea){
+        List<SubmissionDisplay> submissionDisplayList = new ArrayList<>();
+
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String query = "SELECT ENTREGAS.idEntrega,ENTREGAS.upp as upp ,ARCHIVOSKIOSCO.nombreArchivo as nombreArchivo , ARCHIVOSKIOSCO.ruta AS ruta"+
+                ", CASE "+
+         " upp " +
+        " WHEN 0 " +
+        " THEN 'PENDIENTE' " +
+        " WHEN 1 "+
+        " THEN 'ENTREGADO' " +
+        " END AS estatus " +
+        " from TAREAS,ENTREGAS,ARCHIVOSKIOSCO "+
+        " where TAREAS.ESTUDIANTE_IDESTUDIANTE = " + idEstudiante +
+        " and MATERIA_IDMATERIA = " + idMateria +
+        " and id = " + idTarea +
+        " and entregas.Subida_idSubida = TAREAS.SUBIDA_IDSUBIDA " +
+        " and ARCHIVOSKIOSCO.idEntrega = ENTREGAS.idEntrega ";
+
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        try {
+            if (cursor.getCount() > 0) {
+                do {
+                    //add row to list
+                    submissionDisplayList.add(new SubmissionDisplay(
+                            Integer.parseInt(cursor.getString(cursor.getColumnIndex("idEntrega"))),
+                            Integer.parseInt(cursor.getString(cursor.getColumnIndex("upp"))),
+                            cursor.getString(cursor.getColumnIndex("nombreArchivo")),
+                            cursor.getString(cursor.getColumnIndex("estatus")),
+                            cursor.getString(cursor.getColumnIndex("ruta"))
+                    ));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+
+        db.close();
+        dbHelper.close();
+        return submissionDisplayList;
+    }
 
 }

@@ -12,9 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.tsg.tot.R;
-import com.tsg.tot.adapter.FileKioscoAdapter;
+
+import com.tsg.tot.adapter.SubmissionsDisplayAdapter;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Subjects;
@@ -28,32 +31,24 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+
 /**
  * A fragment representing a list of Items.
  */
-public class ListFileKioscoFragment extends Fragment implements
+public class ListSubmissionDisplayFragment extends Fragment implements
         TaskMVP.Presenter ,FragmentsMVP.View{
     private ListFileKioscoFragment.OnFragmentInteractionListener mListener;
 
     RecyclerView recyclerList;
-    FileKioscoAdapter fileKioscoAdapter;
+    SubmissionsDisplayAdapter submissionsDisplayAdapter;
     Integer idMateria = 0;
     Integer idTarea = 0;
     Integer idEstudiante = 0;
 
-    //@Inject
-   // MainMVP.Presenter presenter;
-
     @Inject
     TaskMVP.Presenter presenter;
 
-
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public ListFileKioscoFragment(TaskMVP.Presenter presenter,Integer idMateria,Integer idTarea,Integer idEstudiante) {
+    public ListSubmissionDisplayFragment (TaskMVP.Presenter presenter,Integer idMateria,Integer idTarea,Integer idEstudiante) {
         this.presenter = presenter;
         this.idEstudiante = idEstudiante;
         this.idTarea= idTarea;
@@ -61,30 +56,27 @@ public class ListFileKioscoFragment extends Fragment implements
     }
 
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_fie_kiosco, container, false);
-
-        recyclerList = view.findViewById(R.id.recyclerFileKiosco);
+        View view = inflater.inflate(R.layout.fragment_list_submissions_display, container, false);
+        recyclerList = view.findViewById(R.id.recyclerSubmissionDisplay);
         recyclerList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerList.setLayoutManager(linearLayoutManager);
-        fileKioscoAdapter = new FileKioscoAdapter();
-        recyclerList.setAdapter(fileKioscoAdapter);
+        submissionsDisplayAdapter = new SubmissionsDisplayAdapter();
+        recyclerList.setAdapter(submissionsDisplayAdapter);
+
 
         return view;
     }
-
 
     @Override
     public void setSubjects(List<Subjects> subjectsList, Context context, MainMVP.Presenter presenter) {
@@ -98,8 +90,6 @@ public class ListFileKioscoFragment extends Fragment implements
 
     @Override
     public void setFileKiosco(List<FilesKiosco> filesKioscoList, Context context, TaskMVP.Presenter presenter) {
-
-        fileKioscoAdapter.dataSet(filesKioscoList,filesKioscoList.size(),context,presenter);
 
     }
 
@@ -115,35 +105,7 @@ public class ListFileKioscoFragment extends Fragment implements
 
     @Override
     public void setSubmissionDisplay(List<SubmissionDisplay> submissionDisplayList, Context context, TaskMVP.Presenter presenter) {
-
-    }
-
-
-    @Override
-    public void onResume() {
-
-
-
-        Integer intCode = 0;
-        super.onResume();
-        setFileKiosco(presenter.getFileKioscos(getContext(), idEstudiante,idMateria,idTarea),  getContext(),  presenter);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof ListFileKioscoFragment.OnFragmentInteractionListener) {
-            mListener = (ListFileKioscoFragment.OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+        submissionsDisplayAdapter.dataSet(submissionDisplayList,submissionDisplayList.size(),context,presenter);
     }
 
     @Override
@@ -182,7 +144,7 @@ public class ListFileKioscoFragment extends Fragment implements
     }
 
     @Override
-    public List<FilesKiosco> getFileKioscos(Context context, int parseInt, int parseInt1, int i) {
+    public List<FilesKiosco> getFileKioscos(Context context, int idEstudiante, int idMateria, int idTarea) {
         return null;
     }
 
@@ -201,16 +163,21 @@ public class ListFileKioscoFragment extends Fragment implements
         return null;
     }
 
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
-    }
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
 
     }
 
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(Uri uri);
+    }
 
 
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        setSubmissionDisplay(presenter.getSubmissionDisplay(getContext(), idEstudiante,idMateria,idTarea),  getContext(),  presenter);
+    }
 }

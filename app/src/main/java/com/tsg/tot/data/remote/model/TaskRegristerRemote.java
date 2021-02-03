@@ -4,24 +4,31 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class TaskRegristerRemote {
+
     @SerializedName("id")
     @Expose
     private Integer id;
+
     @SerializedName("fechaCreacion")
     @Expose
     private String fechaCreacion;
+
     @SerializedName("tareaId")
     @Expose
     private Integer tareaId;
+
     @SerializedName("materiaId")
     @Expose
     private Integer materiaId;
+
     @SerializedName("estudianteId")
     @Expose
     private Integer estudianteId;
+
     @SerializedName("kioskoServerId")
     @Expose
     private Integer kioskoServerId;
+
 
     public Integer getId() {
         return id;
@@ -69,5 +76,18 @@ public class TaskRegristerRemote {
 
     public void setKioskoServerId(Integer kioskoServerId) {
         this.kioskoServerId = kioskoServerId;
+    }
+
+    public TaskRegristerRemote(Integer id, String fechaCreacion, Integer tareaId, Integer materiaId, Integer estudianteId, Integer kioskoServerId) {
+        this.id = id;
+        this.fechaCreacion = fechaCreacion;
+        this.tareaId = tareaId;
+        this.materiaId = materiaId;
+        this.estudianteId = estudianteId;
+        this.kioskoServerId = kioskoServerId;
+    }
+
+    public TaskRegristerRemote() {
+
     }
 }

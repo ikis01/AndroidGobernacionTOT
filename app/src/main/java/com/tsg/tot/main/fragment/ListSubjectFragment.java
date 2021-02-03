@@ -16,10 +16,12 @@ import com.tsg.tot.adapter.SubjectsAdapter;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Subjects;
+import com.tsg.tot.data.model.SubmissionDisplay;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.main.mainmvp.MainMVP;
 import com.tsg.tot.main.mainmvp.MainView;
+import com.tsg.tot.storage.TOTPreferences;
 import com.tsg.tot.task.taskmvp.TaskMVP;
 
 import java.util.List;
@@ -82,19 +84,21 @@ public class  ListSubjectFragment extends Fragment implements FragmentsMVP.View 
 
     @Override
     public void onResume() {
-
-        Integer intCode = 0;
         super.onResume();
-        String code = ((MainView)getContext()).tv_studentCode.getText().toString();
-        code = code.replace("Código:","");
+//        Integer intCode = 0;
 
-        if (code != ""){
-            intCode= Integer.parseInt(code);
-        }else{
+//        String code = ((MainView)getContext()).tv_studentCode.getText().toString();
+//        code = code.replace("Código:","");
+//
+//        if (code != ""){
+//            intCode= Integer.parseInt(code);
+//        }else{
+//
+//        }
 
-        }
+        Integer idEstudianteI = Integer.parseInt(TOTPreferences.getInstance(getContext()).getIdUsuario());
 
-        setSubjects(presenter.getSubjects(getContext(),"",intCode), getContext(), presenter );
+        setSubjects(presenter.getSubjects(getContext(),"",idEstudianteI), getContext(), presenter );
     }
 
     public interface OnFragmentInteractionListener {
@@ -123,6 +127,11 @@ public class  ListSubjectFragment extends Fragment implements FragmentsMVP.View 
 
     @Override
     public void setStudyMaterials(List<StudyMaterialRemote> studyMaterialRemoteList, Context context, TaskMVP.Presenter presenter) {
+
+    }
+
+    @Override
+    public void setSubmissionDisplay(List<SubmissionDisplay> submissionDisplayList, Context context, TaskMVP.Presenter presenter) {
 
     }
 

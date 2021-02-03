@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Subjects;
+import com.tsg.tot.data.model.SubmissionDisplay;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 
@@ -100,6 +101,11 @@ public  class TaskPresenter implements TaskMVP.Presenter, TaskMVP.Model.OnFinish
     @Override
     public List<StudyMaterialRemote> getStudyMaterials(Context context, int idClase){
         return model.checkMyStudyMaterial (context,idClase);
+    }
+
+    @Override
+    public List<SubmissionDisplay> getSubmissionDisplay(Context context, int idEstudiante, int idMateria, int idTarea) {
+        return model.checkMySubmissionDisplay(context,idEstudiante,idMateria,idTarea);
     }
 
 

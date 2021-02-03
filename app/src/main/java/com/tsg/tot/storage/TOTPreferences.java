@@ -90,4 +90,15 @@ public class TOTPreferences {
         return pref.getString(IDCLASE,"");
     }
 
+    private static final String TOKEN = "TOKEN";
+
+    public void setToken(String token) {
+        editor.putString(TOKEN, token);
+        editor.commit();
+    }
+
+    public String getToken() {
+        return pref.getString(TOKEN,"");
+    }
+
 }
