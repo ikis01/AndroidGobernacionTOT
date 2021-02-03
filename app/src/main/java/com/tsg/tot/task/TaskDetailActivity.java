@@ -228,7 +228,8 @@ public class TaskDetailActivity extends AppCompatActivity
                             filesKiosco.setNombreArchivo(file.getName());
                             filesKioscoList.add(filesKiosco);
                             dbR.updateMyFileKiosco(filesKioscoList,TaskDetailActivity.this);
-
+                            finish();
+                            startActivity(getIntent());
 
                         } catch (IOException e) {
                             e.printStackTrace();

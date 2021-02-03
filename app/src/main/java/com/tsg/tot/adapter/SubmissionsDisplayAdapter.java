@@ -75,7 +75,7 @@ public class SubmissionsDisplayAdapter extends RecyclerView.Adapter<SubmissionsD
 
         holder.nameFile.setText(submissionDisplayList.get(position).getNombreArchivo());
         holder.statusFile.setText(submissionDisplayList.get(position).getEstatus());
-        
+
         holder.itemView.setOnClickListener(view -> {
             notifyDataSetChanged();
 
