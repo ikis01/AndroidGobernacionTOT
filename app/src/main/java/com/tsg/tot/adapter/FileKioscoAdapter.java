@@ -80,7 +80,7 @@ public class FileKioscoAdapter extends RecyclerView.Adapter<FileKioscoAdapter.Vi
         holder.statusFile.setText("ARCHIVO TAREA");
 
         holder.itemView.setOnClickListener(view -> {
-            FilesKiosco filesKiosco = new FilesKiosco(
+/*            FilesKiosco filesKiosco = new FilesKiosco(
                     filesKioscoList.get(position).getIdArchivosTOT(),
                     filesKioscoList.get(position).getArchivoKiosco(),
                     filesKioscoList.get(position).getCodigo(),
@@ -89,7 +89,7 @@ public class FileKioscoAdapter extends RecyclerView.Adapter<FileKioscoAdapter.Vi
                     filesKioscoList.get(position).getSubida_idsubida(),
                     filesKioscoList.get(position).getNombreArchivo());
 
-            presenter.setFileKiosco(filesKiosco);
+            presenter.setFileKiosco(filesKiosco);*/
             notifyDataSetChanged();
 
             File newFile = new File(filesKioscoList.get(position).getRuta());
