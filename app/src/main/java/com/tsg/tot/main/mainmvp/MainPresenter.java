@@ -82,7 +82,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
                                 model.checkMyTasks(context, API_REPOSITORY,token),
                                 model.checkMyPendingStudyMaterials(context, API_REPOSITORY,token),
                                 model.checkMyLessons(context,API_REPOSITORY,token),
-                                token);
+                                token,dialog);
 
 
                         try {

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021.
+ */
+
 package com.tsg.tot.adapter;
 
 import androidx.annotation.NonNull;
@@ -22,35 +26,34 @@ import java.util.List;
 
 import static androidx.core.content.FileProvider.getUriForFile;
 
-/**
- * TODO: Replace the implementation with code for your data type.
- */
+
 public class FileKioscoAdapter extends RecyclerView.Adapter<FileKioscoAdapter.ViewHolder> {
 
 
-    List<FilesKiosco>  filesKioscoList;
+    List<FilesKiosco> filesKioscoList;
     FilesKiosco filesKiosco;
-    int size= 0;
-    Context context ;
+    int size = 0;
+    Context context;
     TaskMVP.Presenter presenter;
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
-        private  TextView nameFile ;
-        private  TextView statusFile;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView nameFile;
+        private TextView statusFile;
         private RelativeLayout adapterFileKiosco;
 
-        ViewHolder(View itemView){
+        ViewHolder(View itemView) {
             super(itemView);
             nameFile = itemView.findViewById(R.id.tv_file_name_kiosco);
             statusFile = itemView.findViewById(R.id.tv_file_estatus_kisoco);
             adapterFileKiosco = itemView.findViewById(R.id.adapterFileKiosco);
         }
     }
+
     public FileKioscoAdapter() {
-        filesKiosco =  new FilesKiosco();
+        filesKiosco = new FilesKiosco();
     }
 
-    public void dataSet (List<FilesKiosco> filesKioscoList, int size, Context context, TaskMVP.Presenter presenter){
+    public void dataSet(List<FilesKiosco> filesKioscoList, int size, Context context, TaskMVP.Presenter presenter) {
         this.filesKioscoList = filesKioscoList;
         this.size = size;
         this.context = context;
@@ -68,7 +71,7 @@ public class FileKioscoAdapter extends RecyclerView.Adapter<FileKioscoAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder( ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
 
         if (position % 2 == 0) {
             holder.adapterFileKiosco.setBackgroundColor(Color.parseColor("#FFF1EF"));
@@ -94,7 +97,7 @@ public class FileKioscoAdapter extends RecyclerView.Adapter<FileKioscoAdapter.Vi
 
             File newFile = new File(filesKioscoList.get(position).getRuta());
             Uri contentUri = getUriForFile(context.getApplicationContext(), "com.tot.fileprovider", newFile);
-            ApiUtils.openFile(contentUri,context);
+            ApiUtils.openFile(contentUri, context);
 
         });
     }

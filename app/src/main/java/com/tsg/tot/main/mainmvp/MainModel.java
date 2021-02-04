@@ -104,7 +104,8 @@ public class MainModel implements MainMVP.Model {
                                List<TaskRemote> taskRemoteList,
                                List<StudyMaterialRemote> materialRemoteList,
                                List<LessonsRemote> lessonsRemoteList,
-                               String token
+                               String token,
+                               CustomProgressDialog dialog
     ) {
 
         File storageDirMaterialRemote = null;
@@ -112,7 +113,7 @@ public class MainModel implements MainMVP.Model {
         File storageDirTask = null;
         List<TaskRemote> taskRemoteListAux = new ArrayList<>();
         List<FilesKiosco> filesKioscoList = new ArrayList<>();
-
+        dialog.setProgress(dialog.getProgress() + 5);
         databaseRepository.updateMyStudent(studentRemote, context, Integer.parseInt(idUsusario));
         databaseRepository.updateMySubjects(subjectsRemoteList, context);
         databaseRepository.updateRelStudentSubjects(studentRemote, subjectsRemoteList, context);

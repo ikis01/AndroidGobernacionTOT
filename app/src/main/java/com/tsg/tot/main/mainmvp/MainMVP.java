@@ -101,7 +101,8 @@ public interface MainMVP {
                             List<TaskRemote>taskRemoteList,
                             List<StudyMaterialRemote> materialRemoteList,
                             List<LessonsRemote> lessonsRemoteList,
-                            String token);
+                            String token,
+                            CustomProgressDialog dialog);
 
 
 
