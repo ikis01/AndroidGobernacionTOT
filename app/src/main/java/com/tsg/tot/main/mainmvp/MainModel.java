@@ -180,7 +180,7 @@ public class MainModel implements MainMVP.Model {
                                 jsonObject.addProperty("tareaId", taskRemote.getTareaId());
 
 
-                                TaskRegristerRemote taskRegristerRemote=  registerTask( context, taskRemote.getTareaId(), token, jsonObject);
+ //                               TaskRegristerRemote taskRegristerRemote=  registerTask( context, taskRemote.getTareaId(), token, jsonObject);
 
                                 //if (taskRegristerRemote!=null) {
 //                                    Log.d("resultado Registrar TaskRemote ",taskRegristerRemote.toString());
