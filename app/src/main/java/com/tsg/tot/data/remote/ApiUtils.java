@@ -23,6 +23,10 @@ public class ApiUtils {
         return Client.getClient().create(ApiService.class);
     }
 
+    public static ApiService getAPIServiceLogin( ) {
+        return Client.getClientLogin().create(ApiService.class);
+    }
+    
     public static void openFile(Uri uri, Context context){
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(uri);

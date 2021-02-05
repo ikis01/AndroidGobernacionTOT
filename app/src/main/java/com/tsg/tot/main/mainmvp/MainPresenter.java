@@ -86,7 +86,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
 
 
                         try {
-                            Thread.sleep(12 * 1000);
+                            Thread.sleep(10 * 1000);
                            // dialog.setIcon(dialog.getProgress() + 10);
                         } catch (InterruptedException e) {
                             e.printStackTrace();

@@ -153,7 +153,7 @@ public class LoginActivity extends AppCompatActivity {
                 jsonObject.addProperty("password", password);
             try{
                 ///Se obtiene Login remoto  token  en caso de no obtenerlo no se procede a sincronizar
-                Call<TokenCustom> tokenCustomCall = ApiUtils.getAPIService().postLogin(jsonObject);
+                Call<TokenCustom> tokenCustomCall = ApiUtils.getAPIServiceLogin().postLogin(jsonObject);
                 tokenCustomCall.enqueue(new Callback<TokenCustom>() {
                     @Override
                     public void onResponse(Call<TokenCustom> call, Response<TokenCustom> response) {

@@ -23,7 +23,9 @@ import com.tsg.tot.main.fragment.CustomProgressDialog;
 import com.tsg.tot.main.fragment.InformationFragment;
 
 import com.tsg.tot.main.fragment.ListSubjectFragment;
+import com.tsg.tot.repository.DatabaseRepository;
 import com.tsg.tot.root.App;
+import com.tsg.tot.storage.TOTPreferences;
 import com.tsg.tot.task.taskmvp.TaskMVP;
 
 import java.util.List;
@@ -51,7 +53,7 @@ public class MainView extends AppCompatActivity
 
     //ProgressDialog dialog;
     CustomProgressDialog dialog;
-    String token, idUsuario ="";
+    String token, idUsuario = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,12 +69,20 @@ public class MainView extends AppCompatActivity
 
         presenter.createDB(this);
 
-        if (getIntent().getExtras()!=null) {
-             token = getIntent().getExtras().getString("token");
-             idUsuario = getIntent().getExtras().getString("idUsuario");
+        if (getIntent().getExtras() != null) {
+            token = getIntent().getExtras().getString("token");
+            idUsuario = getIntent().getExtras().getString("idUsuario");
         }
-           // Toast.makeText(this, "el token es : \n" + token, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "el token es : \n" + token, Toast.LENGTH_SHORT).show();
+        DatabaseRepository dbR = new DatabaseRepository();
 
+        List<Student> studentList = dbR.getStudent(MainView.this, Integer.parseInt(idUsuario));
+
+        if (studentList.size() > 0) {
+            TOTPreferences.getInstance(MainView.this).setIdEstudiante(studentList.get(0).getId().toString());
+        } else {
+            TOTPreferences.getInstance(MainView.this).setIdEstudiante("0");
+        }
 
 
         //Init Fragment
@@ -93,7 +103,7 @@ public class MainView extends AppCompatActivity
 
         tv_pendingTask = findViewById(R.id.tv_pendingTask);
 
-        dialog =  new CustomProgressDialog(MainView.this,
+        dialog = new CustomProgressDialog(MainView.this,
                 getResources().getString(R.string.message_load_db));
         dialog.setIcon(R.drawable.tot_icon);
         dialog.show();
@@ -104,10 +114,10 @@ public class MainView extends AppCompatActivity
         super.onResume();
         presenter.setView(this);
         showLoadingDialog();
-        presenter.checkVersions(this,dialog,token,idUsuario);
-        dialog.setProgress(dialog.getProgress()+5);
-        presenter.setInfoStudent(this,Integer.parseInt(idUsuario));
-        dialog.setProgress(dialog.getProgress()+5);
+        presenter.checkVersions(this, dialog, token, idUsuario);
+        dialog.setProgress(dialog.getProgress() + 5);
+        presenter.setInfoStudent(this, Integer.parseInt(idUsuario));
+        dialog.setProgress(dialog.getProgress() + 5);
 
     }
 
@@ -134,13 +144,11 @@ public class MainView extends AppCompatActivity
             String code = getResources().getString(R.string.main_view_StudentCode)
                     + studentList.get(0).getId();
             tv_studentCode.setText(code);
-            tv_studentName.setText(studentList.get(0).getNombres()+" "+studentList.get(0).getApellidos() );
+            tv_studentName.setText(studentList.get(0).getNombres() + " " + studentList.get(0).getApellidos());
         }
 
         tv_pendingTask.setText(getResources().getString(R.string.main_view_PendingTasks) + ": ");
     }
-
-
 
 
     @Override
@@ -150,7 +158,7 @@ public class MainView extends AppCompatActivity
 
         if (informationFragment != null && findViewById(R.id.contentFragment) == null) {
             informationFragment.setInformation(subjects);
-            informationFragment.setTaskSubjects(presenter.getTaskSubject(this, subjects.getId(),""), this, presenter);
+            informationFragment.setTaskSubjects(presenter.getTaskSubject(this, subjects.getId(), ""), this, presenter);
         } else {
             informationFragment = new InformationFragment(presenter);
             Bundle bundleEnvio = new Bundle();
@@ -194,22 +202,22 @@ public class MainView extends AppCompatActivity
     }
 
     @Override
-    public void setFileKiosco( FilesKiosco fileKiosco) {
+    public void setFileKiosco(FilesKiosco fileKiosco) {
 
     }
 
-    public void update(View view)  {
-        dialog =  new CustomProgressDialog(MainView.this,
+    public void update(View view) {
+        dialog = new CustomProgressDialog(MainView.this,
                 getResources().getString(R.string.message_load_db));
         dialog.setIcon(R.drawable.tot_icon);
         dialog.show();
-        presenter.updateEverything(this,dialog,token);
-        dialog.setProgress(dialog.getProgress()+5);
-        presenter.setInfoStudent(this,Integer.parseInt(idUsuario));
-        dialog.setProgress(dialog.getProgress()+5);
+        presenter.updateEverything(this, dialog, token);
+        dialog.setProgress(dialog.getProgress() + 5);
+        presenter.setInfoStudent(this, Integer.parseInt(idUsuario));
+        dialog.setProgress(dialog.getProgress() + 5);
     }
 
-    public void logout (View view){
+    public void logout(View view) {
 
         Intent broadcastIntent = new Intent();
         broadcastIntent.setAction("com.package.ACTION_LOGOUT");
@@ -219,17 +227,17 @@ public class MainView extends AppCompatActivity
 
 
     @Override
-    public void onClick(View view){
-        switch (view.getId()){
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.statusTaskImage: //id de ImageView.
-                dialog =  new CustomProgressDialog(MainView.this,
+                dialog = new CustomProgressDialog(MainView.this,
                         getResources().getString(R.string.message_load_db));
                 dialog.setIcon(R.drawable.tot_icon);
                 dialog.show();
-                presenter.updateEverything(this,dialog,token);
-                dialog.setProgress(dialog.getProgress()+5);
-                presenter.setInfoStudent(this,Integer.parseInt(idUsuario));
-                dialog.setProgress(dialog.getProgress()+5);
+                presenter.updateEverything(this, dialog, token);
+                dialog.setProgress(dialog.getProgress() + 5);
+                presenter.setInfoStudent(this, Integer.parseInt(idUsuario));
+                dialog.setProgress(dialog.getProgress() + 5);
                 //realiza operación al dar clic al imageView.
                 Intent intent = new Intent(this, MainView.class);
                 startActivity(intent);

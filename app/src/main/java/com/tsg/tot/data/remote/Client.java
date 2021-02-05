@@ -72,6 +72,47 @@ public class Client {
     }
 
 
+    static Retrofit getClientLogin()
+    {
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient httpClient = new UnsafeOkHttpClient().getUnsafeOkHttpClient()
+                .newBuilder()
+                .readTimeout(25, TimeUnit.SECONDS)
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .addInterceptor(logging)
+                // .addInterceptor(new  NetworkConnectionInterceptor())
+                .build();
+
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    // .baseUrl(ApiUtils.BASE_URL+":"+ApiUtils.PORT_URL+"/")
+                    .baseUrl(ApiUtils.BASE_URL)
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .client(httpClient)
+                    .build();
+        }
+        return retrofit;
+/*        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(logging);
+
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(ApiUtils.BASE_URL)
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .client(httpClient.build())
+                    .build();
+        }
+        return retrofit;*/
+    }
+
     static Retrofit getClient() {
         Gson gson = new GsonBuilder()
                 .setLenient()
@@ -83,7 +124,7 @@ public class Client {
         OkHttpClient httpClient = new UnsafeOkHttpClient().getUnsafeOkHttpClient()
                 .newBuilder()
                 .readTimeout(180, TimeUnit.SECONDS)
-                .connectTimeout(90, TimeUnit.SECONDS)
+                .connectTimeout(80, TimeUnit.SECONDS)
                 .addInterceptor(logging)
                // .addInterceptor(new  NetworkConnectionInterceptor())
                 .build();

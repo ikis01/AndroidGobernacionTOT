@@ -78,6 +78,17 @@ public class TOTPreferences {
         return pref.getString(IDUSUARIO,"");
     }
 
+    private static final String IDESTUDIANTE = "IDESTUDIANTE";
+
+    public void setIdEstudiante(String idEstudiante) {
+        editor.putString(IDESTUDIANTE, idEstudiante);
+        editor.commit();
+    }
+
+    public String getIdEstudiante() {
+        return pref.getString(IDESTUDIANTE,"");
+    }
+
 
     private static final String IDCLASE = "IDCLASE";
 

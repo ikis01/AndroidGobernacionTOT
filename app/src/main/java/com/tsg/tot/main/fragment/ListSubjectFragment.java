@@ -96,7 +96,10 @@ public class  ListSubjectFragment extends Fragment implements FragmentsMVP.View 
 //
 //        }
 
-        Integer idEstudianteI = Integer.parseInt(TOTPreferences.getInstance(getContext()).getIdUsuario());
+        //Integer idEstudianteI = Integer.parseInt(TOTPreferences.getInstance(getContext()).getIdUsuario());
+
+        Integer idEstudianteI = Integer.parseInt(TOTPreferences.getInstance(getContext()).getIdEstudiante()==""?"0":TOTPreferences.getInstance(getContext()).getIdEstudiante());
+
 
         setSubjects(presenter.getSubjects(getContext(),"",idEstudianteI), getContext(), presenter );
     }
