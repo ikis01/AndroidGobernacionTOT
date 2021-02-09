@@ -37,7 +37,7 @@ public interface TaskMVP {
         void setView(TaskMVP.View view);
 
 
-        List<Task> getTaskSubject(Context context, int idSubject,String token);
+        List<Task> getTaskSubject(Context context, int idSubject,String token,Integer idEstudiante);
 
         void setInfoStudent(Context context);
 
@@ -63,7 +63,7 @@ public interface TaskMVP {
 
         List<Student> checkStudents(Context context, int from,Integer idUsuario);
 
-        List<Task> checkTasks(Context context, int from,String Token);
+        List<Task> checkTasks(Context context, int from,String Token, Integer idEstudiante);
 
         List<StudyMaterialRemote> checkMyStudyMaterial (Context context , Integer idClase);
 

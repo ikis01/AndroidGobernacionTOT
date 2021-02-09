@@ -30,6 +30,7 @@ import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.main.mainmvp.MainMVP;
 import com.tsg.tot.main.mainmvp.MainView;
+import com.tsg.tot.storage.TOTPreferences;
 import com.tsg.tot.subject.DetailSubjectActivity;
 import com.tsg.tot.task.taskmvp.TaskMVP;
 
@@ -137,7 +138,8 @@ public class InformationFragment extends Fragment implements FragmentsMVP.View{
     @Override
     public void onResume() {
         super.onResume();
-        setTaskSubjects(presenter.getTaskSubject(getContext(), subjects.getId(),""), getContext(), presenter);
+        Integer idEstudianteI = Integer.parseInt(TOTPreferences.getInstance(getContext()).getIdEstudiante()==""?"0":TOTPreferences.getInstance(getContext()).getIdEstudiante());
+        setTaskSubjects(presenter.getTaskSubject(getContext(), subjects.getId(),"",idEstudianteI), getContext(), presenter);
     }
 
     @Override

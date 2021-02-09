@@ -158,7 +158,9 @@ public class MainView extends AppCompatActivity
 
         if (informationFragment != null && findViewById(R.id.contentFragment) == null) {
             informationFragment.setInformation(subjects);
-            informationFragment.setTaskSubjects(presenter.getTaskSubject(this, subjects.getId(), ""), this, presenter);
+            Integer idEstudianteI = Integer.parseInt(TOTPreferences.getInstance(MainView.this).getIdEstudiante()==""?"0":TOTPreferences.getInstance(MainView.this).getIdEstudiante());
+
+            informationFragment.setTaskSubjects(presenter.getTaskSubject(this, subjects.getId(), "",idEstudianteI), this, presenter);
         } else {
             informationFragment = new InformationFragment(presenter);
             Bundle bundleEnvio = new Bundle();
@@ -219,10 +221,15 @@ public class MainView extends AppCompatActivity
 
     public void logout(View view) {
 
-        Intent broadcastIntent = new Intent();
-        broadcastIntent.setAction("com.package.ACTION_LOGOUT");
-        sendBroadcast(broadcastIntent);
+        Intent intent = new Intent();
+        intent.setAction("com.package.ACTION_LOGOUT");
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        sendBroadcast(intent);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        TOTPreferences.getInstance(view.getContext()).setIdUsuario("0");
+        TOTPreferences.getInstance(view.getContext()).setIdEstudiante("0");
         finish();
+
     }
 
 

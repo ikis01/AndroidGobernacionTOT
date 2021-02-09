@@ -69,7 +69,7 @@ public interface LocalRepository {
 
     List<Upload> getUploads(Context context);
 
-    List<Task> getTasks(Context context, String authKey);
+    List<Task> getTasks(Context context, String authKey,Integer idEstudiante);
 
 
     //UPDATE - POST

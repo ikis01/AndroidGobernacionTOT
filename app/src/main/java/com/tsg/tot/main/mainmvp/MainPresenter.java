@@ -111,8 +111,8 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
     }
 
     @Override
-    public List<Task> getTaskSubject(Context context, int idSubject, String token) {
-        List<Task> taskList = model.checkTasks(context, DATABASE_REPOSITORY, token);
+    public List<Task> getTaskSubject(Context context, int idSubject, String token,Integer idEstudiante) {
+        List<Task> taskList = model.checkTasks(context, DATABASE_REPOSITORY, token,idEstudiante);
         List<Task> taskListFinal = new ArrayList<>();
 
         if (taskList != null) {
@@ -185,7 +185,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
 
                 Log.d("checkVersions", "Diferent version");
                 model.updateAllDb(model.checkAPIVersion(context),
-                        model.checkTasks(context, API_REPOSITORY, token),
+                        model.checkTasks(context, API_REPOSITORY, token,0),
                         model.checkUploads(context, API_REPOSITORY),
                         model.checkTeachers(context, API_REPOSITORY, token),
                         model.checkSubjects(context, API_REPOSITORY, token,0),

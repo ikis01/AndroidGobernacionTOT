@@ -119,7 +119,7 @@ implements TaskMVP.Presenter , FragmentsMVP.View {
     }
 
     @Override
-    public List<Task> getTaskSubject(Context context, int idSubject, String token) {
+    public List<Task> getTaskSubject(Context context, int idSubject, String token,Integer idEstudiante) {
         return null;
     }
 

@@ -62,7 +62,7 @@ public interface MainMVP {
         List<Subjects> getSubjects(Context context,String token,Integer code);
         List<FilesKiosco>getFileKioscos(Context context,Integer idEstudiante,Integer idMateria,Integer idTarea);
 
-        List<Task> getTaskSubject(Context context, int idSubject,String token);
+        List<Task> getTaskSubject(Context context, int idSubject,String token,Integer idEstudiante);
 
         void setInfoStudent(Context context, Integer idUsuario);
 
@@ -154,7 +154,7 @@ public interface MainMVP {
 
         List<Upload> checkUploads(Context context, int from);
 
-        List<Task> checkTasks(Context context, int from,String token);
+        List<Task> checkTasks(Context context, int from,String token,Integer idEstudiante);
         List<TaskRemote> checkMyTasks(Context context, int from,String token);
 
         GradeRemote checkMyGrade (Context context, int from , String auth);

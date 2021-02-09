@@ -47,8 +47,8 @@ public  class TaskPresenter implements TaskMVP.Presenter, TaskMVP.Model.OnFinish
 
 
     @Override
-    public List<Task> getTaskSubject(Context context, int idSubject,String token) {
-        List<Task> taskList = model.checkTasks(context, DATABASE_REPOSITORY,token);
+    public List<Task> getTaskSubject(Context context, int idSubject,String token,Integer idEstudiante) {
+        List<Task> taskList = model.checkTasks(context, DATABASE_REPOSITORY,token,idEstudiante);
         List<Task> taskListFinal = new ArrayList<>();
 
         if (taskList != null) {

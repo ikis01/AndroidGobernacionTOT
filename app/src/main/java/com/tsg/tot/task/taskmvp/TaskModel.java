@@ -80,7 +80,7 @@ public class TaskModel implements TaskMVP.Model {
     }
 
     @Override
-    public List<Task> checkTasks(Context context, int from,String token) {
+    public List<Task> checkTasks(Context context, int from,String token,Integer idEstudiante) {
         List<Task> taskList = null;
         List<TaskRemote> taskListRemote = null;
 
@@ -89,7 +89,7 @@ public class TaskModel implements TaskMVP.Model {
                 taskListRemote = apiRepository.getTasks(context,token);
                 break;
             case DATABASE_REPOSITORY:
-                taskList = databaseRepository.getTasks(context,token);
+                taskList = databaseRepository.getTasks(context,token,idEstudiante);
                 break;
             default:
                 break;

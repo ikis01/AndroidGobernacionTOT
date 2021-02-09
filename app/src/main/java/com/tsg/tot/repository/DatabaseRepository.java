@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import androidx.annotation.IntegerRes;
+
 import com.google.gson.JsonObject;
 import com.tsg.tot.data.model.Blob;
 import com.tsg.tot.data.model.Device;
@@ -212,12 +214,13 @@ public class DatabaseRepository implements LocalRepository {
     }
 
     @Override
-    public List<Task> getTasks(Context context, String authKey) {
+    public List<Task> getTasks(Context context, String authKey, Integer idEstudiante) {
         List<Task> taskList = new ArrayList<>();
 
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String query = "SELECT * FROM " + TASK_TABLE_NAME;
+        String query = "SELECT * FROM " + TASK_TABLE_NAME +
+                " WHERE "+ TASK_STUDENT_ID + " = " + idEstudiante ;
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
 
@@ -392,7 +395,7 @@ public class DatabaseRepository implements LocalRepository {
             ContentValues cv = new ContentValues();
             if (taskList != null) {
                 for (TaskRemote task : taskList) {
-                    if (checkId(db, TASK_TABLE_NAME, TASK_KIOSCO, task.getTareaId().toString()) == 0) {
+                    if (checkRelations(db, TASK_TABLE_NAME, TASK_CODE,task.getIdD2L().toString(),TASK_STUDENT_ID,studentRemote.getId().toString()) == 0) {
                         //cv.put(TASK_ID, task.getIdD2L());
                         cv.put(TASK_ID, task.getTareaId());
                         //cv.put(TASK_CODE, task.getIdArchivoD2L());
@@ -402,7 +405,7 @@ public class DatabaseRepository implements LocalRepository {
                         cv.put(TASK_KIOSCO, task.getTareaId());
                         cv.put(TASK_STUDENT_ID, studentRemote.getId());
                         cv.put(TASK_SUBJECT_ID, task.getMateriaId());
-                        cv.put(TASK_UPLOAD_ID, task.getFile().getIdDescarga());
+                            cv.put(TASK_UPLOAD_ID, task.getFile().getIdDescarga());
                         cv.put(TASK_UPLOAD_ID, task.getIdSubida().intValue());
                         db.insert(TASK_TABLE_NAME, null, cv);
                     }
@@ -936,6 +939,20 @@ public class DatabaseRepository implements LocalRepository {
     }
 
 
+    public int checkRelations(SQLiteDatabase db, String tableName, String campo1 , String campo1Valor, String campo2, String campo2Valor) {
+        Cursor c = null;
+        String query = "SELECT count(*) FROM " + tableName
+                + " WHERE " + campo1 + " = " + campo1Valor
+                + " AND  " + campo2 + " = " + campo2Valor;
+        c = db.rawQuery(query, null);
+        if (c.moveToFirst()) {
+            return c.getInt(0);
+        }
+        c.close();
+        return 0;
+    }
+
+
     /**
      * Method that obtains the code and name of the grade of any subject
      *
@@ -1188,12 +1205,14 @@ public class DatabaseRepository implements LocalRepository {
 
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String query = "SELECT ARCHIVOSKIOSCO.* FROM TAREAS,ARCHIVOSKIOSCO,REL_ESTUDIANTE_MATERIAS" +
+        String query = " SELECT DISTINCT ARCHIVOSKIOSCO.* FROM TAREAS,ARCHIVOSKIOSCO,REL_ESTUDIANTE_MATERIAS,SUBIDA " +
                 " WHERE FK_ESTUDIANTE = " + idEstudiante+
                 " AND FK_MATERIA = " + idMateria+
                 " AND TAREAKIOSCO = " + idTarea +
-                " AND TAREAS.SUBIDA_IDSUBIDA = ARCHIVOSKIOSCO.subida_idsubida" +
-                " AND ARCHIVOSKIOSCO.archivoKiosco = tareas.TAREAKIOSCO";
+                " AND SUBIDA.Estudiante_idEstudiante = FK_ESTUDIANTE " +
+                " AND SUBIDA.idSubida = TAREAS.SUBIDA_IDSUBIDA " +
+                " AND ARCHIVOSKIOSCO.subida_idsubida = TAREAS.SUBIDA_IDSUBIDA " +
+                " AND ARCHIVOSKIOSCO.archivoKiosco = tareas.TAREAKIOSCO ";
 
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
