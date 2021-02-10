@@ -15,14 +15,21 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.gson.JsonObject;
 import com.tsg.tot.R;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Subjects;
+import com.tsg.tot.data.model.Task;
+import com.tsg.tot.data.model.TokenCustom;
+import com.tsg.tot.data.remote.ApiUtils;
+import com.tsg.tot.data.remote.model.TaskRegristerRemote;
+import com.tsg.tot.login.LoginActivity;
 import com.tsg.tot.main.fragment.CustomProgressDialog;
 import com.tsg.tot.main.fragment.InformationFragment;
 
 import com.tsg.tot.main.fragment.ListSubjectFragment;
+import com.tsg.tot.repository.ApiRepository;
 import com.tsg.tot.repository.DatabaseRepository;
 import com.tsg.tot.root.App;
 import com.tsg.tot.storage.TOTPreferences;
@@ -32,6 +39,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.READ_PHONE_STATE;
 
@@ -40,7 +51,7 @@ public class MainView extends AppCompatActivity
 
     @Inject
     MainMVP.Presenter presenter;
-
+    TaskRegristerRemote taskRegristerRemote;
     //TaskMVP.Presenter presenterTask;
     ListSubjectFragment listSubjectFragment;
     InformationFragment informationFragment;
@@ -118,6 +129,8 @@ public class MainView extends AppCompatActivity
         dialog.setProgress(dialog.getProgress() + 5);
         presenter.setInfoStudent(this, Integer.parseInt(idUsuario));
         dialog.setProgress(dialog.getProgress() + 5);
+
+        registrarTareasDescargadas();
 
     }
 
@@ -253,5 +266,61 @@ public class MainView extends AppCompatActivity
             default:
                 break;
         }
+    }
+
+    public void registrarTareasDescargadas(){
+        DatabaseRepository dbR = new DatabaseRepository();
+
+        List<Task> taskList = dbR.getTasksToRegister(MainView.this,TOTPreferences.getInstance(MainView.this).getIdEstudiante()==""?0:Integer.parseInt(TOTPreferences.getInstance(MainView.this).getIdEstudiante()));
+        if (taskList.size()>0){
+            for(Task taskAux : taskList){
+                Integer idTask = taskAux.getTareakiosco();
+                registrarTarea(token,taskAux.getId());
+            }
+
+        }
+
+    }
+
+    private void registrarTarea(String token , Integer idTarea){
+
+        ApiRepository apiRepository = new ApiRepository();
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("tareaId", idTarea);
+
+        try{
+            ///Se obtiene Login remoto  token  en caso de no obtenerlo no se procede a sincronizar
+            Call<TaskRegristerRemote> taskRegisterCall = ApiUtils.getAPIServiceTaskRegister().postRegisterTask(token,jsonObject);
+
+            taskRegisterCall.enqueue(new Callback<TaskRegristerRemote>() {
+                @Override
+                public void onResponse(Call<TaskRegristerRemote> call, Response<TaskRegristerRemote> response) {
+                    taskRegristerRemote = response.body();
+                    if (response.code() == 201) {
+                        Task task = new Task ();
+                        DatabaseRepository dbR = new DatabaseRepository();
+                        task.setEstudiante(taskRegristerRemote.getEstudianteId());
+                        task.setTareakiosco(taskRegristerRemote.getTareaId());
+                        task.setRegistroTarea(taskRegristerRemote.getId());
+                        dbR.updateTaskRegister(task,MainView.this);
+                    }
+                    else {
+                        return;
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(Call<TaskRegristerRemote> call, Throwable t) {
+
+                }
+            });
+
+
+        } catch (Exception e) {
+
+        }
+
     }
 }
