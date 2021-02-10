@@ -52,6 +52,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -66,6 +68,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class LoginActivity extends AppCompatActivity {
     /// prueba por modular
+    boolean isConnected  = false;
     private ApiRepository apiRepository;
     Response<TokenCustom> token;
     TokenCustom tokenCustom = new TokenCustom();
@@ -82,23 +85,31 @@ public class LoginActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .permitNetwork().build());
 
-        boolean conectado = ejecutaCliente();
+
         setContentView(R.layout.activity_login);
 
 
         tv_estatus_kiosko = (TextView) findViewById(R.id.tv_estatus_kiosko);
 
-        if (conectado) {
-            tv_estatus_kiosko.setText("ONLINE");
-            //Toast.makeText(this,"Kiosko Online ",Toast.LENGTH_LONG).show();
-        } else {
-            tv_estatus_kiosko.setText("OFFLINE");
-            Toast.makeText(this, "Kiosko Offline ", Toast.LENGTH_LONG).show();
-        }
+
 
         //Permissions
         requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, MODIFY_PHONE_STATE}, 1);
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isConnected = comprobarConexion();
+        if (isConnected) {
+            tv_estatus_kiosko.setText("ONLINE");
+            //Toast.makeText(this,"Kiosko Online ",Toast.LENGTH_LONG).show();
+        } else {
+            tv_estatus_kiosko.setText("OFFLINE");
+            //Toast.makeText(this, "Kiosko Offline ", Toast.LENGTH_LONG).show();
+        }
 
     }
 
@@ -377,4 +388,51 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private boolean comprobarConexion(){
+
+       ApiRepository apiRepository = new ApiRepository();
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("username", "probando");
+        jsonObject.addProperty("password", "probando");
+        try{
+            ///Se obtiene Login remoto  token  en caso de no obtenerlo no se procede a sincronizar
+            Call<TokenCustom> tokenCustomCall = ApiUtils.getAPIServiceLogin().postLogin(jsonObject);
+
+            tokenCustomCall.enqueue(new Callback<TokenCustom>() {
+                @Override
+                public void onResponse(Call<TokenCustom> call, Response<TokenCustom> response) {
+                    if (response.code() == 200||response.code() == 404||response.code() == 400) {
+                        isConnected = true ;
+
+                     } else {
+
+                        isConnected = false ;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<TokenCustom> call, Throwable t) {
+                     isConnected = false ;
+                }
+            });
+
+
+        } catch (Exception e) {
+
+        }
+//        try {
+//
+//           // Thread.sleep(20 * 1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
+        return isConnected;
+    }
+
+
+    public void registrarTareasDescargadas(){
+        DatabaseRepository dbR = new DatabaseRepository();
+
+    }
 }
