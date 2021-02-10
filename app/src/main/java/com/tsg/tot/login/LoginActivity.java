@@ -293,13 +293,13 @@ public class LoginActivity extends AppCompatActivity {
 
             /// prueba de obtencion de datos
 
-            List<LessonsRemote> lessonsRemotesList = dbR.getLessons(this, 209);
+ /*           List<LessonsRemote> lessonsRemotesList = dbR.getLessons(this, 209);
             List<StudyMaterialRemote> studyMaterialRemotes = dbR.getStudyMaterial(this, 1);
             List<Task> taskList = dbR.getTasks(this, 209);
             List<FilesKiosco> filesKioscoList = dbR.getFileKioscos(this, 209, 6763, 601);
 
             List<SubmissionDisplay> submissionDisplayList = dbR.getSubmissionsDisplay(this, 1, 1, 1);
-            /// prueba de obtencion de datos
+*/            /// prueba de obtencion de datos
 
             //// verificar registro previo
             if (usersList.size() > 0) {
