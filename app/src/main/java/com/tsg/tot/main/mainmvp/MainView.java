@@ -125,13 +125,19 @@ public class MainView extends AppCompatActivity
         super.onResume();
         presenter.setView(this);
         showLoadingDialog();
-        presenter.checkVersions(this, dialog, token, idUsuario);
+        if (!token.equals("sinConexion")){
+            presenter.checkVersions(this, dialog, token, idUsuario);
+        }else{
+            dialog.setProgress(dialog.getProgress() + 35);
+        }
         dialog.setProgress(dialog.getProgress() + 5);
         presenter.setInfoStudent(this, Integer.parseInt(idUsuario));
         dialog.setProgress(dialog.getProgress() + 5);
-
-        registrarTareasDescargadas();
-
+        if (!token.equals("sinConexion")){
+            registrarTareasDescargadas();
+        }else{
+            dismissLoadingDialog();
+        }
     }
 
     @Override
@@ -233,7 +239,7 @@ public class MainView extends AppCompatActivity
     }
 
     public void logout(View view) {
-
+        this.finish();
         Intent intent = new Intent();
         intent.setAction("com.package.ACTION_LOGOUT");
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -241,7 +247,8 @@ public class MainView extends AppCompatActivity
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         TOTPreferences.getInstance(view.getContext()).setIdUsuario("0");
         TOTPreferences.getInstance(view.getContext()).setIdEstudiante("0");
-        finish();
+
+
 
     }
 

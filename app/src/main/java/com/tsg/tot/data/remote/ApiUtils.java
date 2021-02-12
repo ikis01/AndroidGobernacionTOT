@@ -30,6 +30,10 @@ public class ApiUtils {
     public static ApiService getAPIServiceTaskRegister( ) {
         return Client.getClientTaskRegister().create(ApiService.class);
     }
+
+    public static ApiService getAPIServiceCheckConnection(){
+        return Client.getClientIsConnected().create(ApiService.class);
+    }
     
     public static void openFile(Uri uri, Context context){
         Intent intent = new Intent(Intent.ACTION_VIEW);

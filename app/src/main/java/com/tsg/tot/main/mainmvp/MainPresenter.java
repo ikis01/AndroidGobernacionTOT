@@ -67,7 +67,9 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
                     if (apiVersion == dbVersion || apiVersion == 0) {
                         Log.d("checkVersions", "Same version");
                         /// en caso de tener la misma version cerrar dialog o no conectarse al kiosco imc
-                        dialog.dismiss();
+                        //dialog.dismiss();
+                        dismissLoadingDialog();
+                        return;
                     } else {
                         Log.d("checkVersions", "Diferent version");
 

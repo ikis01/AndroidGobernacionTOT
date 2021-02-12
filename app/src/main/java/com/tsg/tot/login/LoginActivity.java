@@ -32,6 +32,7 @@ import com.tsg.tot.data.remote.ApiUtils;
 import com.tsg.tot.data.remote.Client;
 import com.tsg.tot.data.remote.model.LessonsRemote;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
+import com.tsg.tot.main.fragment.CustomProgressDialog;
 import com.tsg.tot.main.mainmvp.MainView;
 import com.tsg.tot.repository.ApiRepository;
 import com.tsg.tot.repository.DatabaseRepository;
@@ -75,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
     Client client = new Client();
     private TextView tv_estatus_kiosko;
     private EditText et_usuario, et_contrasena;
-
+    CustomProgressDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,15 +117,21 @@ public class LoginActivity extends AppCompatActivity {
 
     public void iniciarSesion(View view) {
 
+        dialog = new CustomProgressDialog(LoginActivity.this,
+                getResources().getString(R.string.message_load_db));
+        dialog.setIcon(R.drawable.tot_icon);
+        showLoadingDialog();
+        dialog.setProgress(dialog.getProgress() + 5);
         requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
 
-
+        dialog.setProgress(dialog.getProgress() + 5);
         et_usuario = (EditText) findViewById(R.id.et_usuario);
         et_contrasena = (EditText) findViewById(R.id.et_contrasena);
         String usuario = et_usuario.getText().toString();
         String password = et_contrasena.getText().toString();
 
         if (!usuario.isEmpty() && !password.isEmpty()) {
+            dialog.setProgress(dialog.getProgress() + 5);
             ContentValues registro = new ContentValues();
             registro.put("UserName", usuario);
             registro.put("Password", password);
@@ -154,30 +161,35 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
             }
-
+            dialog.setProgress(dialog.getProgress() + 5);
 
             if (usersList.size() == 1) {
                 // Toast.makeText(this,"Inicio Exitoso",Toast.LENGTH_LONG).show();
+                dialog.setProgress(dialog.getProgress() + 5);
                 Integer idUsuario = usersList.get(0).getIdUsuario();
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("username", usuario);
                 jsonObject.addProperty("password", password);
-            try{
+            try{dialog.setProgress(dialog.getProgress() + 5);
                 ///Se obtiene Login remoto  token  en caso de no obtenerlo no se procede a sincronizar
                 Call<TokenCustom> tokenCustomCall = ApiUtils.getAPIServiceLogin().postLogin(jsonObject);
                 tokenCustomCall.enqueue(new Callback<TokenCustom>() {
                     @Override
                     public void onResponse(Call<TokenCustom> call, Response<TokenCustom> response) {
                         if (response.code() == 200) {
+                            dialog.setProgress(dialog.getProgress() + 25);
                             token = response;
                             //tokenCustom.setToken(token.body().getToken());
                             //tokenCustom.setExpiration(token.body().getExpiration());
+                            dialog.setProgress(dialog.getProgress() + 5);
                             Intent intent = new Intent(view.getContext(), MainView.class);
 
                             // intent.putExtra("token", tokenCustom.getToken());
                             intent.putExtra("token", "Bearer " + token.body().getToken());
                             intent.putExtra("idUsuario", idUsuario.toString());
                             TOTPreferences.getInstance(view.getContext()).setIdUsuario(idUsuario.toString());
+                            dialog.setProgress(dialog.getProgress() + 5);
+                            dismissLoadingDialog();
                             view.getContext().startActivity(intent);
 
                             //// token de authenticacion para todos los servicios
@@ -194,6 +206,8 @@ public class LoginActivity extends AppCompatActivity {
                                         //getIntent();
                                     }
                                 });
+                                dialog.setProgress(dialog.getProgress() + 25);
+                                dismissLoadingDialog();
                                 dialog404.show();
                             } else {
                                 if (response.code() == 400) {
@@ -208,12 +222,14 @@ public class LoginActivity extends AppCompatActivity {
                                             //getIntent();
                                         }
                                     });
+                                    dialog.setProgress(dialog.getProgress() + 25);
+                                    dismissLoadingDialog();
                                     dialog400.show();
                                 } else {
                                     Intent intent = new Intent(view.getContext(), MainView.class);
                                     intent.putExtra("token", "sinConexion");
                                     intent.putExtra("idUsuario", idUsuario.toString());
-
+                                    dismissLoadingDialog();
                                     view.getContext().startActivity(intent);
                                 }
 
@@ -225,10 +241,12 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<TokenCustom> call, Throwable t) {
+                        dialog.setProgress(dialog.getProgress() + 5);
                         Intent intent = new Intent(view.getContext(), MainView.class);
                         intent.putExtra("token", "sinConexion");
                         intent.putExtra("idUsuario", idUsuario.toString());
                         TOTPreferences.getInstance(view.getContext()).setIdUsuario(idUsuario.toString());
+                        dismissLoadingDialog();
                         view.getContext().startActivity(intent);
 
                     }
@@ -240,14 +258,14 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(view.getContext(), MainView.class);
                 intent.putExtra("token", "sinConexion");
                 intent.putExtra("idUsuario", idUsuario.toString());
-
+                dismissLoadingDialog();
                 view.getContext().startActivity(intent);
             }
 
 
             } else {
                 //  Toast.makeText(this,"Usuario No registrado en el dispositivo",Toast.LENGTH_LONG).show();
-
+                dismissLoadingDialog();
                 AlertDialog.Builder dialogoUsuarioNoRegistrado = new AlertDialog.Builder(LoginActivity.this);
                 // dialogoConfirmarSubida.setTitle("");
                 dialogoUsuarioNoRegistrado.setMessage("Usuario No registrado en el dispositivo");
@@ -396,7 +414,7 @@ public class LoginActivity extends AppCompatActivity {
         jsonObject.addProperty("password", "probando");
         try{
             ///Se obtiene Login remoto  token  en caso de no obtenerlo no se procede a sincronizar
-            Call<TokenCustom> tokenCustomCall = ApiUtils.getAPIServiceLogin().postLogin(jsonObject);
+            Call<TokenCustom> tokenCustomCall = ApiUtils.getAPIServiceCheckConnection().postLogin(jsonObject);
 
             tokenCustomCall.enqueue(new Callback<TokenCustom>() {
                 @Override
@@ -412,7 +430,9 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<TokenCustom> call, Throwable t) {
-                     isConnected = false ;
+
+                    isConnected = false ;
+                    return;
                 }
             });
 
@@ -431,5 +451,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    public void showLoadingDialog() {
+        if (!dialog.isShowing()) {
+            dialog.show();
+        }
+    }
+
+
+    public void dismissLoadingDialog() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
 
 }
