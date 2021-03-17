@@ -43,6 +43,7 @@ import retrofit2.http.POST;
 public interface ApiService {
     String POST_LOGIN = "api/cuentas/login";
     String GET_VERSION = "api/versiones";
+    String POST_UPLOAD_TASK ="api/entregas/entregarMiTarea";
 
     String GET_DEVICE = "api/disposotivos";
 
@@ -74,6 +75,8 @@ public interface ApiService {
     String POST_SUBMISSIONS = "api/gobernacion/cursos/entregas/";
     String POST_BLOB = "upload";
 
+    //@POST (POST_UPLOAD_TASK)
+   // Call<>
     @POST(POST_REGISTER_TASK)
     Call<TaskRegristerRemote> postRegisterTask(@Header("Authorization") String authKey, @Body JsonObject body );
     @GET(GET_VERSION)

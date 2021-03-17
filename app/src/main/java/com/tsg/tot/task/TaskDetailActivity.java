@@ -23,11 +23,8 @@ import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Submissions;
-import com.tsg.tot.data.model.Task;
 import com.tsg.tot.main.fragment.ListFileKioscoFragment;
-import com.tsg.tot.main.fragment.ListSubjectFragment;
 import com.tsg.tot.main.fragment.ListSubmissionDisplayFragment;
-import com.tsg.tot.main.mainmvp.MainMVP;
 import com.tsg.tot.repository.DatabaseRepository;
 import com.tsg.tot.root.App;
 import com.tsg.tot.task.taskmvp.TaskMVP;
@@ -51,7 +48,7 @@ public class TaskDetailActivity extends AppCompatActivity
 
     @Inject
     TaskMVP.Presenter presenter;
-    Integer idMateria,tareakiosco ,idEstudiante ,idSubida,idTarea;
+    Integer idMateria,tareakiosco ,idEstudiante ,idSubida,idTarea,registroTarea;
     Submissions submissions = new Submissions();
     FragmentTransaction fragmentTransaction;
 
@@ -82,14 +79,14 @@ public class TaskDetailActivity extends AppCompatActivity
         String studentName = getIntent().getExtras().getString("student_name");
         String taskName = getIntent().getExtras().getString("task_name");
 
-
-
         idMateria = getIntent().getExtras().getInt("idMateria");
         tareakiosco = getIntent().getExtras().getInt("tareakiosco");
         idEstudiante = getIntent().getExtras().getInt("idEstudiante");
         nombreTarea = getIntent().getExtras().getString("nombreTarea");
         idSubida =  getIntent().getExtras().getInt("idSubida");
         idTarea =  getIntent().getExtras().getInt("idTarea");
+        registroTarea =getIntent().getExtras().getInt("registroTarea");
+
 
 
 
@@ -203,9 +200,10 @@ public class TaskDetailActivity extends AppCompatActivity
                         DatabaseRepository dbR = new DatabaseRepository();
                          String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
                         submissions.setUpp(0);
-                        submissions.setEstudiante(idEstudiante);
-                        submissions.setSubida(idSubida);
-                        submissions.setTarea(idTarea);
+                        submissions.setIdEstudiante(idEstudiante);
+                        submissions.setIdSubida(idSubida);
+                        submissions.setIdTarea(idTarea);
+                        submissions.setRtEntrega(registroTarea);
                         submissions.setCreado(date);
                         String fileAppend = new SimpleDateFormat("yyyyMMddHHmm").format(new Date()).concat("_");
                         submissionsList.add(submissions);

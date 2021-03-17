@@ -20,9 +20,11 @@ import com.tsg.tot.R;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Subjects;
+import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.TokenCustom;
 import com.tsg.tot.data.remote.ApiUtils;
+import com.tsg.tot.data.remote.model.SubmissionPending;
 import com.tsg.tot.data.remote.model.TaskRegristerRemote;
 import com.tsg.tot.login.LoginActivity;
 import com.tsg.tot.main.fragment.CustomProgressDialog;
@@ -35,6 +37,7 @@ import com.tsg.tot.root.App;
 import com.tsg.tot.storage.TOTPreferences;
 import com.tsg.tot.task.taskmvp.TaskMVP;
 
+import java.io.File;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -125,17 +128,18 @@ public class MainView extends AppCompatActivity
         super.onResume();
         presenter.setView(this);
         showLoadingDialog();
-        if (!token.equals("sinConexion")){
+        if (!token.equals("sinConexion")) {
             presenter.checkVersions(this, dialog, token, idUsuario);
-        }else{
+        } else {
             dialog.setProgress(dialog.getProgress() + 35);
         }
         dialog.setProgress(dialog.getProgress() + 5);
         presenter.setInfoStudent(this, Integer.parseInt(idUsuario));
         dialog.setProgress(dialog.getProgress() + 5);
-        if (!token.equals("sinConexion")){
+        if (!token.equals("sinConexion")) {
             registrarTareasDescargadas();
-        }else{
+            subirEntregasPendientes();
+        } else {
             dismissLoadingDialog();
         }
     }
@@ -177,9 +181,9 @@ public class MainView extends AppCompatActivity
 
         if (informationFragment != null && findViewById(R.id.contentFragment) == null) {
             informationFragment.setInformation(subjects);
-            Integer idEstudianteI = Integer.parseInt(TOTPreferences.getInstance(MainView.this).getIdEstudiante()==""?"0":TOTPreferences.getInstance(MainView.this).getIdEstudiante());
+            Integer idEstudianteI = Integer.parseInt(TOTPreferences.getInstance(MainView.this).getIdEstudiante() == "" ? "0" : TOTPreferences.getInstance(MainView.this).getIdEstudiante());
 
-            informationFragment.setTaskSubjects(presenter.getTaskSubject(this, subjects.getId(), "",idEstudianteI), this, presenter);
+            informationFragment.setTaskSubjects(presenter.getTaskSubject(this, subjects.getId(), "", idEstudianteI), this, presenter);
         } else {
             informationFragment = new InformationFragment(presenter);
             Bundle bundleEnvio = new Bundle();
@@ -249,7 +253,6 @@ public class MainView extends AppCompatActivity
         TOTPreferences.getInstance(view.getContext()).setIdEstudiante("0");
 
 
-
     }
 
 
@@ -275,43 +278,63 @@ public class MainView extends AppCompatActivity
         }
     }
 
-    public void registrarTareasDescargadas(){
+    public void registrarTareasDescargadas() {
         DatabaseRepository dbR = new DatabaseRepository();
 
-        List<Task> taskList = dbR.getTasksToRegister(MainView.this,TOTPreferences.getInstance(MainView.this).getIdEstudiante()==""?0:Integer.parseInt(TOTPreferences.getInstance(MainView.this).getIdEstudiante()));
-        if (taskList.size()>0){
-            for(Task taskAux : taskList){
+        List<Task> taskList = dbR.getTasksToRegister(MainView.this, TOTPreferences.getInstance(MainView.this).getIdEstudiante() == "" ? 0 : Integer.parseInt(TOTPreferences.getInstance(MainView.this).getIdEstudiante()));
+        if (taskList.size() > 0) {
+            for (Task taskAux : taskList) {
                 Integer idTask = taskAux.getTareakiosco();
-                registrarTarea(token,taskAux.getId());
+                registrarTarea(token, taskAux.getId());
             }
 
         }
 
     }
 
-    private void registrarTarea(String token , Integer idTarea){
+    public void subirEntregasPendientes() {
+        DatabaseRepository dbR = new DatabaseRepository();
+
+        List<SubmissionPending> submissionsList = dbR.getSubmissionsToUpload(MainView.this, TOTPreferences.getInstance(MainView.this).getIdEstudiante() == "" ? 0 : Integer.parseInt(TOTPreferences.getInstance(MainView.this).getIdEstudiante()));
+        if (submissionsList.size() > 0) {
+            for (SubmissionPending submissionsAux : submissionsList) {
+
+            }
+        }
+    }
+
+    private void subirEntrega (String token, SubmissionPending submissionPending){
+
+        File archivo = new File(submissionPending.getArchivo());
+        ApiRepository apiRepository = new ApiRepository();
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("TareaRegistroId",submissionPending.getTareaRegistroId());
+        jsonObject.addProperty("Mac",submissionPending.getMacAddress());
+
+    }
+
+    private void registrarTarea(String token, Integer idTarea) {
 
         ApiRepository apiRepository = new ApiRepository();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("tareaId", idTarea);
 
-        try{
+        try {
             ///Se obtiene Login remoto  token  en caso de no obtenerlo no se procede a sincronizar
-            Call<TaskRegristerRemote> taskRegisterCall = ApiUtils.getAPIServiceTaskRegister().postRegisterTask(token,jsonObject);
+            Call<TaskRegristerRemote> taskRegisterCall = ApiUtils.getAPIServiceTaskRegister().postRegisterTask(token, jsonObject);
 
             taskRegisterCall.enqueue(new Callback<TaskRegristerRemote>() {
                 @Override
                 public void onResponse(Call<TaskRegristerRemote> call, Response<TaskRegristerRemote> response) {
                     taskRegristerRemote = response.body();
                     if (response.code() == 201) {
-                        Task task = new Task ();
+                        Task task = new Task();
                         DatabaseRepository dbR = new DatabaseRepository();
                         task.setEstudiante(taskRegristerRemote.getEstudianteId());
                         task.setTareakiosco(taskRegristerRemote.getTareaId());
                         task.setRegistroTarea(taskRegristerRemote.getId());
-                        dbR.updateTaskRegister(task,MainView.this);
-                    }
-                    else {
+                        dbR.updateTaskRegister(task, MainView.this);
+                    } else {
                         return;
                     }
 

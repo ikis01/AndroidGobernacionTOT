@@ -300,7 +300,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void sincronizar(View view) {
         DatabaseRepository dbR = new DatabaseRepository();
-        dbR.updateVersion(0.111f, this);
+        dbR.updateVersion(0.111F, this);
         this.iniciarSesion(view);
     }
 

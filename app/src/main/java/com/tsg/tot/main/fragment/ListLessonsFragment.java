@@ -122,7 +122,7 @@ public class ListLessonsFragment extends Fragment implements
     public void onResume() {
 
         super.onResume();
-        Integer idEstudianteI = Integer.parseInt(TOTPreferences.getInstance(getContext()).getIdUsuario());
+        Integer idEstudianteI = Integer.parseInt(TOTPreferences.getInstance(getContext()).getIdEstudiante());
         setLessons(presenter.getLessons(getContext(),idEstudianteI,idMateria),getContext(),presenter);
     }
 

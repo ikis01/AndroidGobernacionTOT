@@ -59,7 +59,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
                     //Waiting time between queries
                     try {
                         //Thread.sleep(25 *1000);
-                        Thread.sleep(5 *1000);
+                        Thread.sleep(15 *1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -69,7 +69,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
                         /// en caso de tener la misma version cerrar dialog o no conectarse al kiosco imc
                         //dialog.dismiss();
                         dismissLoadingDialog();
-                        return;
+                        //return;
                     } else {
                         Log.d("checkVersions", "Diferent version");
 
@@ -88,7 +88,8 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
 
 
                         try {
-                            Thread.sleep(10 * 1000);
+                            //Thread.sleep(10 * 1000);
+                            Thread.sleep(25 * 1000);
                            // dialog.setIcon(dialog.getProgress() + 10);
                         } catch (InterruptedException e) {
                             e.printStackTrace();

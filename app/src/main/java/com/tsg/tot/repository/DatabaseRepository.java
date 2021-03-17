@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
-import androidx.annotation.IntegerRes;
-
 import com.google.gson.JsonObject;
 import com.tsg.tot.data.model.Blob;
 import com.tsg.tot.data.model.Device;
@@ -34,6 +32,7 @@ import com.tsg.tot.data.remote.model.LessonsRemote;
 import com.tsg.tot.data.remote.model.StudentRemote;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.data.remote.model.SubjectsRemote;
+import com.tsg.tot.data.remote.model.SubmissionPending;
 import com.tsg.tot.data.remote.model.TaskRemote;
 import com.tsg.tot.data.remote.model.TeacherRemote;
 import com.tsg.tot.sqlite.DbOpenHelper;
@@ -235,6 +234,7 @@ public class DatabaseRepository implements LocalRepository {
                     int codeTask = cursor.getColumnIndex(TASK_CODE);
                     int idStudent = cursor.getColumnIndex(TASK_STUDENT_ID);
                     int tareaKiosc = cursor.getColumnIndex(TASK_KIOSCO);
+                    int tareaRegistro = cursor.getColumnIndex(TASK_REGISTER);
                     //add row to list
                     taskList.add(new Task(
                             Integer.parseInt(cursor.getString(idTask)),
@@ -243,7 +243,8 @@ public class DatabaseRepository implements LocalRepository {
                             cursor.getString(codeTask),
                             Integer.parseInt(cursor.getString(idSubjectTask)),
                             Integer.parseInt(cursor.getString(idStudent)),
-                            Integer.parseInt(cursor.getString(tareaKiosc))
+                            Integer.parseInt(cursor.getString(tareaKiosc)),
+                            Integer.parseInt(cursor.getString(tareaRegistro))
                     ));
                 } while (cursor.moveToNext());
             }
@@ -524,9 +525,9 @@ public class DatabaseRepository implements LocalRepository {
                     cv.put(SUBMISSIONS_CREATED, submissions.getCreado());
                     cv.put(SUBMISSIONS_RT_SUBMISSION, submissions.getRtEntrega()== null ? 0:submissions.getRtEntrega());
                     cv.put(SUBMISSIONS_UPP, submissions.getUpp()== null ? 0:submissions.getUpp());
-                    cv.put(SUBMISSIONS_STUDENT_ID, submissions.getEstudiante()== null ? 0:submissions.getEstudiante());
-                    cv.put(SUBMISSIONS_UPLOAD_ID, submissions.getSubida()== null ? 0 :submissions.getSubida());
-                    cv.put(SUBMISSIONS_TASK_ID, submissions.getTarea() == null ? 0 : submissions.getTarea());
+                    cv.put(SUBMISSIONS_STUDENT_ID, submissions.getIdEstudiante()== null ? 0:submissions.getIdEstudiante());
+                    cv.put(SUBMISSIONS_UPLOAD_ID, submissions.getIdSubida()== null ? 0 :submissions.getIdSubida());
+                    cv.put(SUBMISSIONS_TASK_ID, submissions.getIdTarea() == null ? 0 : submissions.getIdTarea());
 
 
 
@@ -1137,6 +1138,44 @@ public class DatabaseRepository implements LocalRepository {
         db.close();
         dbHelper.close();
         return studyMaterialRemoteList;
+    }
+
+    @Override
+    public   List<SubmissionPending> getSubmissionsToUpload (Context context , Integer idEstudiante){
+        List <SubmissionPending> submissionsList = new ArrayList<>();
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String query = "SELECT  RTentrega AS TareaRegistroID ,ruta AS Archivo FROM " + SUBMISSIONS_TABLE_NAME + ","+KIOSCO_TABLE_NAME+
+                " WHERE " + SUBMISSIONS_STUDENT_ID + " = " + idEstudiante +
+                " AND   ENTREGAS.idEntrega = ARCHIVOSKIOSCO.idEntrega" +
+                " AND " + SUBMISSIONS_UPP + " =  0 " ;
+
+        Cursor cursor = db.rawQuery(query,null);
+        cursor.moveToFirst();
+
+        try {
+            if (cursor.getCount() > 0) {
+                do {
+                    //get columns
+                    int tareaRegistroID  = cursor.getColumnIndex("TareaRegistroID");
+                    int archivo = cursor.getColumnIndex("Archivo");
+
+                    //add row to list
+                    submissionsList.add(
+                      new SubmissionPending(
+                              Integer.parseInt(cursor.getString(tareaRegistroID)),
+                              cursor.getString(archivo),
+                             "macAddress"
+                      ));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+
+        db.close();
+        dbHelper.close();
+        return submissionsList;
     }
 
     @Override

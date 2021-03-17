@@ -27,6 +27,7 @@ import com.tsg.tot.data.remote.model.LessonsRemote;
 import com.tsg.tot.data.remote.model.StudentRemote;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.data.remote.model.SubjectsRemote;
+import com.tsg.tot.data.remote.model.SubmissionPending;
 import com.tsg.tot.data.remote.model.TaskRemote;
 import com.tsg.tot.data.remote.model.TeacherRemote;
 
@@ -149,5 +150,6 @@ public interface LocalRepository {
     List<Lessons>getLessons(Context context, Integer idEstudiante,Integer idMateria);
 
     List<Task> getTasksToRegister (Context context, Integer idEstudiante);
+    List<SubmissionPending> getSubmissionsToUpload (Context context , Integer idEstudiante);
     void updateTaskRegister(Task task, Context context);
 }

@@ -114,8 +114,12 @@ public class MainModel implements MainMVP.Model {
         List<TaskRemote> taskRemoteListAux = new ArrayList<>();
         List<FilesKiosco> filesKioscoList = new ArrayList<>();
         dialog.setProgress(dialog.getProgress() + 5);
+
+        if (studentRemote != null) {
         databaseRepository.updateMyStudent(studentRemote, context, Integer.parseInt(idUsusario));
         databaseRepository.updateMySubjects(subjectsRemoteList, context);
+
+
         databaseRepository.updateRelStudentSubjects(studentRemote, subjectsRemoteList, context);
 
         databaseRepository.updateVersion(version, context);
@@ -126,7 +130,7 @@ public class MainModel implements MainMVP.Model {
         databaseRepository.updateMyLessons(lessonsRemoteList, context);
 
 
-        if (studentRemote != null) {
+            //if (studentRemote != null) {
 
             if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
                 //RUNTIME PERMISSION Android M

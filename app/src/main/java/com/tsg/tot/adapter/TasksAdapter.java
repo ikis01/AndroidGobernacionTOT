@@ -99,6 +99,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
             intent.putExtra("nombreTarea",taskList.get(position).getNombre());
             intent.putExtra("idSubida",taskList.get(position).getSubida().getId());
             intent.putExtra("idTarea",taskList.get(position).getId());
+            intent.putExtra("registroTarea",taskList.get(position).getRegistroTarea());
 
 
             context.startActivity(intent);

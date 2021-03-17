@@ -46,7 +46,7 @@ import retrofit2.Response;
 public class ApiRepository implements RemoteRepository {
 
     private ApiService mApiService = ApiUtils.getAPIService();
-    public float apiVersion;
+     public float apiVersion;
     TokenCustom tokenCustom = new TokenCustom("", "");
     TaskRegristerRemote taskRegristerRemote = new TaskRegristerRemote();
 
@@ -309,12 +309,12 @@ public class ApiRepository implements RemoteRepository {
                     if (submissionsList != null) {
                         for (Submissions submission : submissionsList) {
                             try {
-                                Log.d("Debug submissions id ", submission.getId().toString());
+                                Log.d("Debug submissions id ", submission.getIdEntrega().toString());
                                 Log.d("Debug submissions created at ", submission.getCreado());
                                 Log.d("Debug submissions upp", submission.getUpp().toString());
-                                Log.d("Debug submissions task ", submission.getTarea().toString());
-                                Log.d("Debug submissions upload ", submission.getSubida().toString());
-                                Log.d("Debug submissions student", submission.getEstudiante().toString());
+                                Log.d("Debug submissions task ", submission.getIdTarea().toString());
+                                Log.d("Debug submissions upload ", submission.getIdSubida().toString());
+                                Log.d("Debug submissions student", submission.getIdEstudiante().toString());
                             } catch (NullPointerException e) {
                                 Log.d("Debug NullPointerException ", e.toString());
                             }

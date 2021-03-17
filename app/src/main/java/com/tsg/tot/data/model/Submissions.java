@@ -5,38 +5,48 @@ import com.google.gson.annotations.SerializedName;
 
 public class Submissions {
 
-    @SerializedName("id")
+    @SerializedName("idEntrega")
     @Expose
-    private Integer id;
+    private Integer idEntrega;
 
+    @SerializedName("codigoEntrega")
+    @Expose
     private String codigoEntrega ;
+
+    @SerializedName("codigoTarea")
+    @Expose
     private String codigoTarea ;
+
+    @SerializedName("rtEntrega")
+    @Expose
     private Integer rtEntrega;
 
     @SerializedName("creado")
     @Expose
     private String creado;
+
     @SerializedName("upp")
     @Expose
     private Integer upp;
 
-    @SerializedName("tarea")
+    @SerializedName("idTarea")
     @Expose
-    private Integer tarea;
+    private Integer idTarea;
 
-    @SerializedName("subida")
+    @SerializedName("idSubida")
     @Expose
-    private Integer subida;
-    @SerializedName("estudiante")
-    @Expose
-    private Integer estudiante;
+    private Integer idSubida;
 
-    public Integer getId() {
-        return id;
+    @SerializedName("idEstudiante")
+    @Expose
+    private Integer idEstudiante;
+
+    public Integer getIdEntrega() {
+        return idEntrega;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdEntrega(Integer idEntregas) {
+        this.idEntrega = idEntregas;
     }
 
     public String getCreado() {
@@ -57,39 +67,52 @@ public class Submissions {
 
 
 
-    public Integer getTarea() {
-        return tarea;
+    public Integer getIdTarea() {
+        return idTarea;
     }
 
-    public void setTarea(Integer tarea) {
-        this.tarea = tarea;
+    public void setIdTarea(Integer idTarea) {
+        this.idTarea = idTarea;
     }
 
 
 
-    public Integer getSubida() {
-        return subida;
+    public Integer getIdSubida() {
+        return idSubida;
     }
 
-    public void setSubida(Integer subida) {
-        this.subida = subida;
+    public void setIdSubida(Integer idSubida) {
+        this.idSubida = idSubida;
     }
 
-    public Integer getEstudiante() {
-        return estudiante;
+    public Integer getIdEstudiante() {
+        return idEstudiante;
     }
 
-    public void setEstudiante(Integer estudiante) {
-        this.estudiante = estudiante;
+    public void setIdEstudiante(Integer idEstudiante) {
+        this.idEstudiante = idEstudiante;
     }
 
-    public Submissions(Integer id, String creado, Integer upp, Integer ejercios, Integer tarea, Integer evaluacion, Integer subida, Integer estudiante) {
-        this.id = id;
+
+    public Submissions(Integer idEntrega, String codigoEntrega, String codigoTarea, Integer rtEntrega, String creado, Integer upp, Integer idTarea, Integer idSubida, Integer idEstudiante) {
+        this.idEntrega = idEntrega;
+        this.codigoEntrega = codigoEntrega;
+        this.codigoTarea = codigoTarea;
+        this.rtEntrega = rtEntrega;
         this.creado = creado;
         this.upp = upp;
-        this.tarea = tarea;
-        this.subida = subida;
-        this.estudiante = estudiante;
+        this.idTarea = idTarea;
+        this.idSubida = idSubida;
+        this.idEstudiante = idEstudiante;
+    }
+
+    public Submissions(Integer id, String creado, Integer upp, Integer ejercios, Integer idTarea, Integer evaluacion, Integer idSubida, Integer idEstudiante) {
+        this.idEntrega = id;
+        this.creado = creado;
+        this.upp = upp;
+        this.idTarea = idTarea;
+        this.idSubida = idSubida;
+        this.idEstudiante = idEstudiante;
     }
 
     public Submissions() {
