@@ -95,7 +95,7 @@ public class MainModel implements MainMVP.Model {
     }
 
     @Override
-    public void updateDatabase(String idUsusario, Context context,
+    public Boolean updateDatabase(String idUsusario, Context context,
                                float version,
                                GradeRemote gradeRemote,
                                StudentRemote studentRemote,
@@ -108,6 +108,7 @@ public class MainModel implements MainMVP.Model {
                                CustomProgressDialog dialog
     ) {
 
+        Boolean sincronizado = false;
         File storageDirMaterialRemote = null;
         File storageDirectoryStudent = null;
         File storageDirTask = null;
@@ -116,18 +117,18 @@ public class MainModel implements MainMVP.Model {
         dialog.setProgress(dialog.getProgress() + 5);
 
         if (studentRemote != null) {
-        databaseRepository.updateMyStudent(studentRemote, context, Integer.parseInt(idUsusario));
-        databaseRepository.updateMySubjects(subjectsRemoteList, context);
+            databaseRepository.updateMyStudent(studentRemote, context, Integer.parseInt(idUsusario));
+            databaseRepository.updateMySubjects(subjectsRemoteList, context);
 
 
-        databaseRepository.updateRelStudentSubjects(studentRemote, subjectsRemoteList, context);
+            databaseRepository.updateRelStudentSubjects(studentRemote, subjectsRemoteList, context);
 
-        databaseRepository.updateVersion(version, context);
-        databaseRepository.updateMyGrade(gradeRemote, context, studentRemote);
+            databaseRepository.updateVersion(version, context);
+            databaseRepository.updateMyGrade(gradeRemote, context, studentRemote);
 
-        databaseRepository.updateMyTeachers(teacherRemoteList, context);
+            databaseRepository.updateMyTeachers(teacherRemoteList, context);
 
-        databaseRepository.updateMyLessons(lessonsRemoteList, context);
+            databaseRepository.updateMyLessons(lessonsRemoteList, context);
 
 
             //if (studentRemote != null) {
@@ -145,7 +146,7 @@ public class MainModel implements MainMVP.Model {
 
             }
 
-        }
+        //} el studen null original regresar por si las moscas
 
         if (taskRemoteList != null && studentRemote != null) {
 
@@ -184,15 +185,15 @@ public class MainModel implements MainMVP.Model {
                                 jsonObject.addProperty("tareaId", taskRemote.getTareaId());
 
 
- //                               TaskRegristerRemote taskRegristerRemote=  registerTask( context, taskRemote.getTareaId(), token, jsonObject);
+                                //                               TaskRegristerRemote taskRegristerRemote=  registerTask( context, taskRemote.getTareaId(), token, jsonObject);
 
                                 //if (taskRegristerRemote!=null) {
 //                                    Log.d("resultado Registrar TaskRemote ",taskRegristerRemote.toString());
 //                                    Log.d("TaskIdRegistro result  --> ",taskRegristerRemote.getId().toString());
-                                 //   taskRemote.setIdRegistro(taskRegristerRemote.getId());
+                                //   taskRemote.setIdRegistro(taskRegristerRemote.getId());
                                 //} else {
-                                    taskRemote.setIdRegistro(0);
-                              //  }
+                                taskRemote.setIdRegistro(0);
+                                //  }
                                 taskRemoteListAux.add(taskRemote);
                                 filesKiosco.setArchivoKiosco(taskRemote.getFile().getId());
                                 filesKiosco.setCodigo(taskRemote.getTareaId().toString());
@@ -269,7 +270,11 @@ public class MainModel implements MainMVP.Model {
             databaseRepository.updateMyStudyMaterial(materialSList, context);
         }
 
+        sincronizado = true;
+        }
 
+
+        return sincronizado;
     }
 
     @Override
@@ -665,6 +670,12 @@ public class MainModel implements MainMVP.Model {
         }
 
         return taskList;
+    }
+
+    @Override
+    public TaskRegristerRemote  postUploadTask(Context context, String token,MultipartBody.Part file, MultipartBody tareaRegistroId,MultipartBody mac ){
+        TaskRegristerRemote taskRegristerRemote = apiRepository.postUploadTask(token,file,tareaRegistroId,mac);
+        return taskRegristerRemote;
     }
 
     @Override

@@ -26,7 +26,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
         this.model = model;
     }
 
-
+    volatile boolean ejecutar = true ;
 
     @Override
     public void setView(MainMVP.View view) {
@@ -38,6 +38,74 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
         model.createDb(context);
     }
 
+    @Override
+    public void checkVersionsSync(Context context, CustomProgressDialog dialog, String token, String idUsuario) {
+
+        Log.d("checkVersions", "checkVersions");
+        if (view != null) {
+            new Thread(() -> {
+                Log.d("checkVersions", "Thread Sincronizacion");
+                //Thread for checking versions
+                while (ejecutar) {
+                    //Set version No.
+                    float apiVersion = model.checkAPIVersion(context);
+                    float dbVersion = model.checkDbVersion(context);
+
+                    if (dbVersion == apiVersion) {
+                        //dismissLoadingDialog();
+                    }
+
+                    //Waiting time between queries
+                     try {
+                        //Thread.sleep(25 *1000);
+                       Thread.sleep(10 *1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (apiVersion == dbVersion || apiVersion == 0) {
+                        Log.d("checkVersions", "Same version");
+                        /// en caso de tener la misma version cerrar dialog o no conectarse al kiosco imc
+                        //dialog.dismiss();
+                        //dismissLoadingDialog();
+                        //return;
+                    } else {
+                        Log.d("checkVersions", "Diferent version");
+
+
+                        Boolean terminado = model.updateDatabase(idUsuario, context,
+                                model.checkAPIVersion(context),
+                                model.checkMyGrade(context, API_REPOSITORY, token),
+                                model.checkMyStudent(context, API_REPOSITORY, token),
+                                model.checkMyTeachers(context, API_REPOSITORY, token),
+                                model.checkMySubjects(context, API_REPOSITORY, token),
+                                model.checkMyTasks(context, API_REPOSITORY,token),
+                                model.checkMyPendingStudyMaterials(context, API_REPOSITORY,token),
+                                model.checkMyLessons(context,API_REPOSITORY,token),
+                                token,dialog);
+                        if (terminado){
+                            ejecutar = false ;
+                            dismissLoadingDialog();
+                            this.notifyRefresh();
+                        }
+
+                        try {
+                            //Thread.sleep(10 * 1000);
+                            Thread.sleep(25 * 1000);
+                            //dialog.setIcon(dialog.getProgress() + 10);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        //this.notifyRefresh();
+
+                    }
+                }
+            }).start();
+        }
+    }
+
+
 
     @Override
     public void checkVersions(Context context, CustomProgressDialog dialog, String token, String idUsuario) {
@@ -47,7 +115,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
             new Thread(() -> {
                 Log.d("checkVersions", "Thread");
                 //Thread for checking versions
-                while (true) {
+                while (ejecutar) {
                     //Set version No.
                     float apiVersion = model.checkAPIVersion(context);
                     float dbVersion = model.checkDbVersion(context);
@@ -74,8 +142,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
                         Log.d("checkVersions", "Diferent version");
 
 
-
-                        model.updateDatabase(idUsuario, context,
+                        Boolean terminado = model.updateDatabase(idUsuario, context,
                                 model.checkAPIVersion(context),
                                 model.checkMyGrade(context, API_REPOSITORY, token),
                                 model.checkMyStudent(context, API_REPOSITORY, token),
@@ -85,7 +152,9 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
                                 model.checkMyPendingStudyMaterials(context, API_REPOSITORY,token),
                                 model.checkMyLessons(context,API_REPOSITORY,token),
                                 token,dialog);
-
+                           if (terminado){
+                               ejecutar = false ;
+                           }
 
                         try {
                             //Thread.sleep(10 * 1000);
@@ -179,7 +248,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
         }
     }
 
-    public void updateEverything(Context context, CustomProgressDialog dialog, String token) {
+    public void updateEverything(Context context, CustomProgressDialog dialog, String token,Integer idUsuario) {
 
         if (view != null) {
             new Thread(() -> {
@@ -188,17 +257,17 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
 
                 Log.d("checkVersions", "Diferent version");
                 model.updateAllDb(model.checkAPIVersion(context),
-                        model.checkTasks(context, API_REPOSITORY, token,0),
-                        model.checkUploads(context, API_REPOSITORY),
-                        model.checkTeachers(context, API_REPOSITORY, token),
-                        model.checkSubjects(context, API_REPOSITORY, token,0),
-                        model.checkGrades(context, API_REPOSITORY),
-                        model.checkStudyMaterials(context, API_REPOSITORY),
-                        model.checkEvaluations(context, API_REPOSITORY),
-                        model.checkStudents(context, API_REPOSITORY,1),
-                        model.checkSubmissions(context, API_REPOSITORY),
-                        model.checkExercises(context, API_REPOSITORY),
-                        model.checkLessons(context, API_REPOSITORY),
+                        model.checkTasks(context, DATABASE_REPOSITORY, token,0),
+                        model.checkUploads(context, DATABASE_REPOSITORY),
+                        model.checkTeachers(context, DATABASE_REPOSITORY, token),
+                        model.checkSubjects(context, DATABASE_REPOSITORY, token,0),
+                        model.checkGrades(context, DATABASE_REPOSITORY),
+                        model.checkStudyMaterials(context, DATABASE_REPOSITORY),
+                        model.checkEvaluations(context, DATABASE_REPOSITORY),
+                        model.checkStudents(context, DATABASE_REPOSITORY,1),
+                        model.checkSubmissions(context, DATABASE_REPOSITORY),
+                        model.checkExercises(context, DATABASE_REPOSITORY),
+                        model.checkLessons(context, DATABASE_REPOSITORY),
                         context, dialog);
 
                 try {

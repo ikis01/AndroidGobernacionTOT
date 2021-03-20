@@ -1,9 +1,14 @@
 package com.tsg.tot.main.mainmvp;
 
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -38,13 +43,19 @@ import com.tsg.tot.storage.TOTPreferences;
 import com.tsg.tot.task.taskmvp.TaskMVP;
 
 import java.io.File;
+import java.net.NetworkInterface;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Multipart;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.READ_PHONE_STATE;
@@ -68,6 +79,7 @@ public class MainView extends AppCompatActivity
     //ProgressDialog dialog;
     CustomProgressDialog dialog;
     String token, idUsuario = "";
+    Boolean actionSync = false ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,11 +98,12 @@ public class MainView extends AppCompatActivity
         if (getIntent().getExtras() != null) {
             token = getIntent().getExtras().getString("token");
             idUsuario = getIntent().getExtras().getString("idUsuario");
+            actionSync = getIntent().getExtras().getBoolean("actionSync");
         }
         // Toast.makeText(this, "el token es : \n" + token, Toast.LENGTH_SHORT).show();
         DatabaseRepository dbR = new DatabaseRepository();
 
-        List<Student> studentList = dbR.getStudent(MainView.this, Integer.parseInt(idUsuario));
+        List<Student> studentList = dbR.getStudent(MainView.this, Integer.parseInt(idUsuario==null?"0":idUsuario.equals("")?"0":idUsuario));
 
         if (studentList.size() > 0) {
             TOTPreferences.getInstance(MainView.this).setIdEstudiante(studentList.get(0).getId().toString());
@@ -104,6 +117,7 @@ public class MainView extends AppCompatActivity
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.contentList, listSubjectFragment);
         fragmentTransaction.commit();
+
 
 
     }
@@ -128,11 +142,29 @@ public class MainView extends AppCompatActivity
         super.onResume();
         presenter.setView(this);
         showLoadingDialog();
-        if (!token.equals("sinConexion")) {
+
+        if (actionSync){
+            TOTPreferences.getInstance(this).setActionSync(true);
+            showLoadingDialog();
+        }
+
+
+        if (!token.equals("sinConexion")&& !actionSync) {
             presenter.checkVersions(this, dialog, token, idUsuario);
         } else {
             dialog.setProgress(dialog.getProgress() + 35);
         }
+
+
+        if (!token.equals("sinConexion")&& actionSync) {
+            showLoadingDialog();
+            presenter.checkVersionsSync(this,dialog,token,idUsuario);
+            //presenter.checkVersions(this, dialog, token, idUsuario);
+        }
+
+
+
+
         dialog.setProgress(dialog.getProgress() + 5);
         presenter.setInfoStudent(this, Integer.parseInt(idUsuario));
         dialog.setProgress(dialog.getProgress() + 5);
@@ -236,14 +268,14 @@ public class MainView extends AppCompatActivity
                 getResources().getString(R.string.message_load_db));
         dialog.setIcon(R.drawable.tot_icon);
         dialog.show();
-        presenter.updateEverything(this, dialog, token);
+        presenter.updateEverything(this, dialog, token,Integer.parseInt(idUsuario.equals("")?"0":idUsuario));
         dialog.setProgress(dialog.getProgress() + 5);
         presenter.setInfoStudent(this, Integer.parseInt(idUsuario));
         dialog.setProgress(dialog.getProgress() + 5);
     }
 
     public void logout(View view) {
-        this.finish();
+     /*   this.finish();
         Intent intent = new Intent();
         intent.setAction("com.package.ACTION_LOGOUT");
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -252,8 +284,70 @@ public class MainView extends AppCompatActivity
         TOTPreferences.getInstance(view.getContext()).setIdUsuario("0");
         TOTPreferences.getInstance(view.getContext()).setIdEstudiante("0");
 
+        TOTPreferences.getInstance(view.getContext()).setIdUsuario("0");
+        TOTPreferences.getInstance(view.getContext()).setIdEstudiante("0");
+        TOTPreferences.getInstance(view.getContext()).setIdClase("0");
+
+
+        Thread[] threads = new Thread[Thread.activeCount()];
+        Thread.enumerate(threads);
+        for (Thread t : threads) {
+            if (t.isAlive()) {
+                t.interrupt();
+            }
+        }
+
+         finishAffinity();
+*/
+
+
+        AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
+        dialogo1.setTitle("Cerrar Sesión");
+        dialogo1.setMessage("¿ Esta Seguro de que desea cerrar la sesión ?");
+        dialogo1.setCancelable(false);
+        dialogo1.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogo1, int id) {
+                aceptarCerrarSesion(view);
+            }
+        });
+        dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogo1, int id) {
+                cancelarCerrarSesion(view);
+            }
+        });
+        dialogo1.show();
+
 
     }
+
+    public void aceptarCerrarSesion(View view) {
+        Intent mStartActivity = new Intent(this, MainView.class);
+        int mPendingIntentId = 1;
+        PendingIntent mPendingIntent = PendingIntent.getActivity(this, mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager mgr = (AlarmManager)this.getSystemService(ALARM_SERVICE);
+        mgr.set(AlarmManager.RTC, //System.currentTimeMillis() +
+                 60, mPendingIntent);
+        TOTPreferences.getInstance(view.getContext()).setIdUsuario("0");
+        TOTPreferences.getInstance(view.getContext()).setIdEstudiante("0");
+        TOTPreferences.getInstance(view.getContext()).setIdClase("0");
+        Thread[] threads = new Thread[Thread.activeCount()];
+        Thread.enumerate(threads);
+        for (Thread t : threads) {
+            if (t.isAlive()) {
+
+                t.interrupt();
+            }
+        }
+
+        finishAffinity();
+        super.finish();
+
+    }
+
+    public void cancelarCerrarSesion(View view) {
+        finish();
+    }
+
 
 
     @Override
@@ -264,7 +358,7 @@ public class MainView extends AppCompatActivity
                         getResources().getString(R.string.message_load_db));
                 dialog.setIcon(R.drawable.tot_icon);
                 dialog.show();
-                presenter.updateEverything(this, dialog, token);
+                presenter.updateEverything(this, dialog, token,Integer.parseInt(idUsuario.equals("")?"0":idUsuario));
                 dialog.setProgress(dialog.getProgress() + 5);
                 presenter.setInfoStudent(this, Integer.parseInt(idUsuario));
                 dialog.setProgress(dialog.getProgress() + 5);
@@ -298,18 +392,69 @@ public class MainView extends AppCompatActivity
         List<SubmissionPending> submissionsList = dbR.getSubmissionsToUpload(MainView.this, TOTPreferences.getInstance(MainView.this).getIdEstudiante() == "" ? 0 : Integer.parseInt(TOTPreferences.getInstance(MainView.this).getIdEstudiante()));
         if (submissionsList.size() > 0) {
             for (SubmissionPending submissionsAux : submissionsList) {
-
+                    subirEntrega(token,submissionsAux);
             }
         }
     }
 
     private void subirEntrega (String token, SubmissionPending submissionPending){
 
-        File archivo = new File(submissionPending.getArchivo());
+        File file = new File(submissionPending.getArchivo());
+        RequestBody requestBody= RequestBody.create(MediaType.parse("application/octet-stream"),file);
+        MultipartBody.Part body =MultipartBody.Part.createFormData("File",file.getName(), requestBody);
+
         ApiRepository apiRepository = new ApiRepository();
-        JsonObject jsonObject = new JsonObject();
+        String macAddress = getMacAddress();
+
+        Integer registroId = submissionPending.getTareaRegistroId();
+        RequestBody tareaRegistroId = RequestBody.create(MultipartBody.FORM,registroId.toString());
+        RequestBody mac = RequestBody.create(MultipartBody.FORM, macAddress);
+
+
+      /*  JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("TareaRegistroId",submissionPending.getTareaRegistroId());
         jsonObject.addProperty("Mac",submissionPending.getMacAddress());
+        jsonObject.addProperty("File", String.valueOf(file));
+*/
+//        Uri uri = Uri.fromFile(file);
+//        RequestBody requestBody = RequestBody.create(MediaType.parse("application/octet-stream"), file);
+//        MultipartBody.Part body = MultipartBody.Part.createFormData("myfile", file.getName(), requestBody);
+
+
+
+        try {
+            Call<TaskRegristerRemote> submissionUploadTask = ApiUtils.getAPIServiceTaskRegister().postUploadTask(token,body,tareaRegistroId, mac);
+
+            submissionUploadTask.enqueue(new Callback<TaskRegristerRemote>() {
+                @Override
+                public void onResponse(Call<TaskRegristerRemote> call, Response<TaskRegristerRemote> response) {
+                    taskRegristerRemote = response.body();
+                    if (response.code() == 201) {
+
+                        DatabaseRepository dbR = new DatabaseRepository();
+                        //Task task = new Task();
+                        /*task.setEstudiante(taskRegristerRemote.getEstudianteId());
+                        task.setTareakiosco(taskRegristerRemote.getTareaId());
+                        task.setRegistroTarea(taskRegristerRemote.getId());*/
+                        taskRegristerRemote.getTareaRegistroId();
+                        dbR.updateSubmissionUpp(taskRegristerRemote.getTareaRegistroId(),MainView.this);
+                    } else {
+                        return;
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(Call<TaskRegristerRemote> call, Throwable t) {
+
+                }
+            });
+
+
+        } catch (Exception e) {
+                Log.d("Exception --- ", "Exception --- " + e.getMessage().toString());
+        }
 
     }
 
@@ -352,5 +497,35 @@ public class MainView extends AppCompatActivity
 
         }
 
+
+
+
+    }
+
+    public static String getMacAddress() {
+        try {
+            List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface nif : all) {
+                if (!nif.getName().equalsIgnoreCase("wlan0")) continue;
+
+                byte[] macBytes = nif.getHardwareAddress();
+                if (macBytes == null) {
+                    return "LOCALHOST";
+                }
+
+                StringBuilder res1 = new StringBuilder();
+                for (byte b : macBytes) {
+                    res1.append(Integer.toHexString(b & 0xFF) + ":");
+                }
+
+                if (res1.length() > 0) {
+                    res1.deleteCharAt(res1.length() - 1);
+                }
+                return res1.toString();
+            }
+        } catch (Exception ex) {
+            Log.d("Error", ex.getMessage());
+        }
+        return "LOCALHOST";
     }
 }

@@ -115,7 +115,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public void iniciarSesion(View view) {
+
+
+    public void iniciarSesion(View view,Boolean Sync) {
 
         dialog = new CustomProgressDialog(LoginActivity.this,
                 getResources().getString(R.string.message_load_db));
@@ -189,7 +191,11 @@ public class LoginActivity extends AppCompatActivity {
                             intent.putExtra("idUsuario", idUsuario.toString());
                             TOTPreferences.getInstance(view.getContext()).setIdUsuario(idUsuario.toString());
                             dialog.setProgress(dialog.getProgress() + 5);
-                            dismissLoadingDialog();
+                            if (Sync) {
+                                //dismissLoadingDialog();
+                                intent.putExtra("actionSync",true);
+                            }
+
                             view.getContext().startActivity(intent);
 
                             //// token de authenticacion para todos los servicios
@@ -207,10 +213,11 @@ public class LoginActivity extends AppCompatActivity {
                                     }
                                 });
                                 dialog.setProgress(dialog.getProgress() + 25);
+                                /// por definir 10 marzo 2021
                                 dismissLoadingDialog();
                                 dialog404.show();
                             } else {
-                                if (response.code() == 400) {
+                                 if (response.code() == 400) {
                                     AlertDialog.Builder dialog400 = new AlertDialog.Builder(LoginActivity.this);
                                     // dialogoConfirmarSubida.setTitle("");
                                     response.errorBody();
@@ -223,13 +230,15 @@ public class LoginActivity extends AppCompatActivity {
                                         }
                                     });
                                     dialog.setProgress(dialog.getProgress() + 25);
-                                    dismissLoadingDialog();
+                                   // 19 de marzo 2021
+                                     dismissLoadingDialog();
                                     dialog400.show();
                                 } else {
                                     Intent intent = new Intent(view.getContext(), MainView.class);
                                     intent.putExtra("token", "sinConexion");
                                     intent.putExtra("idUsuario", idUsuario.toString());
-                                    dismissLoadingDialog();
+                                    // 19 de marzo 2021
+                                     dismissLoadingDialog();
                                     view.getContext().startActivity(intent);
                                 }
 
@@ -297,11 +306,198 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    public void iniciarSesion(View view) {
+
+        dialog = new CustomProgressDialog(LoginActivity.this,
+                getResources().getString(R.string.message_load_db));
+        dialog.setIcon(R.drawable.tot_icon);
+        showLoadingDialog();
+        dialog.setProgress(dialog.getProgress() + 5);
+        requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
+
+        dialog.setProgress(dialog.getProgress() + 5);
+        et_usuario = (EditText) findViewById(R.id.et_usuario);
+        et_contrasena = (EditText) findViewById(R.id.et_contrasena);
+        String usuario = et_usuario.getText().toString();
+        String password = et_contrasena.getText().toString();
+
+        if (!usuario.isEmpty() && !password.isEmpty()) {
+            dialog.setProgress(dialog.getProgress() + 5);
+            ContentValues registro = new ContentValues();
+            registro.put("UserName", usuario);
+            registro.put("Password", password);
+
+            DatabaseRepository dbR = new DatabaseRepository();
+            List<Users> usersList = dbR.getUsers(registro, this);
+
+
+            File storageDir = null;
+            if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+                //RUNTIME PERMISSION Android M
+                if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "Data");
+                    if (!storageDir.exists()) {
+                        storageDir.mkdir();
+                    }
+
+                    File storageHomework = null;
+
+                    storageHomework = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Data", "Tareas");
+                    if (!storageHomework.exists()) {
+                        storageHomework.mkdir();
+                    }
+
+                } else {
+                    requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
+                }
+
+            }
+            dialog.setProgress(dialog.getProgress() + 5);
+
+            if (usersList.size() == 1) {
+                // Toast.makeText(this,"Inicio Exitoso",Toast.LENGTH_LONG).show();
+                dialog.setProgress(dialog.getProgress() + 5);
+                Integer idUsuario = usersList.get(0).getIdUsuario();
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("username", usuario);
+                jsonObject.addProperty("password", password);
+                try{dialog.setProgress(dialog.getProgress() + 5);
+                    ///Se obtiene Login remoto  token  en caso de no obtenerlo no se procede a sincronizar
+                    Call<TokenCustom> tokenCustomCall = ApiUtils.getAPIServiceLogin().postLogin(jsonObject);
+                    tokenCustomCall.enqueue(new Callback<TokenCustom>() {
+                        @Override
+                        public void onResponse(Call<TokenCustom> call, Response<TokenCustom> response) {
+                            if (response.code() == 200) {
+                                dialog.setProgress(dialog.getProgress() + 25);
+                                token = response;
+                                //tokenCustom.setToken(token.body().getToken());
+                                //tokenCustom.setExpiration(token.body().getExpiration());
+                                dialog.setProgress(dialog.getProgress() + 5);
+                                Intent intent = new Intent(view.getContext(), MainView.class);
+
+                                // intent.putExtra("token", tokenCustom.getToken());
+                                intent.putExtra("token", "Bearer " + token.body().getToken());
+                                intent.putExtra("idUsuario", idUsuario.toString());
+                                intent.putExtra("actionSync",false);
+                                TOTPreferences.getInstance(view.getContext()).setIdUsuario(idUsuario.toString());
+                                dialog.setProgress(dialog.getProgress() + 5);
+
+                                    dismissLoadingDialog();
+
+
+                                view.getContext().startActivity(intent);
+
+                                //// token de authenticacion para todos los servicios
+                            } else {
+                                if (response.code() == 404) {
+                                    AlertDialog.Builder dialog404 = new AlertDialog.Builder(LoginActivity.this);
+                                    // dialogoConfirmarSubida.setTitle("");
+                                    response.errorBody();
+                                    dialog404.setMessage("Usuario No encontrado en Kiosco");
+                                    dialog404.setCancelable(false);
+                                    dialog404.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialogo1, int id) {
+                                            // finish();
+                                            //getIntent();
+                                        }
+                                    });
+                                    dialog.setProgress(dialog.getProgress() + 25);
+                                    dismissLoadingDialog();
+                                    dialog404.show();
+                                } else {
+                                    if (response.code() == 400) {
+                                        AlertDialog.Builder dialog400 = new AlertDialog.Builder(LoginActivity.this);
+                                        // dialogoConfirmarSubida.setTitle("");
+                                        response.errorBody();
+                                        dialog400.setMessage("Login Incorrecto");
+                                        dialog400.setCancelable(false);
+                                        dialog400.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialogo1, int id) {
+                                                // finish();
+                                                //getIntent();
+                                            }
+                                        });
+                                        dialog.setProgress(dialog.getProgress() + 25);
+                                        dismissLoadingDialog();
+                                        dialog400.show();
+                                    } else {
+                                        Intent intent = new Intent(view.getContext(), MainView.class);
+                                        intent.putExtra("token", "sinConexion");
+                                        intent.putExtra("idUsuario", idUsuario.toString());
+                                        dismissLoadingDialog();
+                                        view.getContext().startActivity(intent);
+                                    }
+
+                                }
+
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<TokenCustom> call, Throwable t) {
+                            dialog.setProgress(dialog.getProgress() + 5);
+                            Intent intent = new Intent(view.getContext(), MainView.class);
+                            intent.putExtra("token", "sinConexion");
+                            intent.putExtra("idUsuario", idUsuario.toString());
+                            TOTPreferences.getInstance(view.getContext()).setIdUsuario(idUsuario.toString());
+                            dismissLoadingDialog();
+                            view.getContext().startActivity(intent);
+
+                        }
+                    });
+
+                    /// se hace la sincronizacion
+
+                } catch (Exception e) {
+                    Intent intent = new Intent(view.getContext(), MainView.class);
+                    intent.putExtra("token", "sinConexion");
+                    intent.putExtra("idUsuario", idUsuario.toString());
+                    dismissLoadingDialog();
+                    view.getContext().startActivity(intent);
+                }
+
+
+            } else {
+                //  Toast.makeText(this,"Usuario No registrado en el dispositivo",Toast.LENGTH_LONG).show();
+                dismissLoadingDialog();
+                AlertDialog.Builder dialogoUsuarioNoRegistrado = new AlertDialog.Builder(LoginActivity.this);
+                // dialogoConfirmarSubida.setTitle("");
+                dialogoUsuarioNoRegistrado.setMessage("Usuario No registrado en el dispositivo");
+                dialogoUsuarioNoRegistrado.setCancelable(false);
+                dialogoUsuarioNoRegistrado.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogo1, int id) {
+
+                    }
+                });
+                dialogoUsuarioNoRegistrado.show();
+
+            }
+
+        } else {
+            //Toast.makeText(this,"Favor de llenar todos los campos ",Toast.LENGTH_LONG).show();
+
+            AlertDialog.Builder dialogoUsuarioNoRegistrado = new AlertDialog.Builder(LoginActivity.this);
+            // dialogoConfirmarSubida.setTitle("");
+            dialogoUsuarioNoRegistrado.setMessage("Favor de llenar todos los campos");
+            dialogoUsuarioNoRegistrado.setCancelable(false);
+            dialogoUsuarioNoRegistrado.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogo1, int id) {
+
+                }
+            });
+            dialogoUsuarioNoRegistrado.show();
+
+        }
+
+    }
+
 
     public void sincronizar(View view) {
         DatabaseRepository dbR = new DatabaseRepository();
         dbR.updateVersion(0.111F, this);
-        this.iniciarSesion(view);
+        TOTPreferences.getInstance(view.getContext()).setActionSync(true);
+        this.iniciarSesion(view,true);
     }
 
     public void registrar(View view) {

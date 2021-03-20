@@ -833,17 +833,29 @@ public class DatabaseRepository implements LocalRepository {
 
 
     @Override
+    public void updateSubmissionUpp(Integer rTentregaId , Context context){
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(SUBMISSIONS_RT_SUBMISSION, rTentregaId);
+        cv.put(SUBMISSIONS_UPP,1);
+
+        Integer countRows =  db.update(SUBMISSIONS_TABLE_NAME,cv, SUBMISSIONS_RT_SUBMISSION+" = " + rTentregaId +
+                " AND " + SUBMISSIONS_UPP + " = " + 0 ,null);
+
+
+
+        db.close();
+        dbHelper.close();
+    }
+
+    @Override
     public void updateTaskRegister(Task task, Context context) {
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(TASK_REGISTER, task.getRegistroTarea());
-//        String query = " UPDATE " + TASK_TABLE_NAME +
-//                " SET "+ TASK_REGISTER  + " = " + task.getRegistroTarea().toString() +
-//                " WHERE "+ TASK_KIOSCO+" = " + task.getTareakiosco()+
-//                " AND " + TASK_STUDENT_ID + " = " +task.getEstudiante();
-//
-//                db.execSQL(query);
+
 
                Integer countRows =  db.update(TASK_TABLE_NAME,cv, TASK_KIOSCO+" = " + task.getTareakiosco()+
                         " AND " + TASK_STUDENT_ID + " = " +task.getEstudiante(),null);

@@ -152,4 +152,5 @@ public interface LocalRepository {
     List<Task> getTasksToRegister (Context context, Integer idEstudiante);
     List<SubmissionPending> getSubmissionsToUpload (Context context , Integer idEstudiante);
     void updateTaskRegister(Task task, Context context);
+    void updateSubmissionUpp(Integer RTentregaId , Context context);
 }

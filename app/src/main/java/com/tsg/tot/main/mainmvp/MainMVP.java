@@ -30,6 +30,8 @@ import com.tsg.tot.main.fragment.CustomProgressDialog;
 import java.io.File;
 import java.util.List;
 
+import okhttp3.MultipartBody;
+
 public interface MainMVP {
 
     interface View {
@@ -58,6 +60,7 @@ public interface MainMVP {
         void createDB(Context context);
 
         void checkVersions(Context context, CustomProgressDialog dialog,String token,String idUsuario);
+        void checkVersionsSync(Context context, CustomProgressDialog dialog,String token,String idUsuario);
 
         List<Subjects> getSubjects(Context context,String token,Integer code);
         List<FilesKiosco>getFileKioscos(Context context,Integer idEstudiante,Integer idMateria,Integer idTarea);
@@ -72,7 +75,7 @@ public interface MainMVP {
         void setFileKiosco(FilesKiosco fileKiosco);
 
         void notifyRefresh();
-        void updateEverything (Context context, CustomProgressDialog dialog,String token);
+        void updateEverything (Context context, CustomProgressDialog dialog,String token,Integer idUsuario);
         void testPOST(Context context);
         //void uploadFileTest (Context context);
 
@@ -91,7 +94,7 @@ public interface MainMVP {
 
         float checkDbVersion(Context context);
 
-        void updateDatabase(String idUsuario ,
+        Boolean updateDatabase(String idUsuario ,
                             Context context ,
                             float version,
                             GradeRemote gradeRemote,
@@ -166,8 +169,9 @@ public interface MainMVP {
 
         List<StudyMaterialRemote> checkMyPendingStudyMaterials(Context context,int from ,String token);
          TaskRegristerRemote registerTask(Context context, Integer idTarea, String token, JsonObject body);
+        TaskRegristerRemote  postUploadTask(Context context, String token,MultipartBody.Part file,MultipartBody tareaRegistroId, MultipartBody mac);
 
-            List<FilesKiosco> checkMyFileskioscos (Context  context, Integer idEstudiante,  Integer idMateria,Integer idTarea);
+        List<FilesKiosco> checkMyFileskioscos (Context  context, Integer idEstudiante,  Integer idMateria,Integer idTarea);
 
         //Methods for POST data on Endpoints
 

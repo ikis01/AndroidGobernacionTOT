@@ -31,6 +31,7 @@ import com.tsg.tot.data.remote.model.TeacherRemote;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
@@ -129,5 +130,7 @@ public interface RemoteRepository {
     TokenCustom postLogin(JsonObject requestBody);
 
     TaskRegristerRemote postRegisterTask (String token , JsonObject requestBody);
+
+    TaskRegristerRemote postUploadTask(String token ,MultipartBody.Part file ,MultipartBody tareaRegistroId, MultipartBody mac);
 
 }

@@ -35,6 +35,7 @@ import com.tsg.tot.data.remote.model.TeacherRemote;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -831,6 +832,25 @@ public class ApiRepository implements RemoteRepository {
                 Log.d("POST", "Unable to submit post to API.");
             }
         });
+    }
+
+    @Override
+    public TaskRegristerRemote postUploadTask(String token ,MultipartBody.Part file,MultipartBody tareaRegistroId, MultipartBody mac)
+    {
+        mApiService.postUploadTask(token,file,tareaRegistroId,mac).enqueue(new Callback<TaskRegristerRemote>() {
+            @Override
+            public void onResponse(Call<TaskRegristerRemote> call, Response<TaskRegristerRemote> response) {
+                if (response.isSuccessful()){
+                    taskRegristerRemote = response.body();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TaskRegristerRemote> call, Throwable t) {
+                Log.d("onFailure RegisterTask ", t.toString());
+            }
+        });
+        return taskRegristerRemote;
     }
 
     @Override

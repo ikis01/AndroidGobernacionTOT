@@ -29,6 +29,9 @@ public class TaskRegristerRemote {
     @Expose
     private Integer kioskoServerId;
 
+    @SerializedName("tareaRegistroId")
+    @Expose
+    private Integer tareaRegistroId;
 
     public Integer getId() {
         return id;
@@ -76,6 +79,15 @@ public class TaskRegristerRemote {
 
     public void setKioskoServerId(Integer kioskoServerId) {
         this.kioskoServerId = kioskoServerId;
+    }
+
+
+    public Integer getTareaRegistroId() {
+        return tareaRegistroId;
+    }
+
+    public void setTareaRegistroId(Integer tareaRegistroId) {
+        this.tareaRegistroId = tareaRegistroId;
     }
 
     public TaskRegristerRemote(Integer id, String fechaCreacion, Integer tareaId, Integer materiaId, Integer estudianteId, Integer kioskoServerId) {

@@ -30,12 +30,15 @@ import com.tsg.tot.data.remote.model.TeacherRemote;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 /**
  * End Point del API
@@ -74,9 +77,10 @@ public interface ApiService {
     String POST_EXERCISES = "api/gobernacion/cursos/ejercicios/";
     String POST_SUBMISSIONS = "api/gobernacion/cursos/entregas/";
     String POST_BLOB = "upload";
+    @Multipart
+    @POST (POST_UPLOAD_TASK)
+    Call<TaskRegristerRemote> postUploadTask(@Header("Authorization") String authKey, @Part MultipartBody.Part file, @Part ("TareaRegistroId")RequestBody tareaRegistroId, @Part ("Mac")RequestBody mac);
 
-    //@POST (POST_UPLOAD_TASK)
-   // Call<>
     @POST(POST_REGISTER_TASK)
     Call<TaskRegristerRemote> postRegisterTask(@Header("Authorization") String authKey, @Body JsonObject body );
     @GET(GET_VERSION)

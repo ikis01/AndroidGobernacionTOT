@@ -15,6 +15,7 @@ import org.json.JSONException;
 //import org.mx.infonavit.appinfonavit.v4.model.miuc.TitularMiuc;
 
 import java.lang.reflect.Type;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,6 +111,18 @@ public class TOTPreferences {
 
     public String getToken() {
         return pref.getString(TOKEN,"");
+    }
+
+    private static final String ACTION_SYNC = "ACTIONSYNC";
+
+    public void setActionSync(Boolean actionSync){
+        editor.putBoolean(ACTION_SYNC,actionSync);
+        editor.commit();
+
+    }
+
+    public Boolean getActionSync(){
+        return pref.getBoolean(ACTION_SYNC, Boolean.parseBoolean(""));
     }
 
 }
