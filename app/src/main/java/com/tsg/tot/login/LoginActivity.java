@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -378,11 +379,18 @@ public class LoginActivity extends AppCompatActivity {
                                 // intent.putExtra("token", tokenCustom.getToken());
                                 intent.putExtra("token", "Bearer " + token.body().getToken());
                                 intent.putExtra("idUsuario", idUsuario.toString());
-                                intent.putExtra("actionSync",false);
                                 TOTPreferences.getInstance(view.getContext()).setIdUsuario(idUsuario.toString());
-                                dialog.setProgress(dialog.getProgress() + 5);
 
+                                Boolean sync = TOTPreferences.getInstance(view.getContext()).getActionSync()==null?false:TOTPreferences.getInstance(view.getContext()).getActionSync();
+                                Log.d("Sync","Sync : "+sync.toString());
+                                dialog.setProgress(dialog.getProgress() + 5);
+                                if (sync) {
+                                    //dismissLoadingDialog();
+                                    intent.putExtra("actionSync",true);
+                                }else {
                                     dismissLoadingDialog();
+                                   // intent.putExtra("actionSync",false);
+                                }
 
 
                                 view.getContext().startActivity(intent);
@@ -550,6 +558,10 @@ public class LoginActivity extends AppCompatActivity {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
                 // dialogoConfirmarSubida.setTitle("");
                 dialog.setMessage("Estudiante Registrado Exitosamente");
+
+                // Se agrega bandera Sync por que se acaba de registrar y se deseara sincronizar
+                TOTPreferences.getInstance(view.getContext()).setActionSync(true);
+
                 dialog.setCancelable(false);
                 dialog.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogo1, int id) {
@@ -636,12 +648,7 @@ public class LoginActivity extends AppCompatActivity {
         } catch (Exception e) {
 
         }
-//        try {
-//
-//           // Thread.sleep(20 * 1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+
 
         return isConnected;
     }

@@ -74,6 +74,8 @@ public class MainView extends AppCompatActivity
     public TextView tv_studentCode, tv_studentName, tv_institutionName,
             tv_location, tv_pendingTask;
 
+    int tareasPendientes = 0;
+
     LinearLayout mainLayout;
 
     //ProgressDialog dialog;
@@ -89,7 +91,7 @@ public class MainView extends AppCompatActivity
         setContentView(R.layout.activity_main);
         initViewElements();
         ((App) getApplication()).getComponent().inject(this);
-
+        tareasPendientes =  TOTPreferences.getInstance(this).getTareasPendientes();
         //Permissions
         //        requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
 
@@ -152,7 +154,7 @@ public class MainView extends AppCompatActivity
         if (!token.equals("sinConexion")&& !actionSync) {
             presenter.checkVersions(this, dialog, token, idUsuario);
         } else {
-            dialog.setProgress(dialog.getProgress() + 35);
+                dialog.setProgress(dialog.getProgress() + 35);
         }
 
 
@@ -216,11 +218,16 @@ public class MainView extends AppCompatActivity
             Integer idEstudianteI = Integer.parseInt(TOTPreferences.getInstance(MainView.this).getIdEstudiante() == "" ? "0" : TOTPreferences.getInstance(MainView.this).getIdEstudiante());
 
             informationFragment.setTaskSubjects(presenter.getTaskSubject(this, subjects.getId(), "", idEstudianteI), this, presenter);
+            tareasPendientes =  TOTPreferences.getInstance(this).getTareasPendientes().equals("")?0:TOTPreferences.getInstance(this).getTareasPendientes();
+            tv_pendingTask.setText(getResources().getString(R.string.main_view_PendingTasks) + ": " +tareasPendientes);
         } else {
             informationFragment = new InformationFragment(presenter);
             Bundle bundleEnvio = new Bundle();
             bundleEnvio.putSerializable("subject", subjects);
             informationFragment.setArguments(bundleEnvio);
+            tareasPendientes =  TOTPreferences.getInstance(this).getTareasPendientes();
+            tv_pendingTask.setText(getResources().getString(R.string.main_view_PendingTasks) + ": " +tareasPendientes);
+
 
             //Carga el fragment en el Activity
             getSupportFragmentManager().beginTransaction().
@@ -330,6 +337,8 @@ public class MainView extends AppCompatActivity
         TOTPreferences.getInstance(view.getContext()).setIdUsuario("0");
         TOTPreferences.getInstance(view.getContext()).setIdEstudiante("0");
         TOTPreferences.getInstance(view.getContext()).setIdClase("0");
+        TOTPreferences.getInstance(view.getContext()).setTareaspendientes(0);
+        //TOTPreferences.getInstance(view.getContext()).setActionSync(false);
         Thread[] threads = new Thread[Thread.activeCount()];
         Thread.enumerate(threads);
         for (Thread t : threads) {
@@ -341,6 +350,9 @@ public class MainView extends AppCompatActivity
 
         finishAffinity();
         super.finish();
+
+
+        android.os.Process.killProcess(android.os.Process.myPid());
 
     }
 

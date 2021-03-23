@@ -52,7 +52,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
                     float dbVersion = model.checkDbVersion(context);
 
                     if (dbVersion == apiVersion) {
-                        //dismissLoadingDialog();
+                        dismissLoadingDialog();
                     }
 
                     //Waiting time between queries
@@ -87,6 +87,9 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
                             ejecutar = false ;
                             dismissLoadingDialog();
                             this.notifyRefresh();
+                            if (Thread.currentThread().isAlive()) {
+                                Thread.currentThread().interrupt();
+                            }
                         }
 
                         try {

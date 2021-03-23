@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tsg.tot.R;
 import com.tsg.tot.adapter.SubjectsAdapter;
+import com.tsg.tot.adapter.TasksAdapter;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Subjects;
@@ -36,8 +37,9 @@ public class  ListSubjectFragment extends Fragment implements FragmentsMVP.View 
     private OnFragmentInteractionListener mListener;
 
     RecyclerView recyclerList;
+    TasksAdapter tasksAdapter;
     SubjectsAdapter subjectsAdapter;
-
+    int tareasPendientes = 0;
     MainMVP.Presenter presenter;
 
     public ListSubjectFragment(MainMVP.Presenter presenter) {
@@ -102,6 +104,8 @@ public class  ListSubjectFragment extends Fragment implements FragmentsMVP.View 
 
 
         setSubjects(presenter.getSubjects(getContext(),"",idEstudianteI), getContext(), presenter );
+        tareasPendientes =  TOTPreferences.getInstance(getContext()).getTareasPendientes();
+
     }
 
     public interface OnFragmentInteractionListener {
@@ -115,6 +119,8 @@ public class  ListSubjectFragment extends Fragment implements FragmentsMVP.View 
 
     @Override
     public void setTaskSubjects(List<Task> taskSubjects, Context context, MainMVP.Presenter presenter) {
+        tasksAdapter.dataSet(taskSubjects, taskSubjects.size(), context, presenter);
+        tareasPendientes =  TOTPreferences.getInstance(getContext()).getTareasPendientes();
 
     }
 

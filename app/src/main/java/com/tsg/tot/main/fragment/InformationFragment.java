@@ -50,6 +50,7 @@ public class InformationFragment extends Fragment implements FragmentsMVP.View{
     TextView tv_title, tv_subtitle, tv_description;
     ImageView iv_image;
     ImageButton ib_subject;
+    int tareasPendientes = 0;
 
     RecyclerView recyclerViewTask;
     TasksAdapter tasksAdapter;
@@ -111,6 +112,7 @@ public class InformationFragment extends Fragment implements FragmentsMVP.View{
             intent.putExtra( "idSubject",subjects.getId());
             intent.putExtra("titleSubject",subjects.getTitulo());
             intent.putExtra("student_name",((AppCompatTextView)((MainView)getContext()).tv_studentName).getText());
+            tareasPendientes =  TOTPreferences.getInstance(getContext()).getTareasPendientes();
 
             getContext().startActivity(intent);
 
@@ -140,6 +142,7 @@ public class InformationFragment extends Fragment implements FragmentsMVP.View{
         super.onResume();
         Integer idEstudianteI = Integer.parseInt(TOTPreferences.getInstance(getContext()).getIdEstudiante()==""?"0":TOTPreferences.getInstance(getContext()).getIdEstudiante());
         setTaskSubjects(presenter.getTaskSubject(getContext(), subjects.getId(),"",idEstudianteI), getContext(), presenter);
+        tareasPendientes =  TOTPreferences.getInstance(getContext()).getTareasPendientes();
     }
 
     @Override
@@ -150,6 +153,8 @@ public class InformationFragment extends Fragment implements FragmentsMVP.View{
     @Override
     public void setTaskSubjects(List<Task> taskSubjects, Context context, MainMVP.Presenter presenter) {
         tasksAdapter.dataSet(taskSubjects, taskSubjects.size(), context, presenter);
+        tareasPendientes =  TOTPreferences.getInstance(getContext()).getTareasPendientes();
+
     }
 
     @Override

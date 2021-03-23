@@ -72,6 +72,7 @@ dependencies {
 
     //Inyeccion de dependencias
     implementation 'com.google.dagger:dagger:2.11'
+
     annotationProcessor 'com.google.dagger:dagger-compiler:2.9'
     compileOnly 'com.google.android.wearable:wearable:2.6.0'
 

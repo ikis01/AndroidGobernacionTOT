@@ -3,11 +3,13 @@ package com.tsg.tot.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,6 +22,8 @@ import com.tsg.tot.data.model.Task;
 import com.tsg.tot.main.fragment.ListFileKioscoFragment;
 import com.tsg.tot.main.mainmvp.MainMVP;
 import com.tsg.tot.main.mainmvp.MainView;
+import com.tsg.tot.repository.DatabaseRepository;
+import com.tsg.tot.storage.TOTPreferences;
 import com.tsg.tot.task.TaskDetailActivity;
 
 import java.util.List;
@@ -28,6 +32,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
     List<Task> taskList;
     Task task;
     int size = 0;
+    volatile int countTareasPendientes = 0 ;
     Context context;
     MainMVP.Presenter presenter;
 
@@ -48,11 +53,14 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
     static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView nameTask;
         private LinearLayout adapterTask;
+        private ImageView statusTaskImage ;
 
         ViewHolder(View itemView) {
             super(itemView);
             nameTask = itemView.findViewById(R.id.nameTask);
             adapterTask = itemView.findViewById(R.id.adapterTask);
+            statusTaskImage =  itemView.findViewById(R.id.statusTaskImage);
+
         }
     }
 
@@ -86,6 +94,28 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
         }
         holder.nameTask.setText(taskList.get(position).getNombre());
 
+
+        Integer idEstudiante = taskList.get(position).getEstudiante();
+        Integer idMateria  = taskList.get(position).getId();
+
+
+        DatabaseRepository dbR = new DatabaseRepository();
+
+        List <Task> pendingTasks  =  dbR.getPendingTasks (context,taskList.get(position));
+
+        if (pendingTasks.size()!=0){
+
+        }else{
+            holder.statusTaskImage.setImageResource(R.drawable.x_icon);
+            countTareasPendientes++;
+
+        }
+
+        if (position == taskList.size()-1){
+            TOTPreferences.getInstance(context).setTareaspendientes(countTareasPendientes);
+        }
+
+
         holder.itemView.setOnClickListener(view -> {
 
             //Toast.makeText(context,"click en material: "+taskList.get(position).getNombre(),Toast.LENGTH_SHORT).show();
@@ -100,7 +130,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
             intent.putExtra("idSubida",taskList.get(position).getSubida().getId());
             intent.putExtra("idTarea",taskList.get(position).getId());
             intent.putExtra("registroTarea",taskList.get(position).getRegistroTarea());
-
+         //   intent.putExtra("tareasPendientes",countTareasPendientes);
 
             context.startActivity(intent);
             notifyDataSetChanged();
@@ -115,4 +145,5 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
     public int getItemCount() {
         return size;
     }
+
 }

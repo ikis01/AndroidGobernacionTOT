@@ -1190,6 +1190,59 @@ public class DatabaseRepository implements LocalRepository {
         return submissionsList;
     }
 
+
+    @Override
+    public List<Task> getPendingTasks (Context context,Task task){
+        List<Task> taskList = new ArrayList<>();
+
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String query = "SELECT "+TASK_TABLE_NAME+".* FROM " + TASK_TABLE_NAME +
+                ","+ UPLOAD_TABLE_NAME + "," + SUBMISSIONS_TABLE_NAME +
+                " WHERE TAREAS.MATERIA_IDMATERIA = " + task.getMaterias() +
+                " AND ID =" +  task.getId() +
+                " and TAREAS.ESTUDIANTE_IDESTUDIANTE = " +task.getEstudiante() +
+                " AND ENTREGAS.Tarea_idTarea = TAREAS.ID" +
+                " and TAREAS.ESTUDIANTE_IDESTUDIANTE =SUBIDA.Estudiante_idEstudiante"+
+                " and ENTREGAS.Estudiante_IdEstudiante = TAREAS.ESTUDIANTE_IDESTUDIANTE"+
+                " AND SUBIDA.idSubida = ENTREGAS.Subida_idSubida";
+
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        try {
+            if (cursor.getCount() > 0) {
+                do {
+                    //get columns
+                    int idTask = cursor.getColumnIndex(TASK_ID);
+                    int nameTask = cursor.getColumnIndex(TASK_NAME);
+                    int idSubjectTask = cursor.getColumnIndex(TASK_SUBJECT_ID);
+                    int idUploadTask = cursor.getColumnIndex(TASK_UPLOAD_ID);
+                    int codeTask = cursor.getColumnIndex(TASK_CODE);
+                    int idStudent = cursor.getColumnIndex(TASK_STUDENT_ID);
+                    int tareaKiosco = cursor.getColumnIndex(TASK_KIOSCO);
+
+                    //add row to list
+                    taskList.add(new Task(
+                            Integer.parseInt(cursor.getString(idTask)),
+                            getUpload(db, cursor.getString(idUploadTask)),
+                            cursor.getString(nameTask),
+                            cursor.getString(codeTask),
+                            Integer.parseInt(cursor.getString(idSubjectTask)),
+                            Integer.parseInt(cursor.getString(idStudent)),
+                            Integer.parseInt(cursor.getString(tareaKiosco))
+                    ));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+
+        db.close();
+        dbHelper.close();
+        return taskList;
+    }
+
     @Override
     public List<Task> getTasksToRegister (Context context, Integer idEstudiante){
         List<Task> taskList = new ArrayList<>();

@@ -125,4 +125,19 @@ public class TOTPreferences {
         return pref.getBoolean(ACTION_SYNC, Boolean.parseBoolean(""));
     }
 
+
+    private static final String TAREASPENDIENTES ="TAREASPENDIENTES";
+
+    public void setTareaspendientes (Integer tareaspendientes){
+        editor.putInt("TAREASPENDIENTES",tareaspendientes);
+        editor.commit();
+    }
+
+    public Integer getTareasPendientes (){
+        return pref.getInt("TAREASPENDIENTES",Integer.parseInt("0"));
+    }
+
+
+
+
 }
