@@ -5,7 +5,6 @@ import com.tsg.tot.main.mainmvp.MainView;
 import com.tsg.tot.subject.DetailSubjectActivity;
 import com.tsg.tot.task.TaskDetailActivity;
 import com.tsg.tot.task.taskmvp.TaskModule;
-import com.tsg.tot.task.taskmvp.TaskView;
 
 import javax.inject.Singleton;
 

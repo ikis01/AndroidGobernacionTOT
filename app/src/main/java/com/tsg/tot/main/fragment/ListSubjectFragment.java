@@ -21,7 +21,6 @@ import com.tsg.tot.data.model.SubmissionDisplay;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.main.mainmvp.MainMVP;
-import com.tsg.tot.main.mainmvp.MainView;
 import com.tsg.tot.storage.TOTPreferences;
 import com.tsg.tot.task.taskmvp.TaskMVP;
 

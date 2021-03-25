@@ -3,9 +3,6 @@ package com.tsg.tot.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.Image;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tsg.tot.R;
 import com.tsg.tot.data.model.Task;
-import com.tsg.tot.main.fragment.ListFileKioscoFragment;
 import com.tsg.tot.main.mainmvp.MainMVP;
 import com.tsg.tot.main.mainmvp.MainView;
 import com.tsg.tot.repository.DatabaseRepository;

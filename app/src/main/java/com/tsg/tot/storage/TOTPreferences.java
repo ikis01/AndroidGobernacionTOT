@@ -3,21 +3,11 @@ package com.tsg.tot.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 //import org.mx.infonavit.appinfonavit.v4.model.Credits;
 //import org.mx.infonavit.appinfonavit.v4.model.ModelNotification;
 //import org.mx.infonavit.appinfonavit.v4.model.ModelUserToken;
 //import org.mx.infonavit.appinfonavit.v4.model.miuc.ResponsePerfilate;
 //import org.mx.infonavit.appinfonavit.v4.model.miuc.TitularMiuc;
-
-import java.lang.reflect.Type;
-import java.security.PublicKey;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by imc

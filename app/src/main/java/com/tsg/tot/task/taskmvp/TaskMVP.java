@@ -12,8 +12,6 @@ import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 
 import java.util.List;
 
-import dagger.Provides;
-
 public interface TaskMVP {
     interface View {
         void notifyRefresh();

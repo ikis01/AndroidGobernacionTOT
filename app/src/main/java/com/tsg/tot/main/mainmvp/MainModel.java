@@ -23,10 +23,8 @@ import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
-import com.tsg.tot.data.model.TokenCustom;
 import com.tsg.tot.data.model.Upload;
 import com.tsg.tot.data.model.Uploads;
-import com.tsg.tot.data.remote.ApiUtils;
 import com.tsg.tot.data.remote.model.GradeRemote;
 import com.tsg.tot.data.remote.model.LessonsRemote;
 import com.tsg.tot.data.remote.model.StudentRemote;
@@ -39,9 +37,6 @@ import com.tsg.tot.main.fragment.CustomProgressDialog;
 import com.tsg.tot.repository.ApiRepository;
 import com.tsg.tot.repository.DatabaseRepository;
 import com.tsg.tot.sqlite.DbOpenHelper;
-import com.tsg.tot.storage.TOTPreferences;
-
-import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -56,9 +51,6 @@ import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static com.tsg.tot.sqlite.DBConstants.API_REPOSITORY;
 import static com.tsg.tot.sqlite.DBConstants.DATABASE_REPOSITORY;

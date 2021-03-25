@@ -24,14 +24,14 @@ public class  ApiUtils {
 
     // telmex 2 repetidor
     //
-   //  public static final String BASE_URL = "http://192.168.1.86:6104";
+    public static final String BASE_URL = "http://192.168.1.86:6104";
 
-   // Milena 2
+   // Milena 2 actual
     //public static final String BASE_URL ="http://192.168.20.34:6104";
 
     //static final String BASE_URL = "http://192.168.1.134:6104/";
     //static final String BASE_URL = "http://192.168.1.134";
-    public static final String BASE_URL = "http://192.168.0.120:6104";
+    //public static final String BASE_URL = "http://192.168.0.120:6104";
 
 
     public static final String PORT_URL = "6104";

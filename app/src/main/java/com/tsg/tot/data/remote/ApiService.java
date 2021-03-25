@@ -1,7 +1,5 @@
 package com.tsg.tot.data.remote;
 
-import android.provider.CallLog;
-
 import com.google.gson.JsonObject;
 import com.tsg.tot.data.model.Blob;
 import com.tsg.tot.data.model.Device;
@@ -12,10 +10,8 @@ import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Planning;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.StudyMaterial;
-import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
-import com.tsg.tot.data.model.Teacher;
 import com.tsg.tot.data.model.TokenCustom;
 import com.tsg.tot.data.model.Upload;
 import com.tsg.tot.data.model.Version;

@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,48 +15,30 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.google.gson.JsonObject;
 import com.tsg.tot.R;
-import com.tsg.tot.data.model.FilesKiosco;
-import com.tsg.tot.data.model.SubmissionDisplay;
-import com.tsg.tot.data.model.Submissions;
-import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.TokenCustom;
 import com.tsg.tot.data.model.Users;
 import com.tsg.tot.data.remote.ApiUtils;
 import com.tsg.tot.data.remote.Client;
-import com.tsg.tot.data.remote.model.LessonsRemote;
-import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.main.fragment.CustomProgressDialog;
 import com.tsg.tot.main.mainmvp.MainView;
 import com.tsg.tot.repository.ApiRepository;
 import com.tsg.tot.repository.DatabaseRepository;
-import com.tsg.tot.root.App;
 import com.tsg.tot.storage.TOTPreferences;
-import com.tsg.tot.task.TaskDetailActivity;
-import com.tsg.tot.utils.UtilsTot;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
-
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -147,6 +128,11 @@ public class LoginActivity extends AppCompatActivity {
             if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
                 //RUNTIME PERMISSION Android M
                 if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+                    if (! Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).exists()){
+                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).mkdir();
+                    }
+
                     storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "Data");
                     if (!storageDir.exists()) {
                         storageDir.mkdir();
@@ -336,6 +322,11 @@ public class LoginActivity extends AppCompatActivity {
             if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
                 //RUNTIME PERMISSION Android M
                 if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+                   if (! Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).exists()){
+                       Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).mkdir();
+                   }
+
                     storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "Data");
                     if (!storageDir.exists()) {
                         storageDir.mkdir();

@@ -1,2 +1,3 @@
+include ':UnicornFilePicker'
 rootProject.name='TOT'
 include ':app'

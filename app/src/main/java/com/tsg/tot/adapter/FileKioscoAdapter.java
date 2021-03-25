@@ -4,9 +4,6 @@
 
 package com.tsg.tot.adapter;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
@@ -15,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.tsg.tot.R;
 import com.tsg.tot.data.model.FilesKiosco;

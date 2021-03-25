@@ -1,7 +1,5 @@
 package com.tsg.tot.adapter;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
@@ -11,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.tsg.tot.R;
 import com.tsg.tot.data.remote.ApiUtils;

@@ -3,20 +3,20 @@ package com.tsg.tot.task;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
-
-
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.tsg.tot.R;
 import com.tsg.tot.data.model.FilesKiosco;
@@ -28,7 +28,6 @@ import com.tsg.tot.main.fragment.ListSubmissionDisplayFragment;
 import com.tsg.tot.repository.DatabaseRepository;
 import com.tsg.tot.root.App;
 import com.tsg.tot.task.taskmvp.TaskMVP;
-import com.tsg.tot.utils.FileChooser;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,6 +41,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import abhishekti7.unicorn.filepicker.UnicornFilePicker;
+import abhishekti7.unicorn.filepicker.utils.Constants;
 
 public class TaskDetailActivity extends AppCompatActivity
         implements TaskMVP.View, ListFileKioscoFragment.OnFragmentInteractionListener,View.OnClickListener {
@@ -175,9 +177,102 @@ public class TaskDetailActivity extends AppCompatActivity
 
     }
 
-    private void uploadFile(String nombreTarea){
-        FileChooser fileChooser = new FileChooser(TaskDetailActivity.this);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == Constants.REQ_UNICORN_FILE && resultCode == RESULT_OK){
+            if(data!=null){
+                ArrayList<String> files = data.getStringArrayListExtra("filePaths");
+                for(String fileS : files){
 
+                    File file = new File (fileS);
+
+                    String srcName = file.getAbsolutePath();
+
+                    Log.d("File Name", srcName);
+                    // then actually do something in another module
+
+                    AlertDialog.Builder dialogoConfirmarSubida = new AlertDialog.Builder(TaskDetailActivity.this);
+                    dialogoConfirmarSubida.setTitle("Archivo");
+                    dialogoConfirmarSubida.setMessage("¿ Desea Guardar el Archivo "+ file.getName() + " ?" );
+                    dialogoConfirmarSubida.setCancelable(false);
+                    dialogoConfirmarSubida.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogo1, int id) {
+
+
+                            List<Submissions> submissionsList = new ArrayList<>();
+
+                            DatabaseRepository dbR = new DatabaseRepository();
+                            String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+                            submissions.setUpp(0);
+                            submissions.setIdEstudiante(idEstudiante);
+                            submissions.setIdSubida(idSubida);
+                            submissions.setIdTarea(idTarea);
+                            submissions.setRtEntrega(registroTarea);
+                            submissions.setCreado(date);
+                            String fileAppend = new SimpleDateFormat("yyyyMMddHHmm").format(new Date()).concat("_");
+                            submissionsList.add(submissions);
+                            Long idSubmission = dbR.updateSubmissions(submissionsList,TaskDetailActivity.this);
+
+                            /// Archivo Destino
+                            File dstFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Data/Tareas/"+nombreTarea+"/"+idEstudiante+"_"+ fileAppend+file.getName());
+                            ///Archivo Origen
+                            File srcFile = new File(srcName);
+                            try {
+                                copy(srcFile,dstFile);
+
+                                List<FilesKiosco> filesKioscoList = new ArrayList<>();
+                                FilesKiosco filesKiosco = new FilesKiosco();
+                                filesKiosco.setArchivoKiosco(0);
+                                filesKiosco.setCodigo("0");
+                                filesKiosco.setRuta(dstFile.getAbsolutePath());
+                                filesKiosco.setSubida_idsubida(idSubida);
+                                filesKiosco.setIdEntrega(idSubmission.intValue());
+                                filesKiosco.setNombreArchivo(file.getName());
+                                filesKioscoList.add(filesKiosco);
+                                dbR.updateMyFileKiosco(filesKioscoList,TaskDetailActivity.this);
+                                finish();
+                                startActivity(getIntent());
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    dialogoConfirmarSubida.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogo1, int id) {
+                            cancelar();
+                        }
+                    });
+                    dialogoConfirmarSubida.show();
+
+
+
+                }
+
+
+
+        }
+            }
+        }
+
+
+    private void uploadFile(String nombreTarea){
+        TaskDetailActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        UnicornFilePicker.from(TaskDetailActivity.this)
+                .addConfigBuilder()
+                .selectMultipleFiles(false)
+               // .showOnlyDirectory(true)
+                .setRootDirectory(Environment.getExternalStorageDirectory().getAbsolutePath())
+                .showHiddenFiles(false)
+               // .setFilters(new String[]{"pdf", "png", "jpg", "jpeg"})
+                .addItemDivider(true)
+                .theme(R.style.UnicornFilePicker_Default)
+                .build()
+                .forResult(Constants.REQ_UNICORN_FILE);
+
+/*        FileChooser fileChooser = new FileChooser(TaskDetailActivity.this);
         fileChooser.setFileListener(new FileChooser.FileSelectedListener() {
             @Override
             public void fileSelected(final File file) {
@@ -245,9 +340,8 @@ public class TaskDetailActivity extends AppCompatActivity
 
             }
         });
-// Set up and filter my extension I am looking for
-        //fileChooser.setExtension("pdf");
-        fileChooser.showDialog();
+
+        fileChooser.showDialog();*/
     }
 
     public void aceptar() {

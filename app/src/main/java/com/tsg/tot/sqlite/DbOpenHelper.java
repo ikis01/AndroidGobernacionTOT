@@ -7,9 +7,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-import static com.tsg.tot.sqlite.DBConstants.IPEND_IP;
-import static com.tsg.tot.sqlite.DBConstants.IPEND_PORT;
-import static com.tsg.tot.sqlite.DBConstants.IPEND_TABLE_NAME;
 import static com.tsg.tot.sqlite.DBConstants.VERSION_NUMBER;
 import static com.tsg.tot.sqlite.DBConstants.VERSION_TABLE_NAME;
 

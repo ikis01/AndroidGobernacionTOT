@@ -6,7 +6,6 @@ import android.content.Context;
 import com.tsg.tot.repository.ApiRepository;
 import com.tsg.tot.repository.DatabaseRepository;
 
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;

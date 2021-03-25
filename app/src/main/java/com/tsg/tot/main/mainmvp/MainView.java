@@ -3,7 +3,6 @@ package com.tsg.tot.main.mainmvp;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -25,22 +24,17 @@ import com.tsg.tot.R;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Subjects;
-import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
-import com.tsg.tot.data.model.TokenCustom;
 import com.tsg.tot.data.remote.ApiUtils;
 import com.tsg.tot.data.remote.model.SubmissionPending;
 import com.tsg.tot.data.remote.model.TaskRegristerRemote;
-import com.tsg.tot.login.LoginActivity;
 import com.tsg.tot.main.fragment.CustomProgressDialog;
 import com.tsg.tot.main.fragment.InformationFragment;
-
 import com.tsg.tot.main.fragment.ListSubjectFragment;
 import com.tsg.tot.repository.ApiRepository;
 import com.tsg.tot.repository.DatabaseRepository;
 import com.tsg.tot.root.App;
 import com.tsg.tot.storage.TOTPreferences;
-import com.tsg.tot.task.taskmvp.TaskMVP;
 
 import java.io.File;
 import java.net.NetworkInterface;
@@ -55,10 +49,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Multipart;
-
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.READ_PHONE_STATE;
 
 public class MainView extends AppCompatActivity
         implements MainMVP.View, ListSubjectFragment.OnFragmentInteractionListener, View.OnClickListener {
