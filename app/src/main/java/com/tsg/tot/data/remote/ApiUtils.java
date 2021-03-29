@@ -24,7 +24,7 @@ public class  ApiUtils {
 
     // telmex 2 repetidor
     //
-    public static final String BASE_URL = "http://192.168.1.86:6104";
+    public static final String BASE_URL = "http://192.168.1.95:6104";
 
    // Milena 2 actual
     //public static final String BASE_URL ="http://192.168.20.34:6104";

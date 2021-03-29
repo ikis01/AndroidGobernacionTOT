@@ -102,7 +102,8 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
         if (pendingTasks.size()!=0){
 
         }else{
-            holder.statusTaskImage.setImageResource(R.drawable.x_icon);
+            //holder.statusTaskImage.setImageResource(R.drawable.x_icon);
+            holder.statusTaskImage.setImageResource(R.drawable.warning_icon);
             countTareasPendientes++;
 
         }
