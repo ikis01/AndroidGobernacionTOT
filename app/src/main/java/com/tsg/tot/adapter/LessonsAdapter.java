@@ -30,10 +30,10 @@ public class LessonsAdapter extends RecyclerView.Adapter<LessonsAdapter.ViewHold
     TaskMVP.Presenter presenter ;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView nombreClase ;
-        private TextView tema ;
-        private Button  verMas ;
-        private RelativeLayout adapterLessons;
+        private final TextView nombreClase ;
+        private final TextView tema ;
+        private final Button  verMas ;
+        private final RelativeLayout adapterLessons;
 
         ViewHolder(View itemView) {
             super(itemView);

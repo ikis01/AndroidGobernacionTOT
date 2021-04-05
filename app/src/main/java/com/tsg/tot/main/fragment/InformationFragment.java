@@ -111,7 +111,7 @@ public class InformationFragment extends Fragment implements FragmentsMVP.View{
             Intent intent  = new  Intent (getContext(), DetailSubjectActivity.class);
             intent.putExtra( "idSubject",subjects.getId());
             intent.putExtra("titleSubject",subjects.getTitulo());
-            intent.putExtra("student_name",((AppCompatTextView)((MainView)getContext()).tv_studentName).getText());
+            intent.putExtra("student_name", ((MainView)getContext()).tv_studentName.getText());
             tareasPendientes =  TOTPreferences.getInstance(getContext()).getTareasPendientes();
 
             getContext().startActivity(intent);

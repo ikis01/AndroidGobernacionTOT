@@ -43,7 +43,7 @@ public class DetailSubjectActivity extends AppCompatActivity
        presenter.setView(this);
 
         if (presenter!=null){}
-         presenter.setView((TaskMVP.View) this);
+         presenter.setView(this);
     }
 
     TextView tv_studentCode, tv_studentName, tv_institutionName,
@@ -71,7 +71,7 @@ public class DetailSubjectActivity extends AppCompatActivity
 
 
 
-        btn_volver = (Button) findViewById(R.id.btn_volver);
+        btn_volver = findViewById(R.id.btn_volver);
         btn_volver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

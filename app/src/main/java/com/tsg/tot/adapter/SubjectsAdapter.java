@@ -24,7 +24,7 @@ public class SubjectsAdapter extends RecyclerView.Adapter<SubjectsAdapter.ViewHo
     MainMVP.Presenter presenter;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView nameSubject;
+        private final TextView nameSubject;
 
         ViewHolder(View itemView) {
             super(itemView);

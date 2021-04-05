@@ -46,7 +46,8 @@ import retrofit2.Response;
  */
 public class ApiRepository implements RemoteRepository {
 
-    private ApiService mApiService = ApiUtils.getAPIService();
+    private final ApiService mApiService = ApiUtils.getAPIService();
+    private final ApiService getmApiService = ApiUtils.getAPIServiceGetTasks();
      public float apiVersion;
     TokenCustom tokenCustom = new TokenCustom("", "");
     TaskRegristerRemote taskRegristerRemote = new TaskRegristerRemote();
@@ -578,7 +579,7 @@ public class ApiRepository implements RemoteRepository {
     @Override
     public List<TaskRemote> getTasks(Context context, String authKey) {
 
-        mApiService.getTasks(authKey).enqueue(new Callback<List<TaskRemote>>() {
+        getmApiService.getTasks(authKey).enqueue(new Callback<List<TaskRemote>>() {
 
             @Override
             public void onResponse(Call<List<TaskRemote>> call, Response<List<TaskRemote>> response) {
@@ -589,7 +590,8 @@ public class ApiRepository implements RemoteRepository {
                         for (TaskRemote task : taskList) {
                             try {
                                 Log.d("Debug task id ", task.getTareaId().toString());
-                                Log.d("Debug task upload id ", task.getIdArchivoD2L().toString());
+                                //Log.d("Debug task upload id ", task.getIdArchivoD2L().toString());
+                                Log.d("Debug task upload id ", task.getIdD2L().toString());
 
                             } catch (NullPointerException e) {
                                 Log.d("Debug NullPointerException ", e.toString());

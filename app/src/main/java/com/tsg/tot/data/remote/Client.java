@@ -98,6 +98,36 @@ public class Client {
 
     }
 
+    static Retrofit getClientGetTasks(){
+
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient httpClient = new UnsafeOkHttpClient().getUnsafeOkHttpClient()
+                .newBuilder()
+                .readTimeout(180, TimeUnit.SECONDS)
+                .connectTimeout(80, TimeUnit.SECONDS)
+                .addInterceptor(logging)
+                // .addInterceptor(new  NetworkConnectionInterceptor())
+                .build();
+
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    // .baseUrl(ApiUtils.BASE_URL+":"+ApiUtils.PORT_URL+"/")
+                    .baseUrl(ApiUtils.BASE_URL)
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .client(httpClient)
+                    .build();
+        }
+        return retrofit;
+
+    }
+
     static Retrofit getClientIsConnected()
     {
         Gson gson = new GsonBuilder()

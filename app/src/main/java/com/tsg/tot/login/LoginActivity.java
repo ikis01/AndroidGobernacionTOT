@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
-        tv_estatus_kiosko = (TextView) findViewById(R.id.tv_estatus_kiosko);
+        tv_estatus_kiosko = findViewById(R.id.tv_estatus_kiosko);
 
 
 
@@ -109,8 +109,8 @@ public class LoginActivity extends AppCompatActivity {
         requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
 
         dialog.setProgress(dialog.getProgress() + 5);
-        et_usuario = (EditText) findViewById(R.id.et_usuario);
-        et_contrasena = (EditText) findViewById(R.id.et_contrasena);
+        et_usuario = findViewById(R.id.et_usuario);
+        et_contrasena = findViewById(R.id.et_contrasena);
         String usuario = et_usuario.getText().toString();
         String password = et_contrasena.getText().toString();
 
@@ -303,8 +303,8 @@ public class LoginActivity extends AppCompatActivity {
         requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
 
         dialog.setProgress(dialog.getProgress() + 5);
-        et_usuario = (EditText) findViewById(R.id.et_usuario);
-        et_contrasena = (EditText) findViewById(R.id.et_contrasena);
+        et_usuario = findViewById(R.id.et_usuario);
+        et_contrasena = findViewById(R.id.et_contrasena);
         String usuario = et_usuario.getText().toString();
         String password = et_contrasena.getText().toString();
 
@@ -501,8 +501,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void registrar(View view) {
 
-        et_usuario = (EditText) findViewById(R.id.et_usuario);
-        et_contrasena = (EditText) findViewById(R.id.et_contrasena);
+        et_usuario = findViewById(R.id.et_usuario);
+        et_contrasena = findViewById(R.id.et_contrasena);
         String usuario = et_usuario.getText().toString();
         String password = et_contrasena.getText().toString();
 
@@ -618,13 +618,7 @@ public class LoginActivity extends AppCompatActivity {
             tokenCustomCall.enqueue(new Callback<TokenCustom>() {
                 @Override
                 public void onResponse(Call<TokenCustom> call, Response<TokenCustom> response) {
-                    if (response.code() == 200||response.code() == 404||response.code() == 400) {
-                        isConnected = true ;
-
-                     } else {
-
-                        isConnected = false ;
-                    }
+                    isConnected = response.code() == 200 || response.code() == 404 || response.code() == 400;
                 }
 
                 @Override

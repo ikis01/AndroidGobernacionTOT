@@ -137,6 +137,38 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             "`NUMERO` FLOAT)";
 
 
+
+    private static final String FILE_MESSAGE_KIOSKO = "CREATE TABLE IF NOT EXISTS `ARCHIVO_MENSAJE_KIOSCO` ("+
+            " `ID` INTEGER," +
+            " `FECHA_DESCARGA` TEXT," +
+            " `ID_ARCHIVO_MENSAJE` INTEGER," +
+            " `ID_ARCHIVO_KIOSCO` INTEGER," +
+            " `IDD2L` TEXT,"+
+            " `NOMBRE` TEXT,"+
+            " `URL` TEXT," +
+            " `ID_MENSAJE_KIOSCO` INTEGER)";
+
+
+
+    private static final String MESSAGE_KIOSKO = "CREATE TABLE IF NOT EXISTS `MENSAJE_KIOSCO` ("+
+            " `ID` INTEGER," +
+            " `FECHA_DESCARGA` TEXT," +
+            " `IDD2L` TEXT,"+
+            " `ID_MENSAJE_KIOSCO` INTEGER," +
+            " `NOMBRE` TEXT,"+
+            " `REGISTRO_MENSAJE_KIOSCO` INTEGER," +
+            " `ID_ESTUDIANTE` INTEGER," +
+            " `ID_MATERIA` INTEGER)";
+
+    private static final String MESSAGE_ANSWER_KIOSKO = "CREATE TABLE IF NOT EXISTS `RESPUESTA_MENSAJE` ("+
+            " `ID` INTEGER," +
+            " `BODY` TEXT," +
+            " `ESTADO` TEXT,"+
+            " `ID_MENSAJE_KIOSCO` INTEGER)";
+
+
+
+
     //private static final String GRADE_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS `Grado` (" +
           //  "`idGrado` INTEGER," +
           //  "`Grado` TEXT)";
@@ -202,6 +234,9 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         db.execSQL(USERS_TABLE_CREATE);
         db.execSQL(FILE_KIOSCO_CREATE);
         db.execSQL(RELATION_STUDENT_SUBJECT);
+        db.execSQL(FILE_MESSAGE_KIOSKO);
+        db.execSQL(MESSAGE_KIOSKO);
+        db.execSQL(MESSAGE_ANSWER_KIOSKO);
         //Asigna Version 0.1 a la tabla
         ContentValues cv = new ContentValues();
         cv.put(VERSION_NUMBER, 1.0);

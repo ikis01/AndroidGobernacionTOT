@@ -33,10 +33,10 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView nombre;
-        private TextView descripcion;
-        private Button archivo_adjunto;
-        private RelativeLayout adapterStudyMaterial;
+        private final TextView nombre;
+        private final TextView descripcion;
+        private final Button archivo_adjunto;
+        private final RelativeLayout adapterStudyMaterial;
 
 
         ViewHolder(View itemView) {

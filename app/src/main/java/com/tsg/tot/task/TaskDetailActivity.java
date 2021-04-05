@@ -97,8 +97,8 @@ public class TaskDetailActivity extends AppCompatActivity
         ((App) getApplication()).getComponent().injectTask(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
-        btn_volver = (Button) findViewById(R.id.btn_volver);
-        btn_subir_archivo = (Button) findViewById(R.id.bt_subir_archivos);
+        btn_volver = findViewById(R.id.btn_volver);
+        btn_subir_archivo = findViewById(R.id.bt_subir_archivos);
 
         btn_volver.setOnClickListener(new View.OnClickListener() {
             @Override

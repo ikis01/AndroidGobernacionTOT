@@ -37,9 +37,9 @@ public class FileKioscoAdapter extends RecyclerView.Adapter<FileKioscoAdapter.Vi
     TaskMVP.Presenter presenter;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView nameFile;
-        private TextView statusFile;
-        private RelativeLayout adapterFileKiosco;
+        private final TextView nameFile;
+        private final TextView statusFile;
+        private final RelativeLayout adapterFileKiosco;
 
         ViewHolder(View itemView) {
             super(itemView);

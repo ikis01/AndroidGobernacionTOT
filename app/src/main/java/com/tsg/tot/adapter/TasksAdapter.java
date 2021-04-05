@@ -47,9 +47,9 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView nameTask;
-        private LinearLayout adapterTask;
-        private ImageView statusTaskImage ;
+        private final TextView nameTask;
+        private final LinearLayout adapterTask;
+        private final ImageView statusTaskImage ;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -119,7 +119,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
             Intent intent  = new  Intent (view.getContext(), TaskDetailActivity.class);
             intent.putExtra( "holder",String.valueOf(holder.adapterTask));
             intent.putExtra("task_name",taskList.get(position).getNombre());
-            intent.putExtra("student_name",((AppCompatTextView)((MainView)context).tv_studentName).getText());
+            intent.putExtra("student_name", ((MainView)context).tv_studentName.getText());
             intent.putExtra("tareakiosco",taskList.get(position).getTareakiosco());
             intent.putExtra("idMateria",taskList.get(position).getMaterias());
             intent.putExtra("idEstudiante",taskList.get(position).getEstudiante());

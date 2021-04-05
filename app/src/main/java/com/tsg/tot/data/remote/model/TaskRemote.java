@@ -3,35 +3,48 @@ package com.tsg.tot.data.remote.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class TaskRemote {
+
+
+
+
 
     @SerializedName("tareaId")
     @Expose
     private Integer tareaId;
-    @SerializedName("nombreActividad")
+
+    @SerializedName("nombre")
     @Expose
-    private String nombreActividad;
-    @SerializedName("nombreArchivo")
+    private String nombre;
+
+    @SerializedName("instrucciones")
     @Expose
-    private String nombreArchivo;
+    private String instrucciones;
 
     @SerializedName("idD2L")
     @Expose
     private Integer idD2L;
 
-    @SerializedName("idArchivoD2L")
+
+    @SerializedName("idD2LOther")
     @Expose
-    private Integer idArchivoD2L;
+    private String idD2LOther;
+
+
+    @SerializedName("fechaEntrega")
+    @Expose
+    private String fechaEntrega;
+
     @SerializedName("fechaDescarga")
     @Expose
     private String fechaDescarga;
-    @SerializedName("materiaId")
-    @Expose
-    private Integer materiaId;
+
 
     @SerializedName("file")
     @Expose
-    private FileTaskRemote file;
+    private List<FileTaskRemote> file;
 
     @SerializedName("materia")
     @Expose
@@ -57,29 +70,25 @@ public class TaskRemote {
         this.tareaId = tareaId;
     }
 
-    public String getNombreActividad() {
-        return nombreActividad;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNombreActividad(String nombreActividad) {
-        this.nombreActividad = nombreActividad;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public String getNombreArchivo() {
-        return nombreArchivo;
+    public String getInstrucciones() {
+        return instrucciones;
     }
 
-    public void setNombreArchivo(String nombreArchivo) {
-        this.nombreArchivo = nombreArchivo;
+    public void setInstrucciones(String instrucciones) {
+        this.instrucciones = instrucciones;
     }
 
-    public Integer getIdArchivoD2L() {
-        return idArchivoD2L;
-    }
 
-    public void setIdArchivoD2L(Integer idArchivoD2L) {
-        this.idArchivoD2L = idArchivoD2L;
-    }
+
+
 
     public String getFechaDescarga() {
         return fechaDescarga;
@@ -89,21 +98,6 @@ public class TaskRemote {
         this.fechaDescarga = fechaDescarga;
     }
 
-    public Integer getMateriaId() {
-        return materiaId;
-    }
-
-    public void setMateriaId(Integer materiaId) {
-        this.materiaId = materiaId;
-    }
-
-    public FileTaskRemote getFile() {
-        return file;
-    }
-
-    public void setFile(FileTaskRemote file) {
-        this.file = file;
-    }
 
     public Integer getIdD2L() {
         return idD2L;
@@ -127,5 +121,31 @@ public class TaskRemote {
 
     public void setIdRegistro(Integer idRegistro) {
         this.idRegistro = idRegistro;
+    }
+
+
+
+    public String getFechaEntrega() {
+        return fechaEntrega;
+    }
+
+    public void setFechaEntrega(String fechaEntrega) {
+        this.fechaEntrega = fechaEntrega;
+    }
+
+    public String getIdD2LOther() {
+        return idD2LOther;
+    }
+
+    public void setIdD2LOther(String idD2LOther) {
+        this.idD2LOther = idD2LOther;
+    }
+
+    public List<FileTaskRemote> getFile() {
+        return file;
+    }
+
+    public void setFile(List<FileTaskRemote> file) {
+        this.file = file;
     }
 }

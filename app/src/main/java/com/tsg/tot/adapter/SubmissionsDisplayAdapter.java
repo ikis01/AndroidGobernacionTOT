@@ -32,9 +32,9 @@ public class SubmissionsDisplayAdapter extends RecyclerView.Adapter<SubmissionsD
     TaskMVP.Presenter presenter;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
-        private TextView nameFile ;
-        private  TextView statusFile;
-        private RelativeLayout adapterSubmissionDisplay;
+        private final TextView nameFile ;
+        private final TextView statusFile;
+        private final RelativeLayout adapterSubmissionDisplay;
 
         ViewHolder(View itemView){
             super(itemView);

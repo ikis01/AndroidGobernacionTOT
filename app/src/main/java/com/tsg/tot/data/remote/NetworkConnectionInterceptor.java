@@ -13,7 +13,7 @@ import okhttp3.Response;
 
 public class NetworkConnectionInterceptor implements Interceptor {
 
-    private Context mContext;
+    private final Context mContext;
 
     public NetworkConnectionInterceptor(Context context) {
         mContext = context;

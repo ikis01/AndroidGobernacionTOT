@@ -25,6 +25,7 @@ import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
 import com.tsg.tot.data.model.Upload;
 import com.tsg.tot.data.model.Uploads;
+import com.tsg.tot.data.remote.model.FileTaskRemote;
 import com.tsg.tot.data.remote.model.GradeRemote;
 import com.tsg.tot.data.remote.model.LessonsRemote;
 import com.tsg.tot.data.remote.model.StudentRemote;
@@ -58,8 +59,8 @@ import static com.tsg.tot.sqlite.DBConstants.DATABASE_REPOSITORY;
 public class MainModel implements MainMVP.Model {
 
     DbOpenHelper dbHelper;
-    private ApiRepository apiRepository;
-    private DatabaseRepository databaseRepository;
+    private final ApiRepository apiRepository;
+    private final DatabaseRepository databaseRepository;
 
 
     public MainModel(ApiRepository apiRepository, DatabaseRepository databaseRepository) {
@@ -143,7 +144,6 @@ public class MainModel implements MainMVP.Model {
         if (taskRemoteList != null && studentRemote != null) {
 
             for (TaskRemote taskRemote : taskRemoteList) {
-
                 if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
                     //RUNTIME PERMISSION Android M
                     if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -154,50 +154,56 @@ public class MainModel implements MainMVP.Model {
                             storageDirTask.mkdir();
                         }
 
+                        java.util.Date fecha = new Date();
+                        Uploads upload = new Uploads();
+                        upload.setFecha(fecha.toString());
+                        upload.setFechaDescarga(fecha.toString());
+                        upload.setSubidaKiosco(taskRemote.getTareaId());
+                        upload.setEstudiante_idEstudiante(studentRemote.getId());
+                        Long id = databaseRepository.updateMyUpload(upload, context);
 
-                        if (storageDirTask.exists()) {
-                            String tareaPath = null;
-                            tareaPath = Download(taskRemote.getFile().getUrl(), storageDirTask, taskRemote.getNombreArchivo(), "Tarea_");
-                            if (tareaPath != null) {
-                                /// insertar registro en SUBIDA
-                                TaskRemote taskAux = taskRemote;
-                                FilesKiosco filesKiosco = new FilesKiosco();
-                                java.util.Date fecha = new Date();
-                                Uploads upload = new Uploads();
-                                upload.setFecha(fecha.toString());
-                                upload.setFechaDescarga(fecha.toString());
-                                upload.setSubidaKiosco(taskRemote.getFile().getId());
-                                upload.setEstudiante_idEstudiante(studentRemote.getId());
-                                Long id = databaseRepository.updateMyUpload(upload, context);
-                                taskRemote.setIdSubida(id);
-                                taskRemote.setMateriaId(taskRemote.getMateria().getId());
+                        List  <FileTaskRemote> fileTaskRemoteList = taskRemote.getFile();
+                        for (FileTaskRemote fileTaskRemote : fileTaskRemoteList){
+                    if (storageDirTask.exists()) {
+                        String tareaPath = null;
+                        tareaPath = Download(fileTaskRemote.getUrl(), storageDirTask, fileTaskRemote.getNombre(), "Tarea_");
+                        if (tareaPath != null) {
+
+                            /// insertar registro en SUBIDA
+                            TaskRemote taskAux = taskRemote;
+                            FilesKiosco filesKiosco = new FilesKiosco();
+
+                            taskRemote.setIdSubida(id);
+                            ///ikis
+                            //taskRemote.setMateriaId(taskRemote.getMateria().getId());
 
 
-                                JsonObject jsonObject = new JsonObject();
-                                jsonObject.addProperty("tareaId", taskRemote.getTareaId());
+                            JsonObject jsonObject = new JsonObject();
+                            jsonObject.addProperty("tareaId", taskRemote.getTareaId());
 
 
-                                //                               TaskRegristerRemote taskRegristerRemote=  registerTask( context, taskRemote.getTareaId(), token, jsonObject);
 
-                                //if (taskRegristerRemote!=null) {
-//                                    Log.d("resultado Registrar TaskRemote ",taskRegristerRemote.toString());
-//                                    Log.d("TaskIdRegistro result  --> ",taskRegristerRemote.getId().toString());
-                                //   taskRemote.setIdRegistro(taskRegristerRemote.getId());
-                                //} else {
-                                taskRemote.setIdRegistro(0);
-                                //  }
-                                taskRemoteListAux.add(taskRemote);
-                                filesKiosco.setArchivoKiosco(taskRemote.getFile().getId());
-                                filesKiosco.setCodigo(taskRemote.getTareaId().toString());
-                                filesKiosco.setRuta(tareaPath);
-                                filesKiosco.setSubida_idsubida(id.intValue());
-                                filesKiosco.setNombreArchivo(taskRemote.getNombreArchivo());
-                                filesKioscoList.add(filesKiosco);
+                            taskRemote.setIdRegistro(0);
 
-                            }
-
+                            taskRemoteListAux.add(taskRemote);
+                            filesKiosco.setArchivoKiosco(fileTaskRemote.getId());
+                            filesKiosco.setCodigo(taskRemote.getTareaId().toString());
+                            filesKiosco.setRuta(tareaPath);
+                            filesKiosco.setSubida_idsubida(id.intValue());
+                            filesKiosco.setNombreArchivo(fileTaskRemote.getNombre());
+                            filesKioscoList.add(filesKiosco);
 
                         }
+
+
+                    }
+
+                }
+
+
+
+
+
 
 
                     }
@@ -216,7 +222,7 @@ public class MainModel implements MainMVP.Model {
                         storageAllTask.mkdir();
                     } else {
 
-                        File storageDirectory = new File(storageAllTask.getAbsolutePath(), task.getNombreActividad());
+                        File storageDirectory = new File(storageAllTask.getAbsolutePath(), task.getNombre());
                         if (!storageDirectory.exists()) {
                             storageDirectory.mkdir();
                         }
@@ -246,7 +252,7 @@ public class MainModel implements MainMVP.Model {
 
                         String pathMaterial = null;
                         pathMaterial = Download(material.getUrl(), storageDirMaterialRemote, material.getNombreArchivo(), "Material_");
-                        if (pathMaterial != null) {
+                          if (pathMaterial != null) {
                             material.setRuta(pathMaterial);
                             materialSList.add(material);
                         }
@@ -688,6 +694,7 @@ public class MainModel implements MainMVP.Model {
             case DATABASE_REPOSITORY:
                 //taskList = databaseRepository.getTasks(context,token);
                 break;
+
             default:
                 break;
         }

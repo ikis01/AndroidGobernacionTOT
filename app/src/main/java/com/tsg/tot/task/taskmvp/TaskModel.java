@@ -22,8 +22,8 @@ import static com.tsg.tot.sqlite.DBConstants.DATABASE_REPOSITORY;
 @Module
 public class TaskModel implements TaskMVP.Model {
     DbOpenHelper dbHelper;
-    private ApiRepository apiRepository;
-    private DatabaseRepository databaseRepository;
+    private final ApiRepository apiRepository;
+    private final DatabaseRepository databaseRepository;
 
     public TaskModel(ApiRepository apiRepository, DatabaseRepository databaseRepository) {
         this.apiRepository = apiRepository;

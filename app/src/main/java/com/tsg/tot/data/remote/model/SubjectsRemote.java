@@ -21,6 +21,10 @@ public class SubjectsRemote {
     @Expose
     private String descripcion;
 
+    @SerializedName("profesorId")
+    @Expose
+    private Integer profesorId;
+
     @SerializedName("idD2L")
     @Expose
     private Integer idD2L;
@@ -29,9 +33,6 @@ public class SubjectsRemote {
     @Expose
     private String institucionId;
 
-    @SerializedName("profesorId")
-    @Expose
-    private Integer profesorId;
 
     public Integer getId() {
         return id;

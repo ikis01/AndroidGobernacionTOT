@@ -406,7 +406,7 @@ public class MainView extends AppCompatActivity
         MultipartBody.Part body =MultipartBody.Part.createFormData("File",file.getName(), requestBody);
 
         ApiRepository apiRepository = new ApiRepository();
-        String macAddress = getMacAddress();
+        String macAddress = ApiUtils.getMacAddress();
 
         Integer registroId = submissionPending.getTareaRegistroId();
         RequestBody tareaRegistroId = RequestBody.create(MultipartBody.FORM,registroId.toString());
@@ -455,16 +455,19 @@ public class MainView extends AppCompatActivity
 
 
         } catch (Exception e) {
-                Log.d("Exception --- ", "Exception --- " + e.getMessage().toString());
+                Log.d("Exception --- ", "Exception --- " + e.getMessage());
         }
 
     }
 
     private void registrarTarea(String token, Integer idTarea) {
-
+        String macAddress = ApiUtils.getMacAddress();
         ApiRepository apiRepository = new ApiRepository();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("tareaId", idTarea);
+        jsonObject.addProperty("mac",macAddress);
+
+
 
         try {
             ///Se obtiene Login remoto  token  en caso de no obtenerlo no se procede a sincronizar

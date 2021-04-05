@@ -1,18 +1,24 @@
+/*
+ * Copyright (c) 2021.
+ */
+
 package com.tsg.tot.data.remote.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class FileTaskRemote {
-
+public class FileMessageRemote {
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private Integer id ;
 
     @SerializedName("nombre")
     @Expose
     private String nombre;
 
+    @SerializedName("mensajeId")
+    @Expose
+    private Integer mensajeId ;
 
     @SerializedName("fechaDescarga")
     @Expose
@@ -22,18 +28,9 @@ public class FileTaskRemote {
     @Expose
     private Integer idD2L;
 
-    @SerializedName("tareaId")
-    @Expose
-    private Integer tareaId;
-
-
     @SerializedName("url")
     @Expose
     private String url ;
-
-    @SerializedName("size")
-    @Expose
-    private Integer size ;
 
 
     public Integer getId() {
@@ -52,21 +49,12 @@ public class FileTaskRemote {
         this.nombre = nombre;
     }
 
-    public Integer getTareaId() {
-        return tareaId;
+    public Integer getMensajeId() {
+        return mensajeId;
     }
 
-    public void setTareaId(Integer tareaId) {
-        this.tareaId = tareaId;
-    }
-
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
+    public void setMensajeId(Integer mensajeId) {
+        this.mensajeId = mensajeId;
     }
 
     public String getFechaDescarga() {
@@ -85,11 +73,11 @@ public class FileTaskRemote {
         this.idD2L = idD2L;
     }
 
-    public Integer getSize() {
-        return size;
+    public String getUrl() {
+        return url;
     }
 
-    public void setSize(Integer size) {
-        this.size = size;
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

@@ -21,7 +21,7 @@ public  class TaskPresenter implements TaskMVP.Presenter, TaskMVP.Model.OnFinish
 
     @Nullable
     private TaskMVP.View view;
-    private TaskMVP.Model model;
+    private final TaskMVP.Model model;
 
     public TaskPresenter(TaskMVP.Model model) {
        this.model = model ;

@@ -15,9 +15,9 @@ import android.content.SharedPreferences;
 
 public class TOTPreferences {
 
-    private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
-    private Context mContext;
+    private final SharedPreferences pref;
+    private final SharedPreferences.Editor editor;
+    private final Context mContext;
     // shared pref mode
     private final int PRIVATE_MODE = 0;
     private static final String PREF_NAME = "TOTPreferences";
