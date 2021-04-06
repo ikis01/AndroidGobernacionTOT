@@ -22,8 +22,10 @@ import com.tsg.tot.data.model.TokenCustom;
 import com.tsg.tot.data.model.Upload;
 import com.tsg.tot.data.model.Uploads;
 import com.tsg.tot.data.model.Users;
+import com.tsg.tot.data.remote.model.FileMessageRemote;
 import com.tsg.tot.data.remote.model.GradeRemote;
 import com.tsg.tot.data.remote.model.LessonsRemote;
+import com.tsg.tot.data.remote.model.MessageRemote;
 import com.tsg.tot.data.remote.model.StudentRemote;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.data.remote.model.SubjectsRemote;
@@ -140,6 +142,8 @@ public interface LocalRepository {
     void updateRelStudentSubjects(StudentRemote studentRemote, List<SubjectsRemote> subjectsRemoteList, android.content.Context context);
 
     void updateMyLessons(List<LessonsRemote> lessonsRemoteList, Context context);
+    List<MessageRemote> updateMyMessages(List<MessageRemote> messageRemoteList, Context context,StudentRemote studentRemote);
+    void updateMyFileMessage ( MessageRemote remoteMessage, FileMessageRemote fileMessageRemote ,Context context );
 
     Long updateMyUpload(Uploads upload, Context context);
 

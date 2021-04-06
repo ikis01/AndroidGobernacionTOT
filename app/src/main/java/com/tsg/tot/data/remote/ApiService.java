@@ -17,6 +17,8 @@ import com.tsg.tot.data.model.Upload;
 import com.tsg.tot.data.model.Version;
 import com.tsg.tot.data.remote.model.GradeRemote;
 import com.tsg.tot.data.remote.model.LessonsRemote;
+import com.tsg.tot.data.remote.model.MessageRegisterRemote;
+import com.tsg.tot.data.remote.model.MessageRemote;
 import com.tsg.tot.data.remote.model.StudentRemote;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.data.remote.model.SubjectsRemote;
@@ -28,6 +30,7 @@ import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -40,6 +43,13 @@ import retrofit2.http.Part;
  * End Point del API
  */
 public interface ApiService {
+
+
+    String GET_MESSAGES_PENDING = "api/mensajes/misMensajesPendientesPorDescargar" ;
+    String POST_REGISTER_MESSAGES = "api/mensajes/RegistrarMiMensajeDescargado" ;
+    String POST_ANSWER_MESSAGE = "api/mensajes/responderMensaje";
+    String POST_ANSWER_TASK = "api/mensajes/responderTarea";
+
     String POST_LOGIN = "api/cuentas/login";
     String GET_VERSION = "api/versiones";
     String POST_UPLOAD_TASK ="api/entregas/entregarMiTarea";
@@ -73,6 +83,16 @@ public interface ApiService {
     String POST_EXERCISES = "api/gobernacion/cursos/ejercicios/";
     String POST_SUBMISSIONS = "api/gobernacion/cursos/entregas/";
     String POST_BLOB = "upload";
+
+    @GET (GET_MESSAGES_PENDING)
+    Call<List<MessageRemote>> getMyPendingMessages (@Header("Authorization") String authKey);
+
+    @POST(POST_REGISTER_MESSAGES)
+    Call<MessageRegisterRemote> postRegisterMessage(@Header("Authorization") String authKey, @Body JsonObject body );
+
+    @POST(POST_ANSWER_MESSAGE)
+    Call<ResponseBody> postAnswerMessage(@Header("Authorization") String authKey, @Body JsonObject body );
+
     @Multipart
     @POST (POST_UPLOAD_TASK)
     Call<TaskRegristerRemote> postUploadTask(@Header("Authorization") String authKey, @Part MultipartBody.Part file, @Part ("TareaRegistroId")RequestBody tareaRegistroId, @Part ("Mac")RequestBody mac);

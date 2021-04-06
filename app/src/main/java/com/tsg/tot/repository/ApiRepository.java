@@ -26,6 +26,7 @@ import com.tsg.tot.data.remote.ApiService;
 import com.tsg.tot.data.remote.ApiUtils;
 import com.tsg.tot.data.remote.model.GradeRemote;
 import com.tsg.tot.data.remote.model.LessonsRemote;
+import com.tsg.tot.data.remote.model.MessageRemote;
 import com.tsg.tot.data.remote.model.StudentRemote;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.data.remote.model.SubjectsRemote;
@@ -70,6 +71,7 @@ public class ApiRepository implements RemoteRepository {
 
     GradeRemote gradeRemote;
     List<StudyMaterialRemote> studyMaterialRemoteList;
+    List<MessageRemote> messagePendintRemoteList;
     StudentRemote studentRemote;
     List<LessonsRemote> lessonsRemoteList;
 
@@ -752,6 +754,38 @@ public class ApiRepository implements RemoteRepository {
             }
         });
         return studyMaterialRemoteList;
+    }
+
+    @Override
+    public     List<MessageRemote> getMyPendingMessages(Context context, String auth){
+        mApiService.getMyPendingMessages(auth).enqueue(new Callback<List<MessageRemote>>() {
+            @Override
+            public void onResponse(Call<List<MessageRemote>> call, Response<List<MessageRemote>> response) {
+                if (response.isSuccessful()) {
+                    List<MessageRemote> messagePendingRemotes = response.body();
+                    messagePendintRemoteList = messagePendingRemotes;
+                    if (messagePendintRemoteList != null) {
+                        for ( MessageRemote message : messagePendintRemoteList) {
+                            try {
+                                Log.d("Debug  mensaje ----  id ", message.getId().toString());
+                                Log.d("Debug  mensaje _-- message  name  ", message.getMensajes());
+                            } catch (NullPointerException e) {
+                                Log.d("Debug NullPointerException ", e.toString());
+                            }
+                        }
+                    } else {
+                        Log.d("Debug ", "gradeList is null");
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<MessageRemote>> call, Throwable t) {
+                Log.d("POST Mensajes Pendientes Error :" , t.getMessage());
+            }
+        });
+        return messagePendintRemoteList;
     }
 
     @Override

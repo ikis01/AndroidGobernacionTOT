@@ -26,7 +26,7 @@ public class FileMessageRemote {
 
     @SerializedName("idD2L")
     @Expose
-    private Integer idD2L;
+    private String idD2L;
 
     @SerializedName("url")
     @Expose
@@ -65,11 +65,11 @@ public class FileMessageRemote {
         this.fechaDescarga = fechaDescarga;
     }
 
-    public Integer getIdD2L() {
+    public String getIdD2L() {
         return idD2L;
     }
 
-    public void setIdD2L(Integer idD2L) {
+    public void setIdD2L(String idD2L) {
         this.idD2L = idD2L;
     }
 

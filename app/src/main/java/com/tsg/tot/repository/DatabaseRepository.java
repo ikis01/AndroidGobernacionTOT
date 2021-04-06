@@ -27,9 +27,11 @@ import com.tsg.tot.data.model.TokenCustom;
 import com.tsg.tot.data.model.Upload;
 import com.tsg.tot.data.model.Uploads;
 import com.tsg.tot.data.model.Users;
+import com.tsg.tot.data.remote.model.FileMessageRemote;
 import com.tsg.tot.data.remote.model.FileTaskRemote;
 import com.tsg.tot.data.remote.model.GradeRemote;
 import com.tsg.tot.data.remote.model.LessonsRemote;
+import com.tsg.tot.data.remote.model.MessageRemote;
 import com.tsg.tot.data.remote.model.StudentRemote;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.data.remote.model.SubjectsRemote;
@@ -37,6 +39,7 @@ import com.tsg.tot.data.remote.model.SubmissionPending;
 import com.tsg.tot.data.remote.model.TaskRemote;
 import com.tsg.tot.data.remote.model.TeacherRemote;
 import com.tsg.tot.sqlite.DbOpenHelper;
+import com.tsg.tot.storage.TOTPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -446,6 +449,58 @@ public class DatabaseRepository implements LocalRepository {
         }
     }
 
+    @Override
+    public void updateMyFileMessage (MessageRemote messageRemote, FileMessageRemote fileMessageRemote , Context context ){
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+
+        cv.put(FILE_MESSAGE_FECHA_DESCARGA, fileMessageRemote.getFechaDescarga());
+        cv.put(FILE_MESSAGE_ID_ARCHIVO_MENSAJE, messageRemote.getId());
+        cv.put(FILE_MESSAGE_ID_ARCHIVO_KIOSCO, fileMessageRemote.getId());
+        cv.put(FILE_MESSAGE_IDD2L, fileMessageRemote.getIdD2L());
+        cv.put(FILE_MESSAGE_NOMBRE, fileMessageRemote.getNombre());
+        cv.put(FILE_MESSAGE_URL, fileMessageRemote.getUrl());
+        cv.put(FILE_MESSAGE_ID_MENSAJE_KIOSCO, messageRemote.getMensajeKioscoId());
+         db.insert(FILE_MESSAGE_KIOSCO_TABLE_NAME, null, cv);
+
+        db.close();
+        dbHelper.close();
+
+    }
+
+    @Override
+    public List<MessageRemote> updateMyMessages(List<MessageRemote> messageRemoteList, Context context,StudentRemote studentRemote){
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        List<MessageRemote> messageRemoteListResult = new ArrayList<>();
+        if (messageRemoteList != null) {
+            for (MessageRemote messageRemote : messageRemoteList) {
+                    MessageRemote messageRemoteResult ;
+              //  if (checkId(db, MESSAGE_KIOSCO_TABLE_NAME, MESSAGE_KIOSCO_ID, messageRemote.getId().toString()) == 0) {
+                    cv.put(MESSAGE_KIOSCO_FECHA_DESCARGA, messageRemote.getFechaDescarga());
+                    cv.put(MESSAGE_KIOSCO_IDD2L, messageRemote.getIdD2L());
+                    cv.put(MESSAGE_KIOSCO_ID_MENSAJE_KIOSCO, messageRemote.getId());
+                    cv.put(MESSAGE_KIOSCO_NOMBRE, messageRemote.getMensajes());
+                    cv.put(MESSAGE_KIOSCO_REGISTRO_MENSAJE_KIOSCO, 0);
+                    cv.put(MESSAGE_KIOSCO_ID_ESTUDIANTE, studentRemote.getId());
+                    cv.put(MESSAGE_KIOSCO_ID_MATERIA, messageRemote.getMateria().getId());
+                Long resultId =  db.insert(MESSAGE_KIOSCO_TABLE_NAME, null, cv);
+                messageRemote.setMensajeKioscoId(resultId.intValue());
+                messageRemoteResult =  messageRemote;
+                messageRemoteListResult.add(messageRemoteResult);
+               // }
+            }
+        }
+
+        db.close();
+        dbHelper.close();
+        return messageRemoteListResult;
+
+    }
+
 
     @Override
     public void updateMyLessons(List<LessonsRemote> lessonsRemoteList, Context context) {
@@ -470,6 +525,8 @@ public class DatabaseRepository implements LocalRepository {
         db.close();
         dbHelper.close();
     }
+
+
 
 
     @Override

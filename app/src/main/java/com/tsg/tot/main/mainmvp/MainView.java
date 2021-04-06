@@ -26,6 +26,7 @@ import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.remote.ApiUtils;
+import com.tsg.tot.data.remote.model.MessageRemote;
 import com.tsg.tot.data.remote.model.SubmissionPending;
 import com.tsg.tot.data.remote.model.TaskRegristerRemote;
 import com.tsg.tot.main.fragment.CustomProgressDialog;
@@ -163,6 +164,7 @@ public class MainView extends AppCompatActivity
         if (!token.equals("sinConexion")) {
             registrarTareasDescargadas();
             subirEntregasPendientes();
+            obtenerMensajesPendientes();
         } else {
             dismissLoadingDialog();
         }
@@ -388,6 +390,12 @@ public class MainView extends AppCompatActivity
 
     }
 
+    public void obtenerMensajesPendientes(){
+
+
+
+    }
+
     public void subirEntregasPendientes() {
         DatabaseRepository dbR = new DatabaseRepository();
 
@@ -411,17 +419,6 @@ public class MainView extends AppCompatActivity
         Integer registroId = submissionPending.getTareaRegistroId();
         RequestBody tareaRegistroId = RequestBody.create(MultipartBody.FORM,registroId.toString());
         RequestBody mac = RequestBody.create(MultipartBody.FORM, macAddress);
-
-
-      /*  JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("TareaRegistroId",submissionPending.getTareaRegistroId());
-        jsonObject.addProperty("Mac",submissionPending.getMacAddress());
-        jsonObject.addProperty("File", String.valueOf(file));
-*/
-//        Uri uri = Uri.fromFile(file);
-//        RequestBody requestBody = RequestBody.create(MediaType.parse("application/octet-stream"), file);
-//        MultipartBody.Part body = MultipartBody.Part.createFormData("myfile", file.getName(), requestBody);
-
 
 
         try {

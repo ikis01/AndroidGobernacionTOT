@@ -138,12 +138,22 @@ public class LoginActivity extends AppCompatActivity {
                         storageDir.mkdir();
                     }
 
+
                     File storageHomework = null;
 
                     storageHomework = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Data", "Tareas");
                     if (!storageHomework.exists()) {
                         storageHomework.mkdir();
                     }
+
+                    /// ruta para archivos de mensajes
+                 /*   File storageMessage = null ;
+                    storageMessage = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) , "Mensajes");
+                    if (!storageMessage.exists()) {
+                        storageMessage.mkdir();
+                    }
+*/
+
 
                 } else {
                     requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
@@ -200,7 +210,7 @@ public class LoginActivity extends AppCompatActivity {
                                     }
                                 });
                                 dialog.setProgress(dialog.getProgress() + 25);
-                                /// por definir 10 marzo 2021
+
                                 dismissLoadingDialog();
                                 dialog404.show();
                             } else {
@@ -328,6 +338,11 @@ public class LoginActivity extends AppCompatActivity {
                    }
 
                     storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "Data");
+                    if (!storageDir.exists()) {
+                        storageDir.mkdir();
+                    }
+
+                    storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "Mensajes");
                     if (!storageDir.exists()) {
                         storageDir.mkdir();
                     }

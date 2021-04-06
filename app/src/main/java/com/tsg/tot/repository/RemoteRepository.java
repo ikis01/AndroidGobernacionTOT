@@ -22,6 +22,7 @@ import com.tsg.tot.data.model.Upload;
 import com.tsg.tot.data.model.Users;
 import com.tsg.tot.data.remote.model.GradeRemote;
 import com.tsg.tot.data.remote.model.LessonsRemote;
+import com.tsg.tot.data.remote.model.MessageRemote;
 import com.tsg.tot.data.remote.model.StudentRemote;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.data.remote.model.SubjectsRemote;
@@ -54,6 +55,8 @@ public interface RemoteRepository {
     GradeRemote getMyGrade(Context context, String auth);
 
     List<StudyMaterialRemote> getMyPendingStudyMaterial(Context context, String auth);
+
+    List<MessageRemote> getMyPendingMessages(Context context,String auth);
 
     StudentRemote getMyStudent(Context context, String auth);
 

@@ -46,6 +46,37 @@ public final class DBConstants {
     public static final String REL_STUDENT_SUBJECT_TABLE_NAME = "REL_ESTUDIANTE_MATERIAS";
     public static final String UPLOADS_TABLE_NAME = "SUBIDA";
 
+    public static final String MESSAGE_KIOSCO_TABLE_NAME = "MENSAJE_KIOSCO";
+    public static final String MESSAGE_ANSWER_KIOSCO_TABLE_NAME = "RESPUESTA_MENSAJE" ;
+    public static final String FILE_MESSAGE_KIOSCO_TABLE_NAME = "ARCHIVO_MENSAJE_KIOSCO";
+
+    /****
+     * MENSAJE_KIOSCO
+     * */
+
+    public static final String  MESSAGE_KIOSCO_ID = "ID";
+    public static final String  MESSAGE_KIOSCO_FECHA_DESCARGA = "FECHA_DESCARGA";
+    public static final String  MESSAGE_KIOSCO_IDD2L= "IDD2L";
+    public static final String  MESSAGE_KIOSCO_ID_MENSAJE_KIOSCO = "ID_MENSAJE_KIOSCO";
+    public static final String  MESSAGE_KIOSCO_NOMBRE = "NOMBRE";
+    public static final String  MESSAGE_KIOSCO_REGISTRO_MENSAJE_KIOSCO = "REGISTRO_MENSAJE_KIOSCO";
+    public static final String  MESSAGE_KIOSCO_ID_ESTUDIANTE = "ID_ESTUDIANTE";
+    public static final String  MESSAGE_KIOSCO_ID_MATERIA = "ID_MATERIA";
+
+
+    /******
+     * ARCHIVO_MENSAJE_KIOSCO
+     * */
+
+    public static final String  FILE_MESSAGE_KIOSCO_ID = "ID";
+    public static final String  FILE_MESSAGE_FECHA_DESCARGA = "FECHA_DESCARGA";
+    public static final String  FILE_MESSAGE_ID_ARCHIVO_MENSAJE = "ID_ARCHIVO_MENSAJE";
+    public static final String  FILE_MESSAGE_ID_ARCHIVO_KIOSCO = "ID_ARCHIVO_KIOSCO";
+    public static final String  FILE_MESSAGE_IDD2L = "IDD2L";
+    public static final String  FILE_MESSAGE_NOMBRE = "NOMBRE";
+    public static final String  FILE_MESSAGE_URL = "URL";
+    public static final String  FILE_MESSAGE_ID_MENSAJE_KIOSCO = "ID_MENSAJE_KIOSCO";
+
     /****
      * ARCHIVOSKIOSCO columns
      */

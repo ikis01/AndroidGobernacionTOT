@@ -139,7 +139,8 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
 
     private static final String FILE_MESSAGE_KIOSKO = "CREATE TABLE IF NOT EXISTS `ARCHIVO_MENSAJE_KIOSCO` ("+
-            " `ID` INTEGER," +
+            "`ID` INTEGER constraint `ARCHIVO_MENSAJE_KIOSCO_PK` " +
+            " primary key autoincrement,"+
             " `FECHA_DESCARGA` TEXT," +
             " `ID_ARCHIVO_MENSAJE` INTEGER," +
             " `ID_ARCHIVO_KIOSCO` INTEGER," +
@@ -151,7 +152,8 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
 
     private static final String MESSAGE_KIOSKO = "CREATE TABLE IF NOT EXISTS `MENSAJE_KIOSCO` ("+
-            " `ID` INTEGER," +
+            "`ID` INTEGER constraint `MENSAJE_KIOSCO_PK` " +
+            " primary key autoincrement,"+
             " `FECHA_DESCARGA` TEXT," +
             " `IDD2L` TEXT,"+
             " `ID_MENSAJE_KIOSCO` INTEGER," +
@@ -161,7 +163,8 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             " `ID_MATERIA` INTEGER)";
 
     private static final String MESSAGE_ANSWER_KIOSKO = "CREATE TABLE IF NOT EXISTS `RESPUESTA_MENSAJE` ("+
-            " `ID` INTEGER," +
+            "`ID` INTEGER constraint `RESPUESTA_MENSAJE_PK` " +
+            " primary key autoincrement,"+
             " `BODY` TEXT," +
             " `ESTADO` TEXT,"+
             " `ID_MENSAJE_KIOSCO` INTEGER)";

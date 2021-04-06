@@ -19,6 +19,7 @@ import com.tsg.tot.data.model.Teacher;
 import com.tsg.tot.data.model.Upload;
 import com.tsg.tot.data.remote.model.GradeRemote;
 import com.tsg.tot.data.remote.model.LessonsRemote;
+import com.tsg.tot.data.remote.model.MessageRemote;
 import com.tsg.tot.data.remote.model.StudentRemote;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.data.remote.model.SubjectsRemote;
@@ -103,6 +104,7 @@ public interface MainMVP {
                             List<TaskRemote>taskRemoteList,
                             List<StudyMaterialRemote> materialRemoteList,
                             List<LessonsRemote> lessonsRemoteList,
+                            List<MessageRemote> messageRemoteList,
                             String token,
                             CustomProgressDialog dialog);
 
@@ -141,7 +143,7 @@ public interface MainMVP {
 
         List<StudyMaterial> checkStudyMaterials(Context context, int from);
 
-
+        List<MessageRemote> checkMyPendingMessages (Context context, int from,String auth);
 
 
         List<Subjects> checkSubjects(Context context, int from, String auth,Integer code);

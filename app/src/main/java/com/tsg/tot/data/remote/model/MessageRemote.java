@@ -7,6 +7,8 @@ package com.tsg.tot.data.remote.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class MessageRemote {
     @SerializedName("id")
     @Expose
@@ -31,6 +33,13 @@ public class MessageRemote {
     @SerializedName("materia")
     @Expose
     private SubjectsRemote materia ;
+
+    @SerializedName("filesMensajes")
+    @Expose
+    private List<FileMessageRemote> filesMensajes;
+
+    @SerializedName("mensajeKioscoId")
+    @Expose Integer mensajeKioscoId;
 
 
     public Integer getId() {
@@ -79,5 +88,21 @@ public class MessageRemote {
 
     public void setMateria(SubjectsRemote materia) {
         this.materia = materia;
+    }
+
+    public List<FileMessageRemote> getFilesMensajes() {
+        return filesMensajes;
+    }
+
+    public void setFilesMensajes(List<FileMessageRemote> filesMensajes) {
+        this.filesMensajes = filesMensajes;
+    }
+
+    public Integer getMensajeKioscoId() {
+        return mensajeKioscoId;
+    }
+
+    public void setMensajeKioscoId(Integer mensajeKioscoId) {
+        this.mensajeKioscoId = mensajeKioscoId;
     }
 }
