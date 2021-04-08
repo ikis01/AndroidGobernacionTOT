@@ -11,6 +11,7 @@ import com.tsg.tot.data.model.Exercises;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Grade;
 import com.tsg.tot.data.model.Lessons;
+import com.tsg.tot.data.model.MessageAnswer;
 import com.tsg.tot.data.model.Planning;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.StudyMaterial;
@@ -162,5 +163,6 @@ public interface LocalRepository {
     List<FileMessageRemote> getMyFilesMessage(Context context, Integer idMensajeKiosco);
     List<MessageRemote> getMyMessagesPendingRegist (Context context ,Integer idEstudiante);
     void updateMessageKiosco (MessageRemote messageRemote,Context context);
+    List<MessageAnswer> getMessageAnswers(Context context,Integer idMensajeKiosco);
 
 }

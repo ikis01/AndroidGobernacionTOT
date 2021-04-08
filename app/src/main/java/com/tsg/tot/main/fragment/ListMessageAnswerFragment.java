@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tsg.tot.R;
+import com.tsg.tot.adapter.MessagesAnswerAdapter;
 import com.tsg.tot.adapter.MessagesFileAdapter;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Lessons;
@@ -30,23 +31,22 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ListMessageFilesFragment} factory method to
+ * Use the {@link ListMessageAnswerFragment} factory method to
  * create an instance of this fragment.
  */
-public class ListMessageFilesFragment extends Fragment implements FragmentsMVP.View{
+public class ListMessageAnswerFragment extends Fragment implements FragmentsMVP.View {
 
     private OnFragmentInteractionListener mListener;
 
 
+    RecyclerView recyclerViewAnswerMessage;
+    MessagesAnswerAdapter messagesAnswerAdapter;
 
-    RecyclerView recyclerViewFilesMessage;
-    MessagesFileAdapter messagesFileAdapter;
 
     MainMVP.Presenter presenter;
 
 
-
-    public ListMessageFilesFragment(MainMVP.Presenter presenter) {
+    public ListMessageAnswerFragment(MainMVP.Presenter presenter) {
 
         this.presenter = presenter;
     }
@@ -60,19 +60,18 @@ public class ListMessageFilesFragment extends Fragment implements FragmentsMVP.V
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_files_messages, container, false);
+        View view = inflater.inflate(R.layout.fragment_answer_messages, container, false);
 
-        recyclerViewFilesMessage = view.findViewById(R.id.recyclerMessageFiles);
-        recyclerViewFilesMessage.setHasFixedSize(true);
+        recyclerViewAnswerMessage = view.findViewById(R.id.recyclerMessageAnswers);
+        recyclerViewAnswerMessage.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerViewFilesMessage.setLayoutManager(linearLayoutManager);
+        recyclerViewAnswerMessage.setLayoutManager(linearLayoutManager);
 
-        messagesFileAdapter = new MessagesFileAdapter();
-        recyclerViewFilesMessage.setAdapter(messagesFileAdapter);
+        messagesAnswerAdapter = new MessagesAnswerAdapter();
+        recyclerViewAnswerMessage.setAdapter(messagesAnswerAdapter);
 
         return view;
     }
-
 
 
     @Override
@@ -84,15 +83,12 @@ public class ListMessageFilesFragment extends Fragment implements FragmentsMVP.V
     @Override
     public void onResume() {
         super.onResume();
-    //       Integer idEstudianteI = Integer.parseInt(TOTPreferences.getInstance(getContext()).getIdEstudiante()==""?"0":TOTPreferences.getInstance(getContext()).getIdEstudiante());
         Integer idMensajeKiosco = TOTPreferences.getInstance(getContext()).getIdMensajeKiosco();
 
-       //  List<FileMessageRemote> fileMessageRemoteList = presenter.get
-List<FileMessageRemote> fileMessageRemoteList = presenter.getFilesMessage(getContext(),idMensajeKiosco);
-//        setInformationMessage(messageRemoteList,getContext(),presenter);*/
 
-        setFilesMessage(fileMessageRemoteList,getContext(),presenter);
-     }
+        setAnswerMessage( presenter.getMessageAnswer(getContext(),idMensajeKiosco),getContext(),presenter);
+
+    }
 
     @Override
     public void setSubjects(List<Subjects> subjectsList, Context context, MainMVP.Presenter presenter) {
@@ -126,16 +122,15 @@ List<FileMessageRemote> fileMessageRemoteList = presenter.getFilesMessage(getCon
 
     @Override
     public void setInformationMessage(List<MessageRemote> messageRemoteList, Context context, MainMVP.Presenter presenter) {
-     }
+    }
 
     @Override
     public void setFilesMessage(List<FileMessageRemote> fileMessageRemoteList, Context context, MainMVP.Presenter presenter) {
-        messagesFileAdapter.dataSet(fileMessageRemoteList,fileMessageRemoteList.size(),context,presenter);
     }
 
     @Override
     public void setAnswerMessage(List<MessageAnswer> fileMessageRemoteList, Context context, MainMVP.Presenter presenter) {
-
+        messagesAnswerAdapter.dataSet(fileMessageRemoteList,fileMessageRemoteList.size(),context,presenter);
     }
 
 
@@ -144,7 +139,7 @@ List<FileMessageRemote> fileMessageRemoteList = presenter.getFilesMessage(getCon
         void onFragmentInteraction(Uri uri);
     }
 
-    public ListMessageFilesFragment() {
+    public ListMessageAnswerFragment() {
 
     }
 }

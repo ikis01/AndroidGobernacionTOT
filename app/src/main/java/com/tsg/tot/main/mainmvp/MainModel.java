@@ -16,6 +16,7 @@ import com.tsg.tot.data.model.Exercises;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Grade;
 import com.tsg.tot.data.model.Lessons;
+import com.tsg.tot.data.model.MessageAnswer;
 import com.tsg.tot.data.model.Planning;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.StudyMaterial;
@@ -785,6 +786,16 @@ public class MainModel implements MainMVP.Model {
         fileMessageRemoteList = databaseRepository.getMyFilesMessage(context,idMensajeKiosco);
         return fileMessageRemoteList;
     }
+
+    @Override
+    public List<MessageAnswer> getMyMessagesAnswers(Context context, Integer idMensajeKiosco){
+
+        List <MessageAnswer> messageAnswerList = null;
+        messageAnswerList = databaseRepository.getMessageAnswers(context ,idMensajeKiosco);
+        return messageAnswerList;
+
+    }
+
 
 
     @Override

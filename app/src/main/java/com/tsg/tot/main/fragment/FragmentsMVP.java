@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Lessons;
+import com.tsg.tot.data.model.MessageAnswer;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.SubmissionDisplay;
 import com.tsg.tot.data.model.Task;
@@ -27,5 +28,6 @@ public interface FragmentsMVP {
         void setSubmissionDisplay(List<SubmissionDisplay> submissionDisplayList,Context context,TaskMVP.Presenter presenter);
         void setInformationMessage(List<MessageRemote> messageRemoteList,Context context ,MainMVP.Presenter presenter);
         void setFilesMessage (List<FileMessageRemote> fileMessageRemoteList,Context context,MainMVP.Presenter presenter);
+        void setAnswerMessage  (List<MessageAnswer> fileMessageRemoteList, Context context, MainMVP.Presenter presenter);
     }
 }

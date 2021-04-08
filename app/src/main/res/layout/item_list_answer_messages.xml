@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="15dp"
+    android:id="@+id/adapterMessagesAnswers">
+
+    <ImageView
+        android:id="@+id/statusMessageAnswerImage"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight=".5"
+        android:src="@drawable/check_icon" />
+
+    <TextView
+        android:id="@+id/messageAnswerName"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textSize="24sp"
+        android:layout_marginStart="15dp"
+        android:layout_weight="5" />
+
+    <TextView
+        android:id="@+id/messageAnswerEstado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:textSize="24sp"
+        android:layout_marginStart="15dp"
+        android:gravity="left"
+        android:layout_weight="5" />
+
+
+
+</LinearLayout>

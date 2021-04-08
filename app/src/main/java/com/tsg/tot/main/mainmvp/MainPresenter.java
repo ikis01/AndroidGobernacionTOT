@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.tsg.tot.data.model.FilesKiosco;
+import com.tsg.tot.data.model.MessageAnswer;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.remote.model.FileMessageRemote;
@@ -295,6 +296,11 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
     @Override
     public List<FileMessageRemote> getFilesMessage (Context context, Integer idMensajeKiosco){
         return model.getMyFileMessage (context,idMensajeKiosco);
+    }
+
+    @Override
+    public List<MessageAnswer> getMessageAnswer (Context context,Integer idMensajeKiosco){
+        return model.getMyMessagesAnswers(context,idMensajeKiosco);
     }
 
 }

@@ -9,6 +9,7 @@ import com.tsg.tot.data.model.Exercises;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Grade;
 import com.tsg.tot.data.model.Lessons;
+import com.tsg.tot.data.model.MessageAnswer;
 import com.tsg.tot.data.model.Planning;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.StudyMaterial;
@@ -81,6 +82,7 @@ public interface MainMVP {
         void updateEverything (Context context, CustomProgressDialog dialog,String token,Integer idUsuario);
         List<MessageRemote> getMessagesStudent (Context context,Integer idEstudiante);
         List<FileMessageRemote> getFilesMessage (Context context,Integer idMensajeKiosco);
+        List<MessageAnswer> getMessageAnswer (Context context ,Integer idMensajeKiosco);
         //void uploadFileTest (Context context);
 
 
@@ -179,7 +181,7 @@ public interface MainMVP {
         List<FilesKiosco> checkMyFileskioscos (Context  context, Integer idEstudiante,  Integer idMateria,Integer idTarea);
 
         List<MessageRemote> getMyMessages (Context context,Integer idEstudiante);
-
+        List<MessageAnswer> getMyMessagesAnswers(Context context, Integer idMensajeKiosco);
 
 
         List<FileMessageRemote> getMyFileMessage (Context context,Integer idMensajeKiosco);

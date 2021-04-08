@@ -24,6 +24,7 @@ import com.tsg.tot.R;
 import com.tsg.tot.adapter.MessagesAdapter;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Lessons;
+import com.tsg.tot.data.model.MessageAnswer;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.SubmissionDisplay;
 import com.tsg.tot.data.model.Task;
@@ -140,6 +141,11 @@ public class InformationMessageFragment extends Fragment implements FragmentsMVP
 
     @Override
     public void setFilesMessage(List<FileMessageRemote> fileMessageRemoteList, Context context, MainMVP.Presenter presenter) {
+
+    }
+
+    @Override
+    public void setAnswerMessage(List<MessageAnswer> fileMessageRemoteList, Context context, MainMVP.Presenter presenter) {
 
     }
 

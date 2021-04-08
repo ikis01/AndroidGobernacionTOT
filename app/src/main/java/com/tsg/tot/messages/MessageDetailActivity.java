@@ -23,6 +23,7 @@ import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.remote.model.MessageRemote;
 import com.tsg.tot.main.fragment.InformationMessageFragment;
+import com.tsg.tot.main.fragment.ListMessageAnswerFragment;
 import com.tsg.tot.main.fragment.ListMessageFilesFragment;
 import com.tsg.tot.main.mainmvp.MainMVP;
 import com.tsg.tot.repository.DatabaseRepository;
@@ -40,6 +41,7 @@ implements MainMVP.View,ListMessageFilesFragment.OnFragmentInteractionListener,V
     MainMVP.Presenter presenter;
     FragmentTransaction fragmentTransaction;
     ListMessageFilesFragment listMessageFilesFragment;
+    ListMessageAnswerFragment listMessageAnswerFragment ;
     LinearLayout mainLayout;
     public Button btn_volver;
     String token, idUsuario ,descripcionMensaje,materiaTitulo,idMensajeKiosco= "";
@@ -85,6 +87,11 @@ implements MainMVP.View,ListMessageFilesFragment.OnFragmentInteractionListener,V
         listMessageFilesFragment = new ListMessageFilesFragment(presenter);
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.contentMaterialMensajeList, listMessageFilesFragment);
+        fragmentTransaction.commit();
+
+        listMessageAnswerFragment = new ListMessageAnswerFragment(presenter);
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.contentRespuestasList,listMessageAnswerFragment);
         fragmentTransaction.commit();
 
     }
