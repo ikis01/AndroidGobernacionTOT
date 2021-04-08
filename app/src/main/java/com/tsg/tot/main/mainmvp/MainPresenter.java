@@ -8,6 +8,8 @@ import androidx.annotation.Nullable;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
+import com.tsg.tot.data.remote.model.FileMessageRemote;
+import com.tsg.tot.data.remote.model.MessageRemote;
 import com.tsg.tot.main.fragment.CustomProgressDialog;
 
 import java.util.ArrayList;
@@ -242,10 +244,6 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
         }
     }
 
-    @Override
-    public void testPOST(Context context) {
-        model.postSubmissions("", "3", "224", "2", "269", "1");
-    }
 
     private void dismissLoadingDialog() {
         if (view != null) {
@@ -288,8 +286,15 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
             }).start();
         }
     }
-    // @Override
-    // public void uploadFileTest (Context context){
-    //     model.postBlob("679049","archvioEnTexto","897","12");
-    // }
+
+    @Override
+    public List<MessageRemote> getMessagesStudent(Context context, Integer idEstudiante) {
+        return model.getMyMessages(context,idEstudiante);
+    }
+
+    @Override
+    public List<FileMessageRemote> getFilesMessage (Context context, Integer idMensajeKiosco){
+        return model.getMyFileMessage (context,idMensajeKiosco);
+    }
+
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.os.Message;
 import android.util.Log;
 
 import com.google.gson.JsonObject;
@@ -1326,6 +1327,179 @@ public class DatabaseRepository implements LocalRepository {
         return taskList;
     }
 
+    @Override
+    public List<MessageRemote> getMyMessagesPendingRegist(Context context,Integer idEstudiante) {
+        List <MessageRemote> messageList = new ArrayList<>();
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String query = "SELECT  MATERIAS.Titulo , MENSAJE_KIOSCO.* from MENSAJE_KIOSCO,MATERIAS "+
+                " WHERE ID_ESTUDIANTE =" + idEstudiante +
+                " AND ID_MATERIA = MATERIAS.idMateria " +
+                " AND REGISTRO_MENSAJE_KIOSCO = 0"
+                ;
+
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        try {
+            if (cursor.getCount() > 0) {
+                do {
+                    //get columns
+                    int tituloMateria = cursor.getColumnIndex(SUBJECTS_TITLE);
+                    int idMensaje = cursor.getColumnIndex(MESSAGE_KIOSCO_ID);
+                    int idfechaDescarga = cursor.getColumnIndex(MESSAGE_KIOSCO_FECHA_DESCARGA);
+                    int idD2l = cursor.getColumnIndex(MESSAGE_KIOSCO_IDD2L);
+                    int idMensajeKiosco = cursor.getColumnIndex(MESSAGE_KIOSCO_ID_MENSAJE_KIOSCO);
+                    int nombreMensaje = cursor.getColumnIndex(MESSAGE_KIOSCO_NOMBRE);
+                    int registroMensajeKiosco = cursor.getColumnIndex(MESSAGE_KIOSCO_REGISTRO_MENSAJE_KIOSCO);
+                    int idEstudianteKiosco = cursor.getColumnIndex(MESSAGE_KIOSCO_ID_ESTUDIANTE);
+                    int idMateriaKiosco = cursor.getColumnIndex(MESSAGE_KIOSCO_ID_MATERIA);
+
+                    //add row to list
+                    messageList.add(new MessageRemote(
+                            Integer.parseInt(cursor.getString(idMensaje)),
+                            cursor.getString(nombreMensaje),
+                            cursor.getString(idD2l),
+                            "",
+                            cursor.getString(idfechaDescarga),
+                            null,
+                            null,
+                            Integer.parseInt(cursor.getString(idMensajeKiosco)),
+                            cursor.getString(tituloMateria),
+                            Integer.parseInt(cursor.getString(registroMensajeKiosco)),
+                            Integer.parseInt(cursor.getString(idEstudianteKiosco)),
+                            Integer.parseInt(cursor.getString(idMateriaKiosco))
+
+                    ));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+
+        db.close();
+        dbHelper.close();
+        return messageList;
+
+    }
+
+    @Override
+    public void updateMessageKiosco(MessageRemote messageRemote, Context context) {
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(MESSAGE_KIOSCO_REGISTRO_MENSAJE_KIOSCO, messageRemote.getRegistroMensajeKiosco());
+
+
+        Integer countRows =  db.update(MESSAGE_KIOSCO_TABLE_NAME,cv, MESSAGE_KIOSCO_ID_MENSAJE_KIOSCO+" = " + messageRemote.getMensajeKioscoId()+
+                " AND " + MESSAGE_KIOSCO_ID_ESTUDIANTE + " = " +messageRemote.getIdEstudiante(),null);
+
+
+
+        db.close();
+        dbHelper.close();
+    }
+
+
+    @Override
+    public List<MessageRemote> getMyMessages(Context context,Integer idEstudiante) {
+       List <MessageRemote> messageList = new ArrayList<>();
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String query = "SELECT  MATERIAS.Titulo , MENSAJE_KIOSCO.* from MENSAJE_KIOSCO,MATERIAS "+
+        " WHERE ID_ESTUDIANTE =" + idEstudiante +
+        " AND ID_MATERIA = MATERIAS.idMateria " ;
+
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        try {
+            if (cursor.getCount() > 0) {
+                do {
+                    //get columns
+                    int tituloMateria = cursor.getColumnIndex(SUBJECTS_TITLE);
+                    int idMensaje = cursor.getColumnIndex(MESSAGE_KIOSCO_ID);
+                    int idfechaDescarga = cursor.getColumnIndex(MESSAGE_KIOSCO_FECHA_DESCARGA);
+                    int idD2l = cursor.getColumnIndex(MESSAGE_KIOSCO_IDD2L);
+                    int idMensajeKiosco = cursor.getColumnIndex(MESSAGE_KIOSCO_ID_MENSAJE_KIOSCO);
+                    int nombreMensaje = cursor.getColumnIndex(MESSAGE_KIOSCO_NOMBRE);
+                    int registroMensajeKiosco = cursor.getColumnIndex(MESSAGE_KIOSCO_REGISTRO_MENSAJE_KIOSCO);
+                    int idEstudianteKiosco = cursor.getColumnIndex(MESSAGE_KIOSCO_ID_ESTUDIANTE);
+                    int idMateriaKiosco = cursor.getColumnIndex(MESSAGE_KIOSCO_ID_MATERIA);
+
+                    //add row to list
+                    messageList.add(new MessageRemote(
+                            Integer.parseInt(cursor.getString(idMensaje)),
+                            cursor.getString(nombreMensaje),
+                            cursor.getString(idD2l),
+                            "",
+                            cursor.getString(idfechaDescarga),
+                            null,
+                            null,
+                            Integer.parseInt(cursor.getString(idMensajeKiosco)),
+                            cursor.getString(tituloMateria),
+                            Integer.parseInt(cursor.getString(registroMensajeKiosco)),
+                            Integer.parseInt(cursor.getString(idEstudianteKiosco)),
+                            Integer.parseInt(cursor.getString(idMateriaKiosco))
+
+                    ));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+
+        db.close();
+        dbHelper.close();
+        return messageList;
+
+    }
+
+   @Override
+   public List<FileMessageRemote> getMyFilesMessage(Context context,Integer idMensajeKiosco){
+       List <FileMessageRemote> fileMessageRemoteList = new ArrayList<>();
+       DbOpenHelper dbHelper = new DbOpenHelper(context);
+       SQLiteDatabase db = dbHelper.getWritableDatabase();
+       String query = "SELECT * FROM ARCHIVO_MENSAJE_KIOSCO"+
+          " WHERE ID_MENSAJE_KIOSCO ="+idMensajeKiosco;
+
+       Cursor cursor = db.rawQuery(query, null);
+       cursor.moveToFirst();
+
+       try {
+           if (cursor.getCount() > 0) {
+               do {
+                   //get columns
+                   int id = cursor.getColumnIndex(FILE_MESSAGE_KIOSCO_ID);
+                   int fechDescarga = cursor.getColumnIndex(FILE_MESSAGE_FECHA_DESCARGA);
+                   int idArchivoMensaje = cursor.getColumnIndex(FILE_MESSAGE_ID_ARCHIVO_MENSAJE);
+                   int idArchivoKiosco = cursor.getColumnIndex(FILE_MESSAGE_ID_ARCHIVO_KIOSCO);
+                   int idD2l = cursor.getColumnIndex(FILE_MESSAGE_IDD2L);
+                   int nombre = cursor.getColumnIndex(FILE_MESSAGE_NOMBRE);
+                   int url = cursor.getColumnIndex(FILE_MESSAGE_URL);
+                   int idMensajeKioscos = cursor.getColumnIndex(FILE_MESSAGE_ID_MENSAJE_KIOSCO);
+
+                   //add row to list
+                   fileMessageRemoteList.add(new FileMessageRemote(
+                           Integer.parseInt(cursor.getString(id)),
+                           cursor.getString(nombre),
+                           0,
+                           cursor.getString(fechDescarga),
+                           cursor.getString(idD2l),
+                           cursor.getString(url),
+                           Integer.parseInt(cursor.getString(idMensajeKioscos))
+
+                   ));
+               } while (cursor.moveToNext());
+           }
+       } finally {
+           cursor.close();
+       }
+
+       db.close();
+       dbHelper.close();
+       return fileMessageRemoteList;
+   }
     @Override
     public List<Task> getTasksToRegister (Context context, Integer idEstudiante){
         List<Task> taskList = new ArrayList<>();

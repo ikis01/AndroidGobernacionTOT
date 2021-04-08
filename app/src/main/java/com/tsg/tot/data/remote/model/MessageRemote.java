@@ -39,7 +39,27 @@ public class MessageRemote {
     private List<FileMessageRemote> filesMensajes;
 
     @SerializedName("mensajeKioscoId")
-    @Expose Integer mensajeKioscoId;
+    @Expose
+    private Integer mensajeKioscoId;
+
+    @SerializedName("materiaTitulo")
+    @Expose
+
+    private String materiaTitulo ;
+
+    @SerializedName("registroMensajeKiosco")
+    @Expose
+    private Integer registroMensajeKiosco;
+
+    @SerializedName("idEstudiante")
+    @Expose
+    private Integer idEstudiante;
+
+
+    @SerializedName("idMateria")
+    @Expose
+    private Integer idMateria;
+
 
 
     public Integer getId() {
@@ -104,5 +124,58 @@ public class MessageRemote {
 
     public void setMensajeKioscoId(Integer mensajeKioscoId) {
         this.mensajeKioscoId = mensajeKioscoId;
+    }
+
+    public String getMateriaTitulo() {
+        return materiaTitulo;
+    }
+
+    public void setMateriaTitulo(String materiaTitulo) {
+        this.materiaTitulo = materiaTitulo;
+    }
+
+    public Integer getRegistroMensajeKiosco() {
+        return registroMensajeKiosco;
+    }
+
+    public void setRegistroMensajeKiosco(Integer registroMensajeKiosco) {
+        this.registroMensajeKiosco = registroMensajeKiosco;
+    }
+
+    public Integer getIdEstudiante() {
+        return idEstudiante;
+    }
+
+    public void setIdEstudiante(Integer idEstudiante) {
+        this.idEstudiante = idEstudiante;
+    }
+
+    public Integer getIdMateria() {
+        return idMateria;
+    }
+
+    public void setIdMateria(Integer idMateria) {
+        this.idMateria = idMateria;
+    }
+
+
+
+    public MessageRemote(Integer id, String mensajes, String idD2L, String fechaCreacion, String fechaDescarga, SubjectsRemote materia, List<FileMessageRemote> filesMensajes, Integer mensajeKioscoId, String materiaTitulo, Integer registroMensajeKiosco, Integer idEstudiante, Integer idMateria) {
+        this.id = id;
+        this.mensajes = mensajes;
+        this.idD2L = idD2L;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaDescarga = fechaDescarga;
+        this.materia = materia;
+        this.filesMensajes = filesMensajes;
+        this.mensajeKioscoId = mensajeKioscoId;
+        this.materiaTitulo = materiaTitulo;
+        this.registroMensajeKiosco = registroMensajeKiosco;
+        this.idEstudiante = idEstudiante;
+        this.idMateria = idMateria;
+    }
+
+    public MessageRemote (){
+
     }
 }

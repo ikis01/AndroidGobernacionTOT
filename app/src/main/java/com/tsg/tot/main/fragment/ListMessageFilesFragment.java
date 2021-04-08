@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tsg.tot.R;
-import com.tsg.tot.adapter.SubjectsAdapter;
-import com.tsg.tot.adapter.TasksAdapter;
+import com.tsg.tot.adapter.MessagesFileAdapter;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Subjects;
@@ -30,54 +29,50 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ListSubjectFragment} factory method to
+ * Use the {@link ListMessageFilesFragment} factory method to
  * create an instance of this fragment.
  */
-public class  ListSubjectFragment extends Fragment implements FragmentsMVP.View {
+public class ListMessageFilesFragment extends Fragment implements FragmentsMVP.View{
 
     private OnFragmentInteractionListener mListener;
 
-    RecyclerView recyclerList;
-    TasksAdapter tasksAdapter;
-    SubjectsAdapter subjectsAdapter;
-    int tareasPendientes = 0;
+
+
+    RecyclerView recyclerViewFilesMessage;
+    MessagesFileAdapter messagesFileAdapter;
+
     MainMVP.Presenter presenter;
 
-    public ListSubjectFragment(MainMVP.Presenter presenter) {
+
+
+    public ListMessageFilesFragment(MainMVP.Presenter presenter) {
+
         this.presenter = presenter;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_subject, container, false);
-        recyclerList = view.findViewById(R.id.recyclerView);
-        recyclerList.setHasFixedSize(true);
+        View view = inflater.inflate(R.layout.fragment_files_messages, container, false);
 
+        recyclerViewFilesMessage = view.findViewById(R.id.recyclerMessageFiles);
+        recyclerViewFilesMessage.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerList.setLayoutManager(linearLayoutManager);
+        recyclerViewFilesMessage.setLayoutManager(linearLayoutManager);
 
-        subjectsAdapter = new SubjectsAdapter();
-        recyclerList.setAdapter(subjectsAdapter);
+        messagesFileAdapter = new MessagesFileAdapter();
+        recyclerViewFilesMessage.setAdapter(messagesFileAdapter);
 
         return view;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
+
 
     @Override
     public void onDetach() {
@@ -88,40 +83,23 @@ public class  ListSubjectFragment extends Fragment implements FragmentsMVP.View 
     @Override
     public void onResume() {
         super.onResume();
-//        Integer intCode = 0;
+    //       Integer idEstudianteI = Integer.parseInt(TOTPreferences.getInstance(getContext()).getIdEstudiante()==""?"0":TOTPreferences.getInstance(getContext()).getIdEstudiante());
+        Integer idMensajeKiosco = TOTPreferences.getInstance(getContext()).getIdMensajeKiosco();
 
-//        String code = ((MainView)getContext()).tv_studentCode.getText().toString();
-//        code = code.replace("Código:","");
-//
-//        if (code != ""){
-//            intCode= Integer.parseInt(code);
-//        }else{
-//
-//        }
+       //  List<FileMessageRemote> fileMessageRemoteList = presenter.get
+List<FileMessageRemote> fileMessageRemoteList = presenter.getFilesMessage(getContext(),idMensajeKiosco);
+//        setInformationMessage(messageRemoteList,getContext(),presenter);*/
 
-        //Integer idEstudianteI = Integer.parseInt(TOTPreferences.getInstance(getContext()).getIdUsuario());
-
-        Integer idEstudianteI = Integer.parseInt(TOTPreferences.getInstance(getContext()).getIdEstudiante()==""?"0":TOTPreferences.getInstance(getContext()).getIdEstudiante());
-
-
-        setSubjects(presenter.getSubjects(getContext(),"",idEstudianteI), getContext(), presenter );
-        tareasPendientes =  TOTPreferences.getInstance(getContext()).getTareasPendientes();
-
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
-    }
+        setFilesMessage(fileMessageRemoteList,getContext(),presenter);
+     }
 
     @Override
     public void setSubjects(List<Subjects> subjectsList, Context context, MainMVP.Presenter presenter) {
-        subjectsAdapter.dataSet(subjectsList, subjectsList.size(), context, presenter);
+
     }
 
     @Override
     public void setTaskSubjects(List<Task> taskSubjects, Context context, MainMVP.Presenter presenter) {
-        tasksAdapter.dataSet(taskSubjects, taskSubjects.size(), context, presenter);
-        tareasPendientes =  TOTPreferences.getInstance(getContext()).getTareasPendientes();
 
     }
 
@@ -147,15 +125,20 @@ public class  ListSubjectFragment extends Fragment implements FragmentsMVP.View 
 
     @Override
     public void setInformationMessage(List<MessageRemote> messageRemoteList, Context context, MainMVP.Presenter presenter) {
-
-    }
+     }
 
     @Override
     public void setFilesMessage(List<FileMessageRemote> fileMessageRemoteList, Context context, MainMVP.Presenter presenter) {
-
+        messagesFileAdapter.dataSet(fileMessageRemoteList,fileMessageRemoteList.size(),context,presenter);
     }
 
-    public ListSubjectFragment() {
+
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
+    }
+
+    public ListMessageFilesFragment() {
 
     }
 }

@@ -3,11 +3,6 @@ package com.tsg.tot.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-//import org.mx.infonavit.appinfonavit.v4.model.Credits;
-//import org.mx.infonavit.appinfonavit.v4.model.ModelNotification;
-//import org.mx.infonavit.appinfonavit.v4.model.ModelUserToken;
-//import org.mx.infonavit.appinfonavit.v4.model.miuc.ResponsePerfilate;
-//import org.mx.infonavit.appinfonavit.v4.model.miuc.TitularMiuc;
 
 /**
  * Created by imc
@@ -127,6 +122,29 @@ public class TOTPreferences {
         return pref.getInt("TAREASPENDIENTES",Integer.parseInt("0"));
     }
 
+
+    public static final String NOMBRE_ESTUDIANTE = "NOMBRE_ESTUDIANTE";
+
+    public void setNombreEstudiante (String nombreEstudiante){
+        editor.putString("NOMBRE_ESTUDIANTE",nombreEstudiante);
+        editor.commit();
+    }
+
+    public String getNombreEstudiante(){
+        return pref.getString("NOMBRE_ESTUDIANTE","");
+    }
+
+
+    public static final String ID_MENSAJE_KIOSCO = "ID_MENSAJE_KIOSCO";
+
+    public void setIdMensajeKiosco(Integer idMensajeKiosco){
+        editor.putInt("ID_MENSAJE_KIOSCO",idMensajeKiosco);
+        editor.commit();
+    }
+
+    public Integer getIdMensajeKiosco (){
+        return pref.getInt("ID_MENSAJE_KIOSCO",Integer.parseInt("0"));
+    }
 
 
 

@@ -32,6 +32,11 @@ public class FileMessageRemote {
     @Expose
     private String url ;
 
+    @SerializedName("idMensajeKiosco")
+    @Expose
+    private Integer idMensajeKiosco;
+
+
 
     public Integer getId() {
         return id;
@@ -79,5 +84,27 @@ public class FileMessageRemote {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Integer getIdMensajeKiosco() {
+        return idMensajeKiosco;
+    }
+
+    public void setIdMensajeKiosco(Integer idMensajeKiosco) {
+        this.idMensajeKiosco = idMensajeKiosco;
+    }
+
+    public FileMessageRemote(Integer id, String nombre, Integer mensajeId, String fechaDescarga, String idD2L, String url, Integer idMensajeKiosco) {
+        this.id = id;
+        this.nombre = nombre;
+        this.mensajeId = mensajeId;
+        this.fechaDescarga = fechaDescarga;
+        this.idD2L = idD2L;
+        this.url = url;
+        this.idMensajeKiosco = idMensajeKiosco;
+    }
+
+    public FileMessageRemote() {
+
     }
 }

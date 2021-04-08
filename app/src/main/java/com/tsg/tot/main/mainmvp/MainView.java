@@ -32,6 +32,7 @@ import com.tsg.tot.data.remote.model.TaskRegristerRemote;
 import com.tsg.tot.main.fragment.CustomProgressDialog;
 import com.tsg.tot.main.fragment.InformationFragment;
 import com.tsg.tot.main.fragment.ListSubjectFragment;
+import com.tsg.tot.messages.MessageMainActivity;
 import com.tsg.tot.repository.ApiRepository;
 import com.tsg.tot.repository.DatabaseRepository;
 import com.tsg.tot.root.App;
@@ -100,6 +101,7 @@ public class MainView extends AppCompatActivity
 
         if (studentList.size() > 0) {
             TOTPreferences.getInstance(MainView.this).setIdEstudiante(studentList.get(0).getId().toString());
+            TOTPreferences.getInstance(MainView.this).setNombreEstudiante(studentList.get(0).getNombres()+" "+studentList.get(0).getApellidos());
         } else {
             TOTPreferences.getInstance(MainView.this).setIdEstudiante("0");
         }
@@ -262,6 +264,11 @@ public class MainView extends AppCompatActivity
 
     }
 
+    @Override
+    public void setMessages(List<MessageRemote> messagesList) {
+
+    }
+
     public void update(View view) {
         dialog = new CustomProgressDialog(MainView.this,
                 getResources().getString(R.string.message_load_db));
@@ -271,6 +278,13 @@ public class MainView extends AppCompatActivity
         dialog.setProgress(dialog.getProgress() + 5);
         presenter.setInfoStudent(this, Integer.parseInt(idUsuario));
         dialog.setProgress(dialog.getProgress() + 5);
+    }
+
+    public void viewMessages(View view){
+        Intent intent = new Intent(view.getContext(), MessageMainActivity.class);
+        intent.putExtra("idUsuario", idUsuario);
+        intent.putExtra("token", token);
+        view.getContext().startActivity(intent);
     }
 
     public void logout(View view) {

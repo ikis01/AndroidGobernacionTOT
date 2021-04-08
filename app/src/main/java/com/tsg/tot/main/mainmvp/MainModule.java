@@ -31,6 +31,8 @@ public class MainModule {
         return new MainPresenter(model);
     }
 
+
+
     @Provides
     public MainMVP.Model provideMainModel(ApiRepository apiRepository, DatabaseRepository databaseRepository) {
         return new MainModel(apiRepository, databaseRepository);

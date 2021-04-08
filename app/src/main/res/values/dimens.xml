@@ -11,4 +11,5 @@
     inner_frame_layout_padding (below variable) on round screens.
     -->
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

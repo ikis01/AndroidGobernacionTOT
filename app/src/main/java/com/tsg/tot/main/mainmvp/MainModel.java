@@ -25,10 +25,12 @@ import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
 import com.tsg.tot.data.model.Upload;
 import com.tsg.tot.data.model.Uploads;
+import com.tsg.tot.data.remote.ApiUtils;
 import com.tsg.tot.data.remote.model.FileMessageRemote;
 import com.tsg.tot.data.remote.model.FileTaskRemote;
 import com.tsg.tot.data.remote.model.GradeRemote;
 import com.tsg.tot.data.remote.model.LessonsRemote;
+import com.tsg.tot.data.remote.model.MessageRegisterRemote;
 import com.tsg.tot.data.remote.model.MessageRemote;
 import com.tsg.tot.data.remote.model.StudentRemote;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
@@ -54,6 +56,11 @@ import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.http.Body;
+import retrofit2.http.Header;
 
 import static com.tsg.tot.sqlite.DBConstants.API_REPOSITORY;
 import static com.tsg.tot.sqlite.DBConstants.DATABASE_REPOSITORY;
@@ -63,6 +70,8 @@ public class MainModel implements MainMVP.Model {
     DbOpenHelper dbHelper;
     private final ApiRepository apiRepository;
     private final DatabaseRepository databaseRepository;
+
+    MessageRegisterRemote messageRegisterRemote ;
 
 
     public MainModel(ApiRepository apiRepository, DatabaseRepository databaseRepository) {
@@ -195,6 +204,56 @@ public class MainModel implements MainMVP.Model {
                         }
                     }
 
+
+                    ///// registrar los mensajes descargados para no duplicarse
+
+                    List <MessageRemote> messageRemoteListToRegist = databaseRepository.getMyMessagesPendingRegist(context,studentRemote.getId());
+
+                    for(MessageRemote messageRemote:messageRemoteListToRegist){
+
+
+                        try {
+                            ///Se obtiene Login remoto  token  en caso de no obtenerlo no se procede a sincronizar
+
+                            String macAddress = ApiUtils.getMacAddress();
+                            JsonObject jsonObject = new JsonObject();
+                            jsonObject.addProperty("mensajeId", messageRemote.getMensajeKioscoId());
+                            jsonObject.addProperty("mac",macAddress);
+
+
+
+                            Call<MessageRegisterRemote> taskRegisterCall = ApiUtils.getAPIServiceTaskRegister().postRegisterMessage(token, jsonObject);
+
+                            taskRegisterCall.enqueue(new Callback<MessageRegisterRemote>() {
+                                @Override
+                                public void onResponse(Call<MessageRegisterRemote> call, Response<MessageRegisterRemote> response) {
+                                    messageRegisterRemote = response.body();
+                                    if (response.code() == 201) {
+                                        MessageRemote messageRemotes = new MessageRemote();
+                                        DatabaseRepository dbR = new DatabaseRepository();
+                                        messageRemotes.setIdEstudiante(messageRegisterRemote.getEstudianteId());
+                                        messageRemotes.setMensajeKioscoId(messageRegisterRemote.getMensajeId());
+                                        messageRemotes.setRegistroMensajeKiosco(messageRegisterRemote.getId());
+                                        dbR.updateMessageKiosco(messageRemotes, context);
+                                    } else {
+                                        return;
+                                    }
+
+
+                                }
+
+                                @Override
+                                public void onFailure(Call<MessageRegisterRemote> call, Throwable t) {
+
+                                }
+                            });
+
+
+                        } catch (Exception e) {
+
+                        }
+
+                    }
                 }
             }
 
@@ -709,6 +768,22 @@ public class MainModel implements MainMVP.Model {
         List<FilesKiosco> filesKioscoList = null;
         filesKioscoList = databaseRepository.getFileKioscos(context, idEstudiante, idMateria, idTarea);
         return filesKioscoList;
+    }
+
+
+
+    @Override
+    public List<MessageRemote> getMyMessages (Context context,Integer idEstudiante){
+        List<MessageRemote> messageRemoteList = null ;
+        messageRemoteList = databaseRepository.getMyMessages(context,idEstudiante);
+        return messageRemoteList;
+    }
+
+    @Override
+    public List<FileMessageRemote> getMyFileMessage(Context context, Integer idMensajeKiosco) {
+        List <FileMessageRemote> fileMessageRemoteList = null;
+        fileMessageRemoteList = databaseRepository.getMyFilesMessage(context,idMensajeKiosco);
+        return fileMessageRemoteList;
     }
 
 

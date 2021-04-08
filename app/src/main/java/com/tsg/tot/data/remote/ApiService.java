@@ -91,7 +91,7 @@ public interface ApiService {
     Call<MessageRegisterRemote> postRegisterMessage(@Header("Authorization") String authKey, @Body JsonObject body );
 
     @POST(POST_ANSWER_MESSAGE)
-    Call<ResponseBody> postAnswerMessage(@Header("Authorization") String authKey, @Body JsonObject body );
+    Call<MessageRegisterRemote> postAnswerMessage(@Header("Authorization") String authKey, @Body JsonObject body );
 
     @Multipart
     @POST (POST_UPLOAD_TASK)

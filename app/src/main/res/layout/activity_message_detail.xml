@@ -6,20 +6,20 @@
     android:layout_height="match_parent"
     android:background="@drawable/classroom"
     android:orientation="vertical"
-    tools:context=".main.mainmvp.MainView">
+    tools:context=".messages.MessageDetailActivity">
 
     <RelativeLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="80dp"
         android:layout_gravity="top"
         android:layout_weight="1"
         android:background="@xml/gradient_bg"
         android:elevation="5dp">
 
-        <LinearLayout
-            android:layout_width="100dp"
-            android:layout_height="150dp"
+        <TableLayout
+            android:layout_width="169dp"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
@@ -29,12 +29,28 @@
             android:orientation="horizontal">
 
             <TableLayout
-                android:layout_width="507dp"
-                android:layout_height="130dp"
+                android:layout_width="match_parent"
+                android:layout_height="197dp"
                 android:layout_gravity="center"
                 android:layout_weight="2">
 
-                <TableRow android:orientation="vertical">
+                <Button
+                    android:id="@+id/imv_contract"
+                    android:layout_width="127dp"
+                    android:layout_height="126dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/contract"
+                    android:text=""
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <!--<TableRow android:orientation="vertical">
 
                     <Button
                         android:layout_gravity="center"
@@ -44,7 +60,6 @@
                         android:layout_height="60dp"
                         android:background="@drawable/notificacion"
                         android:text=""
-                        android:onClick="viewMessages"
                         android:textAllCaps="false"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
@@ -68,20 +83,20 @@
 
                         android:textStyle="bold" />
 
-                </TableRow>
+                </TableRow>-->
 
             </TableLayout>
-        </LinearLayout>
+        </TableLayout>
 
-        <LinearLayout
+       <!-- <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:layout_marginStart="120dp"
+            android:layout_marginStart="110dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp">
-            >
+
             <Button
                 android:id="@+id/bt_usuario"
                 android:layout_width="120dp"
@@ -92,7 +107,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-        </LinearLayout>
+        </LinearLayout>!-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -106,59 +121,52 @@
 
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
                 android:orientation="vertical">
 
-                <TextView
+                <!--<TextView
                     android:id="@+id/tv_studentCode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="left"
                     android:textColor="@color/colorWhite"
-                    android:textSize="12sp" />
+                    android:textSize="12sp" />!-->
 
                 <TextView
-                    android:id="@+id/tv_studentName"
+                    android:id="@+id/tv_studentNameMessageDetail"
                     android:layout_width="wrap_content"
-                    android:layout_height="20pt"
+                    android:layout_height="25pt"
                     android:text="Nombre Estudiante"
                     android:textColor="@color/colorWhite"
                     android:textSize="18pt"
                     android:textStyle="bold" />
 
-                <!--TextView
-                    android:id="@+id/tv_institutionName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:text="NOMBRE DE LA INSTITUCIÓN"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="18sp" /-->
                 <TextView
-                    android:id="@+id/tv_institutionName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="18pt"
-                    android:text="TSG"
+                    android:id="@+id/tv_messageDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="35pt"
+                    android:text=""
                     android:textColor="@color/colorBlack"
-                    android:textSize="16pt" />
+                    android:textSize="14pt" />
 
-                <!--TextView
-                    android:id="@+id/tv_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ubicación"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="14sp"
-                    android:textStyle="bold|italic" /-->
                 <TextView
+                    android:id="@+id/tv_materia_title_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="35pt"
+                    android:text="Materia"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14pt"
+                    android:textStyle="bold|italic" />
+                <!--<TextView
                     android:id="@+id/tv_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Bogotá"
                     android:textColor="@color/colorBlack"
                     android:textSize="14sp"
-                    android:textStyle="bold|italic" />
+                    android:textStyle="bold|italic" />!-->
 
             </LinearLayout>
             <LinearLayout
@@ -181,14 +189,14 @@
                         android:paddingBottom="5dp">
 
                         <Button
-                            android:layout_height="match_parent"
+                            android:id="@+id/bt_subir_respuestas"
                             android:layout_width="fill_parent"
-                            android:background="@drawable/custom_button_main"
-                            android:text="  ACTUALIZAR  "
-                            android:onClick="update"
-
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:id="@+id/bt_subir_archivos"
+                            android:background="@drawable/custom_button_main"
+
+                            android:onClick="uploadFile"
+                            android:text="  Subir Respuestas"
 
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
@@ -202,13 +210,12 @@
                         android:paddingBottom="5dp">
 
                         <Button
-                            android:id="@+id/bt_upload_file"
+                            android:id="@+id/btn_volver_message_detail"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:background="@drawable/custom_button_main"
-                            android:text=" Cerrar Sesion "
-                            android:onClick="logout"
+                            android:text=" Volver "
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
                             android:textSize="16sp"
@@ -248,36 +255,121 @@
             android:orientation="vertical"
             tools:ignore="NestedWeights">
 
+<!--
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/title_table_bg"
+                android:orientation="horizontal">
 
-            <!--TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginBottom="0dp"
-                android:layout_weight="1"
-                android:gravity="center" /-->
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:src="@drawable/grado_materias1" />
+
+
+                <TextView
+                    android:id="@+id/tv_title_material_messages"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="0dp"
+                    android:layout_weight="9"
+                    android:gravity="center_horizontal"
+                    android:padding="10dp"
+                    android:text="@string/activity_message_detail_material"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tv_title_material_estado"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="0dp"
+                    android:layout_weight="9"
+                    android:gravity="center_horizontal"
+                    android:padding="10dp"
+                    android:text="@string/activity_message_estado_material"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+-->
 
             <FrameLayout
-                android:id="@+id/contentList"
+                android:id="@+id/contentMaterialMensajeList"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="3" />
+                android:layout_weight="3" >
+
+            </FrameLayout>
 
         </LinearLayout>
 
-        <FrameLayout
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/subjects_bg"
+            android:orientation="vertical"
+            tools:ignore="NestedWeights">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/title_table_bg"
+                android:orientation="horizontal">
+
+                <!--ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:src="@drawable/task_icon" /!-->
+
+                <TextView
+                    android:id="@+id/tv_title_respuestas_messages"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="0dp"
+                    android:layout_weight="9"
+                    android:gravity="center_horizontal"
+                    android:padding="10dp"
+                    android:text="@string/activity_message_detail_respuestas"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+            <FrameLayout
+                android:id="@+id/contentRespuestasList"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                />
+
+        </LinearLayout>
+
+
+        <!--FrameLayout
             android:id="@+id/contentFragment"
             android:background="@drawable/info_bg"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="20dp"
-            android:layout_weight="5" />
+            android:layout_marginStart="0dp"
+            android:layout_weight="5" /!-->
     </LinearLayout>
 </LinearLayout>

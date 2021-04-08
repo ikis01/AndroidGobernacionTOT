@@ -158,4 +158,9 @@ public interface LocalRepository {
     void updateTaskRegister(Task task, Context context);
     void updateSubmissionUpp(Integer RTentregaId , Context context);
     List<Task> getPendingTasks (Context context,Task task);
+    List<MessageRemote> getMyMessages (Context context ,Integer idEstudiante);
+    List<FileMessageRemote> getMyFilesMessage(Context context, Integer idMensajeKiosco);
+    List<MessageRemote> getMyMessagesPendingRegist (Context context ,Integer idEstudiante);
+    void updateMessageKiosco (MessageRemote messageRemote,Context context);
+
 }

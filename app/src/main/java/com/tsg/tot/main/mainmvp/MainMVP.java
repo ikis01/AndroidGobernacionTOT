@@ -17,6 +17,7 @@ import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.model.Teacher;
 import com.tsg.tot.data.model.Upload;
+import com.tsg.tot.data.remote.model.FileMessageRemote;
 import com.tsg.tot.data.remote.model.GradeRemote;
 import com.tsg.tot.data.remote.model.LessonsRemote;
 import com.tsg.tot.data.remote.model.MessageRemote;
@@ -49,6 +50,8 @@ public interface MainMVP {
 
         void setFileKiosco(FilesKiosco fileKiosco);
 
+        void setMessages(List<MessageRemote> messagesList );
+
     }
 
     interface Presenter {
@@ -76,7 +79,8 @@ public interface MainMVP {
 
         void notifyRefresh();
         void updateEverything (Context context, CustomProgressDialog dialog,String token,Integer idUsuario);
-        void testPOST(Context context);
+        List<MessageRemote> getMessagesStudent (Context context,Integer idEstudiante);
+        List<FileMessageRemote> getFilesMessage (Context context,Integer idMensajeKiosco);
         //void uploadFileTest (Context context);
 
 
@@ -173,6 +177,12 @@ public interface MainMVP {
         TaskRegristerRemote  postUploadTask(Context context, String token,MultipartBody.Part file,MultipartBody tareaRegistroId, MultipartBody mac);
 
         List<FilesKiosco> checkMyFileskioscos (Context  context, Integer idEstudiante,  Integer idMateria,Integer idTarea);
+
+        List<MessageRemote> getMyMessages (Context context,Integer idEstudiante);
+
+
+
+        List<FileMessageRemote> getMyFileMessage (Context context,Integer idMensajeKiosco);
 
         //Methods for POST data on Endpoints
 

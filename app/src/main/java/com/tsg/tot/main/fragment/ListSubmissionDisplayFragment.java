@@ -19,6 +19,8 @@ import com.tsg.tot.data.model.Lessons;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.SubmissionDisplay;
 import com.tsg.tot.data.model.Task;
+import com.tsg.tot.data.remote.model.FileMessageRemote;
+import com.tsg.tot.data.remote.model.MessageRemote;
 import com.tsg.tot.data.remote.model.StudyMaterialRemote;
 import com.tsg.tot.main.mainmvp.MainMVP;
 import com.tsg.tot.task.taskmvp.TaskMVP;
@@ -102,6 +104,16 @@ public class ListSubmissionDisplayFragment extends Fragment implements
     @Override
     public void setSubmissionDisplay(List<SubmissionDisplay> submissionDisplayList, Context context, TaskMVP.Presenter presenter) {
         submissionsDisplayAdapter.dataSet(submissionDisplayList,submissionDisplayList.size(),context,presenter);
+    }
+
+    @Override
+    public void setInformationMessage(List<MessageRemote> messageRemoteList, Context context, MainMVP.Presenter presenter) {
+
+    }
+
+    @Override
+    public void setFilesMessage(List<FileMessageRemote> fileMessageRemoteList, Context context, MainMVP.Presenter presenter) {
+
     }
 
     @Override
