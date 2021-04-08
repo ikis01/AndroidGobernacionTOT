@@ -195,7 +195,7 @@
                             android:layout_gravity="center_horizontal"
                             android:background="@drawable/custom_button_main"
 
-                            android:onClick="uploadFile"
+                            android:onClick="uploadAnswer"
                             android:text="  Subir Respuestas"
 
                             android:textAllCaps="false"

@@ -4,13 +4,17 @@
 
 package com.tsg.tot.messages;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,6 +25,7 @@ import com.tsg.tot.R;
 import com.tsg.tot.data.model.FilesKiosco;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Subjects;
+import com.tsg.tot.data.model.Submissions;
 import com.tsg.tot.data.remote.model.MessageRemote;
 import com.tsg.tot.main.fragment.InformationMessageFragment;
 import com.tsg.tot.main.fragment.ListMessageAnswerFragment;
@@ -29,7 +34,13 @@ import com.tsg.tot.main.mainmvp.MainMVP;
 import com.tsg.tot.repository.DatabaseRepository;
 import com.tsg.tot.root.App;
 import com.tsg.tot.storage.TOTPreferences;
+import com.tsg.tot.task.TaskDetailActivity;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -49,6 +60,8 @@ implements MainMVP.View,ListMessageFilesFragment.OnFragmentInteractionListener,V
     public TextView tv_studentCode, tv_studentNameMessageDetail, tv_institutionName,
             tv_location, tv_messageDescription,tv_materia_title_message;
 
+    Button bt_subir_respuestas;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +79,14 @@ implements MainMVP.View,ListMessageFilesFragment.OnFragmentInteractionListener,V
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        bt_subir_respuestas = findViewById(R.id.bt_subir_respuestas);
+        bt_subir_respuestas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadAnswer("",0);
             }
         });
 
@@ -157,6 +178,70 @@ implements MainMVP.View,ListMessageFilesFragment.OnFragmentInteractionListener,V
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    private void uploadAnswer (String mensajeDescripcion, Integer idMensajeKiosco ){
+        final EditText input = new EditText(this);
+        AlertDialog.Builder dialogoConfirmarSubida = new AlertDialog.Builder(MessageDetailActivity.this);
+        dialogoConfirmarSubida.setTitle(descripcionMensaje);
+        dialogoConfirmarSubida.setMessage( mensajeDescripcion );
+        dialogoConfirmarSubida.setView(input);
+        dialogoConfirmarSubida.setCancelable(false);
+        dialogoConfirmarSubida.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogo1, int id) {
+
+                Log.d("texto en input de dialogo " , String.valueOf(input.getText()));
+
+/*                List<Submissions> submissionsList = new ArrayList<>();
+
+                DatabaseRepository dbR = new DatabaseRepository();
+                String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+                submissions.setUpp(0);
+                submissions.setIdEstudiante(idEstudiante);
+                submissions.setIdSubida(idSubida);
+                submissions.setIdTarea(idTarea);
+                submissions.setRtEntrega(registroTarea);
+                submissions.setCreado(date);
+                String fileAppend = new SimpleDateFormat("yyyyMMddHHmm").format(new Date()).concat("_");
+                submissionsList.add(submissions);
+                Long idSubmission = dbR.updateSubmissions(submissionsList,TaskDetailActivity.this);
+
+                /// Archivo Destino
+                File dstFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Data/Tareas/"+nombreTarea+"/"+idEstudiante+"_"+ fileAppend+file.getName());
+                ///Archivo Origen
+                File srcFile = new File(srcName);*/
+/*                try {
+                    copy(srcFile,dstFile);
+
+                    List<FilesKiosco> filesKioscoList = new ArrayList<>();
+                    FilesKiosco filesKiosco = new FilesKiosco();
+                    filesKiosco.setArchivoKiosco(0);
+                    filesKiosco.setCodigo("0");
+                    filesKiosco.setRuta(dstFile.getAbsolutePath());
+                    filesKiosco.setSubida_idsubida(idSubida);
+                    filesKiosco.setIdEntrega(idSubmission.intValue());
+                    filesKiosco.setNombreArchivo(file.getName());
+                    filesKioscoList.add(filesKiosco);
+                    dbR.updateMyFileKiosco(filesKioscoList,TaskDetailActivity.this);
+                    finish();
+                    startActivity(getIntent());
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }*/
+            }
+        });
+        dialogoConfirmarSubida.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogo1, int id) {
+                cancelar();
+            }
+        });
+        dialogoConfirmarSubida.show();
+
+    }
+
+    public void cancelar() {
 
     }
 }
