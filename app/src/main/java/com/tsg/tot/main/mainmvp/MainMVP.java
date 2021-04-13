@@ -70,6 +70,7 @@ public interface MainMVP {
         List<FilesKiosco>getFileKioscos(Context context,Integer idEstudiante,Integer idMateria,Integer idTarea);
 
         List<Task> getTaskSubject(Context context, int idSubject,String token,Integer idEstudiante);
+        List<Task> getAllPendingTaskSubject(Context context,Integer idEstudiante);
 
         void setInfoStudent(Context context, Integer idUsuario);
 
@@ -182,7 +183,7 @@ public interface MainMVP {
 
         List<MessageRemote> getMyMessages (Context context,Integer idEstudiante);
         List<MessageAnswer> getMyMessagesAnswers(Context context, Integer idMensajeKiosco);
-
+        List<Task> getAllMyPendingTasks(Context context,Integer idEstudiante);
 
         List<FileMessageRemote> getMyFileMessage (Context context,Integer idMensajeKiosco);
 

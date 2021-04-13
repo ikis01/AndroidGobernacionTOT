@@ -178,4 +178,10 @@ public class MessageRemote {
     public MessageRemote (){
 
     }
+
+    public MessageRemote(String mensajes, Integer registroMensajeKiosco,Integer idMessage) {
+        this.mensajes = mensajes;
+        this.registroMensajeKiosco = registroMensajeKiosco;
+        this.id = idMessage;
+    }
 }

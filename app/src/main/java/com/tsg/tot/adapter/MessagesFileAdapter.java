@@ -67,6 +67,7 @@ public class MessagesFileAdapter extends RecyclerView.Adapter<MessagesFileAdapte
            // attachFileMessages =  itemView.findViewById(R.id.bt_attachFileMessages);
 
 
+
         }
     }
 

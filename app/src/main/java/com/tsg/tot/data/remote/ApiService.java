@@ -84,6 +84,8 @@ public interface ApiService {
     String POST_SUBMISSIONS = "api/gobernacion/cursos/entregas/";
     String POST_BLOB = "upload";
 
+
+
     @GET (GET_MESSAGES_PENDING)
     Call<List<MessageRemote>> getMyPendingMessages (@Header("Authorization") String authKey);
 
@@ -91,7 +93,7 @@ public interface ApiService {
     Call<MessageRegisterRemote> postRegisterMessage(@Header("Authorization") String authKey, @Body JsonObject body );
 
     @POST(POST_ANSWER_MESSAGE)
-    Call<MessageRegisterRemote> postAnswerMessage(@Header("Authorization") String authKey, @Body JsonObject body );
+    Call<ResponseBody> postAnswerMessage(@Header("Authorization") String authKey, @Body JsonObject body );
 
     @Multipart
     @POST (POST_UPLOAD_TASK)

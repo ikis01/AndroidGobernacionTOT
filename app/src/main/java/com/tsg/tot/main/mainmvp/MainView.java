@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -30,7 +31,9 @@ import com.tsg.tot.data.remote.model.MessageRemote;
 import com.tsg.tot.data.remote.model.SubmissionPending;
 import com.tsg.tot.data.remote.model.TaskRegristerRemote;
 import com.tsg.tot.main.fragment.CustomProgressDialog;
+import com.tsg.tot.main.fragment.InformationAllTaskFragment;
 import com.tsg.tot.main.fragment.InformationFragment;
+import com.tsg.tot.main.fragment.ListMessageAnswerFragment;
 import com.tsg.tot.main.fragment.ListSubjectFragment;
 import com.tsg.tot.messages.MessageMainActivity;
 import com.tsg.tot.repository.ApiRepository;
@@ -48,6 +51,7 @@ import javax.inject.Inject;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,9 +62,9 @@ public class MainView extends AppCompatActivity
     @Inject
     MainMVP.Presenter presenter;
     TaskRegristerRemote taskRegristerRemote;
-    //TaskMVP.Presenter presenterTask;
     ListSubjectFragment listSubjectFragment;
     InformationFragment informationFragment;
+    InformationAllTaskFragment informationAllTaskFragment;
     FragmentTransaction fragmentTransaction;
 
     public TextView tv_studentCode, tv_studentName, tv_institutionName,
@@ -111,6 +115,12 @@ public class MainView extends AppCompatActivity
         listSubjectFragment = new ListSubjectFragment(presenter);
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.contentList, listSubjectFragment);
+        fragmentTransaction.commit();
+
+
+        informationAllTaskFragment = new InformationAllTaskFragment(presenter);
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.contentFragment,informationAllTaskFragment);
         fragmentTransaction.commit();
 
 
@@ -166,7 +176,7 @@ public class MainView extends AppCompatActivity
         if (!token.equals("sinConexion")) {
             registrarTareasDescargadas();
             subirEntregasPendientes();
-            obtenerMensajesPendientes();
+            registrarRespuestasPendientes();
         } else {
             dismissLoadingDialog();
         }
@@ -204,17 +214,40 @@ public class MainView extends AppCompatActivity
 
     @Override
     public void setInfoSubject(Subjects subjects) {
-        informationFragment = (InformationFragment) this.getSupportFragmentManager().
+
+        Object informationFragmentIOF = this.getSupportFragmentManager().
                 findFragmentById(R.id.contentFragment);
 
-        if (informationFragment != null && findViewById(R.id.contentFragment) == null) {
-            informationFragment.setInformation(subjects);
-            Integer idEstudianteI = Integer.parseInt(TOTPreferences.getInstance(MainView.this).getIdEstudiante() == "" ? "0" : TOTPreferences.getInstance(MainView.this).getIdEstudiante());
+        if (informationFragmentIOF.getClass().isInstance(informationFragment)){
 
-            informationFragment.setTaskSubjects(presenter.getTaskSubject(this, subjects.getId(), "", idEstudianteI), this, presenter);
-            tareasPendientes =  TOTPreferences.getInstance(this).getTareasPendientes().equals("")?0:TOTPreferences.getInstance(this).getTareasPendientes();
-            tv_pendingTask.setText(getResources().getString(R.string.main_view_PendingTasks) + ": " +tareasPendientes);
-        } else {
+            informationFragment = (InformationFragment) this.getSupportFragmentManager().
+                    findFragmentById(R.id.contentFragment);
+
+
+            if (informationFragment != null && findViewById(R.id.contentFragment) == null) {
+                informationFragment.setInformation(subjects);
+                Integer idEstudianteI = Integer.parseInt(TOTPreferences.getInstance(MainView.this).getIdEstudiante() == "" ? "0" : TOTPreferences.getInstance(MainView.this).getIdEstudiante());
+
+                informationFragment.setTaskSubjects(presenter.getTaskSubject(this, subjects.getId(), "", idEstudianteI), this, presenter);
+                tareasPendientes =  TOTPreferences.getInstance(this).getTareasPendientes().equals("")?0:TOTPreferences.getInstance(this).getTareasPendientes();
+                tv_pendingTask.setText(getResources().getString(R.string.main_view_PendingTasks) + ": " +tareasPendientes);
+            } else {
+                informationFragment = new InformationFragment(presenter);
+                Bundle bundleEnvio = new Bundle();
+                bundleEnvio.putSerializable("subject", subjects);
+                informationFragment.setArguments(bundleEnvio);
+                tareasPendientes =  TOTPreferences.getInstance(this).getTareasPendientes();
+                tv_pendingTask.setText(getResources().getString(R.string.main_view_PendingTasks) + ": " +tareasPendientes);
+
+
+                //Carga el fragment en el Activity
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.contentFragment, informationFragment).
+                        addToBackStack(null).commit();
+            }
+
+        }else {
+
             informationFragment = new InformationFragment(presenter);
             Bundle bundleEnvio = new Bundle();
             bundleEnvio.putSerializable("subject", subjects);
@@ -227,7 +260,10 @@ public class MainView extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().
                     replace(R.id.contentFragment, informationFragment).
                     addToBackStack(null).commit();
+
         }
+
+
     }
 
     @Override
@@ -404,10 +440,20 @@ public class MainView extends AppCompatActivity
 
     }
 
-    public void obtenerMensajesPendientes(){
+    public void registrarRespuestasPendientes(){
+        DatabaseRepository dbr = new DatabaseRepository();
+        List<MessageRemote> messageRemoteList = dbr.getAllMessagesToRegist(MainView.this, TOTPreferences.getInstance(MainView.this).getIdEstudiante() == "" ? 0 : Integer.parseInt(TOTPreferences.getInstance(MainView.this).getIdEstudiante()));
 
+        if(messageRemoteList.size()>0){
+            for (MessageRemote messageRemote : messageRemoteList){
+                Integer idRegisterMessage = messageRemote.getRegistroMensajeKiosco();
+                String mensaje = messageRemote.getMensajes();
+                Integer idRespuestaMensaje = messageRemote.getId();
 
+                regsitrarMensaje(token,idRegisterMessage,mensaje,idRespuestaMensaje);
 
+            }
+        }
     }
 
     public void subirEntregasPendientes() {
@@ -468,6 +514,49 @@ public class MainView extends AppCompatActivity
         } catch (Exception e) {
                 Log.d("Exception --- ", "Exception --- " + e.getMessage());
         }
+
+    }
+
+    private void regsitrarMensaje (String token,Integer idMensajeRegistro,String respuesta,Integer idRespuestaMensaje) {
+        ApiRepository apiRepository = new ApiRepository();
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("mensajeRegistroId", idMensajeRegistro);
+        jsonObject.addProperty("respuesta",respuesta);
+
+
+        try {
+            ///Se obtiene Login remoto  token  en caso de no obtenerlo no se procede a sincronizar
+            Call<ResponseBody> taskRegisterMessages = ApiUtils.getAPIService().postAnswerMessage(token, jsonObject);
+
+            taskRegisterMessages.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                    if (response.code() == 204) {
+                        DatabaseRepository dbR = new DatabaseRepository();
+                        dbR.updateAnswerMessageState(idRespuestaMensaje,MainView.this);
+
+                    } else {
+                        return;
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                }
+
+            });
+
+
+        } catch (Exception e) {
+
+        }
+
+
+
 
     }
 

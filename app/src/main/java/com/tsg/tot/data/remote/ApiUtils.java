@@ -14,31 +14,15 @@ public class  ApiUtils {
     private ApiUtils() {
     }
 
-    //static final String BASE_URL = "http://192.168.0.27:8000/";
-
-    // servidor Linux "https://192.168.0.120:6104/";
-    //  telmex  "https://192.168.1.134:6104/";
-    //  izzi  "http://10.0.0.5:6104/"
 
     //Servidor Ofinica TSG
     // public  static final String BASE_URL = "http://192.168.0.120:6104/";
 
-    // Pruebas Calidad Casa Milena Nuevo Servidor de pruebas 26 Febrero 2021 ******
+    //Local Pruebas Israel
+     public static final String BASE_URL = "http://192.168.1.101:6104";
 
-    //public static final String BASE_URL = "http://192.168.20.24:6104";
-
-    // telmex 2 repetidor
-     public static final String BASE_URL = "http://192.168.1.95:6104";
-
-   // telcel
-   // public static final String BASE_URL = "http://172.20.10.2:6104";
-
-   // Milena 2 actual
-    //public static final String BASE_URL ="http://192.168.20.34:6104";
-
-    //static final String BASE_URL = "http://192.168.1.134:6104/";
-    //static final String BASE_URL = "http://192.168.1.134";
-    //public static final String BASE_URL = "http://192.168.0.120:6104";
+   // Local Pruebas Milena
+    // public static final String BASE_URL ="http://192.168.20.34:6104";
 
 
     public static final String PORT_URL = "6104";

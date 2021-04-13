@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.RequestBody;
+import retrofit2.http.Body;
 
 import static com.tsg.tot.sqlite.DBConstants.*;
 
@@ -915,6 +916,23 @@ public class DatabaseRepository implements LocalRepository {
 
 
     @Override
+    public void updateAnswerMessageState (Integer idMessageAnswer,Context context){
+
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+       // cv.put(MESSAGE_ANSWER_KIOSCO_ID, idMessageAnswer);
+        cv.put(MESSAGE_ANSWER_KIOSCO_ESTADO, 1);
+
+        Integer countRows = db.update(MESSAGE_ANSWER_KIOSCO_TABLE_NAME, cv, MESSAGE_ANSWER_KIOSCO_ID + " = " + idMessageAnswer +
+                " AND " + MESSAGE_ANSWER_KIOSCO_ESTADO + " = " + 0, null);
+
+
+        db.close();
+        dbHelper.close();
+    }
+
+    @Override
     public void updateSubmissionUpp(Integer rTentregaId, Context context) {
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -945,6 +963,21 @@ public class DatabaseRepository implements LocalRepository {
         db.close();
         dbHelper.close();
     }
+
+    @Override
+    public void updateAnswerMessage (String body,Integer idMensajeKiosco , Context context) {
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+                    cv.put(MESSAGE_ANSWER_KIOSCO_BODY, body);
+                    cv.put(MESSAGE_ANSWER_KIOSCO_ESTADO, 0);
+                    cv.put(MESSAGE_ANSWER_KIOSCO_ID_MENSAJE_KIOSCO, idMensajeKiosco);
+                    db.insert(MESSAGE_ANSWER_KIOSCO_TABLE_NAME, null, cv);
+
+        db.close();
+        dbHelper.close();
+    }
+
 
     @Override
     public void updateTasks(List<Task> taskList, Context context) {
@@ -1270,6 +1303,103 @@ public class DatabaseRepository implements LocalRepository {
         return submissionsList;
     }
 
+    @Override
+    public  List<MessageRemote> getAllMessagesToRegist (Context context ,Integer idEstudiante){
+        List<MessageRemote> messageRemoteList = new ArrayList<>();
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        String query = " SELECT RESPUESTA_MENSAJE.ID AS ID , MENSAJE_KIOSCO.REGISTRO_MENSAJE_KIOSCO AS REGISTRO_MENSAJE_KIOSCO , "+
+                       " RESPUESTA_MENSAJE.BODY AS BODY " +
+                       " FROM MENSAJE_KIOSCO,RESPUESTA_MENSAJE " +
+                       " WHERE ID_ESTUDIANTE = " + idEstudiante +
+                       " AND MENSAJE_KIOSCO.ID = RESPUESTA_MENSAJE.ID_MENSAJE_KIOSCO" +
+                       " AND RESPUESTA_MENSAJE.ESTADO = 0";
+
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        try {
+            if (cursor.getCount() > 0) {
+                do {
+                    //get columns
+                    int idRegisterMessage = cursor.getColumnIndex(MESSAGE_KIOSCO_REGISTRO_MENSAJE_KIOSCO);
+                    int messageDescription = cursor.getColumnIndex(MESSAGE_ANSWER_KIOSCO_BODY);
+                    int idRespuestaMensaje = cursor.getColumnIndex(MESSAGE_ANSWER_KIOSCO_ID);
+
+
+                    //add row to list
+                    messageRemoteList.add(new MessageRemote(
+                            cursor.getString(messageDescription),
+                            Integer.parseInt(cursor.getString(idRegisterMessage)),
+                            Integer.parseInt(cursor.getString(idRespuestaMensaje))
+
+                    ));
+
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+
+        db.close();
+        dbHelper.close();
+        return messageRemoteList;
+    }
+
+    @Override
+    public List<Task> getAllPendingTasks (Context context,Integer idEstudiante) {
+
+        List<Task> taskList = new ArrayList<>();
+
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String query = " SELECT "+ TASK_TABLE_NAME +".* ,"+
+                SUBJECTS_TABLE_NAME +"."+SUBJECTS_TITLE +
+        " from " + TASK_TABLE_NAME + ", " + SUBJECTS_TABLE_NAME +
+        " LEFT JOIN "+ SUBMISSIONS_TABLE_NAME  +
+        " ON ID = Tarea_idTarea" +
+        " WHERE Tarea_idTarea IS NULL" +
+        " AND TAREAS.ESTUDIANTE_IDESTUDIANTE = " + idEstudiante +
+                " AND TAREAS.MATERIA_IDMATERIA = MATERIAS.idMateria ";
+
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        try {
+            if (cursor.getCount() > 0) {
+                do {
+                    //get columns
+                    int idTask = cursor.getColumnIndex(TASK_ID);
+                    int nameTask = cursor.getColumnIndex(TASK_NAME);
+                    int idSubjectTask = cursor.getColumnIndex(TASK_SUBJECT_ID);
+                    int idUploadTask = cursor.getColumnIndex(TASK_UPLOAD_ID);
+                    int codeTask = cursor.getColumnIndex(TASK_CODE);
+                    int idStudent = cursor.getColumnIndex(TASK_STUDENT_ID);
+                    int tareaKiosco = cursor.getColumnIndex(TASK_KIOSCO);
+                    int tituloMateria = cursor.getColumnIndex(SUBJECTS_TITLE);
+
+                    //add row to list
+                    taskList.add(new Task(
+                            Integer.parseInt(cursor.getString(idTask)),
+                            getUpload(db, cursor.getString(idUploadTask)),
+                            cursor.getString(nameTask),
+                            cursor.getString(codeTask),
+                            Integer.parseInt(cursor.getString(idSubjectTask)),
+                            Integer.parseInt(cursor.getString(idStudent)),
+                            Integer.parseInt(cursor.getString(tareaKiosco)),
+                            cursor.getString(tituloMateria)
+                    ));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+
+        db.close();
+        dbHelper.close();
+        return taskList;
+    }
 
     @Override
     public List<Task> getPendingTasks(Context context, Task task) {

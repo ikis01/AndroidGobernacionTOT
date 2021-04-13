@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tsg.tot.R;
@@ -24,7 +23,7 @@ import com.tsg.tot.task.TaskDetailActivity;
 
 import java.util.List;
 
-public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> implements View.OnClickListener{
+public class TasksAllPendingAdapter extends RecyclerView.Adapter<TasksAllPendingAdapter.ViewHolder> implements View.OnClickListener{
     List<Task> taskList;
     Task task;
     int size = 0;
@@ -62,7 +61,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
         }
     }
 
-    public TasksAdapter() {
+    public TasksAllPendingAdapter() {
         task = new Task();
     }
 
@@ -76,10 +75,10 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
 
     @NonNull
     @Override
-    public TasksAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TasksAllPendingAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_tasks, parent, false);
         v.setOnClickListener(this);
-        return new TasksAdapter.ViewHolder(v);
+        return new TasksAllPendingAdapter.ViewHolder(v);
     }
 
     @Override
@@ -90,19 +89,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
         } else {
             holder.adapterTask.setBackgroundColor(Color.parseColor("#FFFFFF"));
         }
-
-        String composeTaskSubject = "";
-
-        if(taskList.get(position).getDescripcionMateria()!=null){
-            if(!taskList.get(position).getDescripcionMateria().equals("")){
-               // composeTaskSubject = taskList.get(position).getNombre() + ": " + taskList.get(position).getDescripcionMateria();
-                holder.nameTask.setText(taskList.get(position).getNombre()+" : " + taskList.get(position).getDescripcionMateria());
-            }
-
-        }else {
-            holder.nameTask.setText(taskList.get(position).getNombre());
-        }
-
+        holder.nameTask.setText(taskList.get(position).getNombre());
 
 
        if ( holder.nameSubject != null){

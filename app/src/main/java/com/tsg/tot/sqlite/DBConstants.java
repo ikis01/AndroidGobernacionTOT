@@ -50,6 +50,15 @@ public final class DBConstants {
     public static final String MESSAGE_ANSWER_KIOSCO_TABLE_NAME = "RESPUESTA_MENSAJE" ;
     public static final String FILE_MESSAGE_KIOSCO_TABLE_NAME = "ARCHIVO_MENSAJE_KIOSCO";
 
+
+    /****
+     * RESPUESTA_MENSAJE
+     * */
+    public static final String MESSAGE_ANSWER_KIOSCO_ID = "ID";
+    public static final String MESSAGE_ANSWER_KIOSCO_BODY = "BODY";
+    public  static  final String MESSAGE_ANSWER_KIOSCO_ESTADO = "ESTADO";
+    public static final String MESSAGE_ANSWER_KIOSCO_ID_MENSAJE_KIOSCO = "ID_MENSAJE_KIOSCO";
+
     /****
      * MENSAJE_KIOSCO
      * */

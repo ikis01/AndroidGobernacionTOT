@@ -164,5 +164,8 @@ public interface LocalRepository {
     List<MessageRemote> getMyMessagesPendingRegist (Context context ,Integer idEstudiante);
     void updateMessageKiosco (MessageRemote messageRemote,Context context);
     List<MessageAnswer> getMessageAnswers(Context context,Integer idMensajeKiosco);
-
+    void updateAnswerMessage (String body,Integer idMensajeKiosco , Context context);
+    List<Task> getAllPendingTasks (Context context,Integer idEstudiante);
+    List<MessageRemote> getAllMessagesToRegist (Context context ,Integer idEstudiante);
+    void updateAnswerMessageState (Integer idMessageAnswer,Context context);
 }

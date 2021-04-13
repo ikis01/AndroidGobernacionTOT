@@ -211,6 +211,11 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
     }
 
     @Override
+    public List<Task> getAllPendingTaskSubject(Context context, Integer idEstudiante) {
+        return model.getAllMyPendingTasks(context,idEstudiante);
+    }
+
+    @Override
     public void setInfoStudent(Context context,Integer idUsuario) {
         if (view != null) {
             view.setInfoStudent(model.checkStudents(context, DATABASE_REPOSITORY,idUsuario));

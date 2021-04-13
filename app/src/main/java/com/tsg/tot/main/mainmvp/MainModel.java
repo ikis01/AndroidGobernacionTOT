@@ -796,6 +796,12 @@ public class MainModel implements MainMVP.Model {
 
     }
 
+    @Override
+    public List<Task> getAllMyPendingTasks(Context context, Integer idEstudiante) {
+        List <Task> taskList = null ;
+        taskList = databaseRepository.getAllPendingTasks(context,idEstudiante);
+        return taskList;
+    }
 
 
     @Override

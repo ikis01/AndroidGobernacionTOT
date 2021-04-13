@@ -34,6 +34,10 @@ public class Task  {
     @Expose
     private Integer registroTarea;
 
+    @SerializedName("descripcionMateria")
+    @Expose
+    private String descripcionMateria;
+
     /**
      * No args constructor for use in serialization
      */
@@ -48,6 +52,17 @@ public class Task  {
         this.materias = materias;
         this.estudiante = estudiante;
         this.tareakiosco = tareakiosco;
+    }
+
+    public Task(Integer id, Upload subida, String nombre, String codigo, Integer materias, Integer estudiante, Integer tareakiosco,String descripcionMateria) {
+        this.id = id;
+        this.subida = subida;
+        this.nombre = nombre;
+        this.codigo = codigo;
+        this.materias = materias;
+        this.estudiante = estudiante;
+        this.tareakiosco = tareakiosco;
+        this.descripcionMateria = descripcionMateria;
     }
 
     public Task(Integer id, Upload subida, String nombre, String codigo, Integer materias, Integer estudiante, Integer tareakiosco,Integer registroTarea) {
@@ -162,5 +177,13 @@ public class Task  {
 
     public void setRegistroTarea(Integer registroTarea) {
         this.registroTarea = registroTarea;
+    }
+
+    public String getDescripcionMateria() {
+        return descripcionMateria;
+    }
+
+    public void setDescripcionMateria(String descripcionMateria) {
+        this.descripcionMateria = descripcionMateria;
     }
 }

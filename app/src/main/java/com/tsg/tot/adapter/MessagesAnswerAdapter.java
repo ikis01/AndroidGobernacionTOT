@@ -50,16 +50,15 @@ public class MessagesAnswerAdapter extends RecyclerView.Adapter<MessagesAnswerAd
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView statusMessageAnswerImage;
+        //private final ImageView statusMessageAnswerImage;
         private final TextView messageAnswerName;
         private final TextView messageAnswerEstado;
         private final LinearLayout adapterMessagesAnswers;
-       // private final Button  attachFileMessages;
 
 
         ViewHolder(View itemView) {
             super(itemView);
-            statusMessageAnswerImage = itemView.findViewById(R.id.statusMessageAnswerImage);
+          //  statusMessageAnswerImage = itemView.findViewById(R.id.statusMessageAnswerImage);
             messageAnswerName = itemView.findViewById(R.id.messageAnswerName);
             messageAnswerEstado  = itemView.findViewById(R.id.messageAnswerEstado);
             adapterMessagesAnswers = itemView.findViewById(R.id.adapterMessagesAnswers);
@@ -86,7 +85,7 @@ public class MessagesAnswerAdapter extends RecyclerView.Adapter<MessagesAnswerAd
     @NonNull
     @Override
     public MessagesAnswerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_file_messages, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_answer_messages, parent, false);
         v.setOnClickListener(this);
         return new MessagesAnswerAdapter.ViewHolder(v);
     }

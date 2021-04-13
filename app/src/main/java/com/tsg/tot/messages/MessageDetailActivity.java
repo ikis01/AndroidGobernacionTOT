@@ -86,7 +86,7 @@ implements MainMVP.View,ListMessageFilesFragment.OnFragmentInteractionListener,V
         bt_subir_respuestas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadAnswer("",0);
+                uploadAnswer();
             }
         });
 
@@ -181,21 +181,23 @@ implements MainMVP.View,ListMessageFilesFragment.OnFragmentInteractionListener,V
 
     }
 
-    private void uploadAnswer (String mensajeDescripcion, Integer idMensajeKiosco ){
+    private void uploadAnswer (){
         final EditText input = new EditText(this);
         AlertDialog.Builder dialogoConfirmarSubida = new AlertDialog.Builder(MessageDetailActivity.this);
         dialogoConfirmarSubida.setTitle(descripcionMensaje);
-        dialogoConfirmarSubida.setMessage( mensajeDescripcion );
+        dialogoConfirmarSubida.setMessage( "Responda : " );
         dialogoConfirmarSubida.setView(input);
         dialogoConfirmarSubida.setCancelable(false);
         dialogoConfirmarSubida.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogo1, int id) {
-
+                Integer idMensajeKiosco = TOTPreferences.getInstance(MessageDetailActivity.this).getIdMensajeKiosco();
+                DatabaseRepository dbR = new DatabaseRepository();
+                dbR.updateAnswerMessage(String.valueOf(input.getText()),idMensajeKiosco,MessageDetailActivity.this);
                 Log.d("texto en input de dialogo " , String.valueOf(input.getText()));
 
 /*                List<Submissions> submissionsList = new ArrayList<>();
 
-                DatabaseRepository dbR = new DatabaseRepository();
+
                 String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
                 submissions.setUpp(0);
                 submissions.setIdEstudiante(idEstudiante);
