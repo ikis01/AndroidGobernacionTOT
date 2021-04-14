@@ -296,7 +296,11 @@ public class MainModel implements MainMVP.Model {
                         upload.setSubidaKiosco(taskRemote.getTareaId());
                         upload.setEstudiante_idEstudiante(studentRemote.getId());
                         Long id = databaseRepository.updateMyUpload(upload, context);
-
+                        /// se saca linea para siempre registrar tarea aun si no tiene archivo
+                        taskRemote.setIdRegistro(0);
+                        taskRemote.setIdSubida(id);
+                        taskRemoteListAux.add(taskRemote);
+                        ///
                         List  <FileTaskRemote> fileTaskRemoteList = taskRemote.getFile();
                         for (FileTaskRemote fileTaskRemote : fileTaskRemoteList){
                     if (storageDirTask.exists()) {
@@ -305,10 +309,10 @@ public class MainModel implements MainMVP.Model {
                         if (tareaPath != null) {
 
                             /// insertar registro en SUBIDA
-                            TaskRemote taskAux = taskRemote;
+                            //TaskRemote taskAux = taskRemote;
                             FilesKiosco filesKiosco = new FilesKiosco();
 
-                            taskRemote.setIdSubida(id);
+                            //taskRemote.setIdSubida(id);
                             ///ikis
                             //taskRemote.setMateriaId(taskRemote.getMateria().getId());
 
@@ -318,9 +322,9 @@ public class MainModel implements MainMVP.Model {
 
 
 
-                            taskRemote.setIdRegistro(0);
+                            //taskRemote.setIdRegistro(0);
 
-                            taskRemoteListAux.add(taskRemote);
+                            //taskRemoteListAux.add(taskRemote);
                             filesKiosco.setArchivoKiosco(fileTaskRemote.getId());
                             filesKiosco.setCodigo(taskRemote.getTareaId().toString());
                             filesKiosco.setRuta(tareaPath);

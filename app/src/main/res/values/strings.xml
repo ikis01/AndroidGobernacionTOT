@@ -15,8 +15,9 @@
     <string name="activity_message_estado_material">ESTADO</string>
     <string name="activity_message_detail_respuestas">RESPUESTAS</string>
 
-    <string name="activity_task_detail_StudyMaterial">MATERIAL TAREA</string>
-    <string name="activity_task_detail_Submissions">ENTREGAS</string>
+    <string name="activity_task_detail_studyMaterial">MATERIAL TAREA</string>
+    <string name="activity_task_detail_submissions">ENTREGAS</string>
+    <string name="activity_task_detail_state">ESTADO</string>
 
 
     <string name="activity_subject_lesson_name">Nombre</string>

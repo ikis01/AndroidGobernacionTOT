@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,7 +35,7 @@ public class SubmissionsDisplayAdapter extends RecyclerView.Adapter<SubmissionsD
     static class ViewHolder extends RecyclerView.ViewHolder{
         private final TextView nameFile ;
         private final TextView statusFile;
-        private final RelativeLayout adapterSubmissionDisplay;
+        private final LinearLayout adapterSubmissionDisplay;
 
         ViewHolder(View itemView){
             super(itemView);

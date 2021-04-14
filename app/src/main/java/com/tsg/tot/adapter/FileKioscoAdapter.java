@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -39,7 +40,7 @@ public class FileKioscoAdapter extends RecyclerView.Adapter<FileKioscoAdapter.Vi
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView nameFile;
         private final TextView statusFile;
-        private final RelativeLayout adapterFileKiosco;
+        private final LinearLayout adapterFileKiosco;
 
         ViewHolder(View itemView) {
             super(itemView);

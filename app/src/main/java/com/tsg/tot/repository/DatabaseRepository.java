@@ -251,7 +251,7 @@ public class DatabaseRepository implements LocalRepository {
                             Integer.parseInt(cursor.getString(idSubjectTask)),
                             Integer.parseInt(cursor.getString(idStudent)),
                             Integer.parseInt(cursor.getString(tareaKiosc)),
-                            Integer.parseInt(cursor.getString(tareaRegistro))
+                            Integer.parseInt(cursor.getString(tareaRegistro)==null?"0":cursor.getString(tareaRegistro))
                     ));
                 } while (cursor.moveToNext());
             }
@@ -424,21 +424,21 @@ public class DatabaseRepository implements LocalRepository {
                                 }
                             }
 
-                        }
-                    } else {
-                        if (checkRelations(db, TASK_TABLE_NAME, TASK_CODE, task.getIdD2L().toString(), TASK_STUDENT_ID, studentRemote.getId().toString()) == 0) {
-                            //cv.put(TASK_ID, task.getIdD2L());
-                            cv.put(TASK_ID, task.getTareaId());
-                            //cv.put(TASK_CODE, task.getIdArchivoD2L());
-                            cv.put(TASK_CODE, task.getIdD2L());
-                            cv.put(TASK_NAME, task.getNombre());
-                            cv.put(TASK_REGISTER, task.getIdRegistro());
-                            cv.put(TASK_KIOSCO, task.getTareaId());
-                            cv.put(TASK_STUDENT_ID, studentRemote.getId());
-                            cv.put(TASK_SUBJECT_ID, task.getMateria().getId());
-                            cv.put(TASK_UPLOAD_ID, 0);
-                            cv.put(TASK_UPLOAD_ID, task.getIdSubida().intValue());
-                            db.insert(TASK_TABLE_NAME, null, cv);
+                        }else {
+                            if (checkRelations(db, TASK_TABLE_NAME, TASK_CODE, task.getIdD2L().toString(), TASK_STUDENT_ID, studentRemote.getId().toString()) == 0) {
+                                //cv.put(TASK_ID, task.getIdD2L());
+                                cv.put(TASK_ID, task.getTareaId());
+                                //cv.put(TASK_CODE, task.getIdArchivoD2L());
+                                cv.put(TASK_CODE, task.getIdD2L());
+                                cv.put(TASK_NAME, task.getNombre());
+                                cv.put(TASK_REGISTER, task.getIdRegistro());
+                                cv.put(TASK_KIOSCO, task.getTareaId());
+                                cv.put(TASK_STUDENT_ID, studentRemote.getId());
+                                cv.put(TASK_SUBJECT_ID, task.getMateria().getId());
+                                cv.put(TASK_UPLOAD_ID, 0);
+                                cv.put(TASK_UPLOAD_ID, task.getIdSubida()==null?0:task.getIdSubida().intValue());
+                                db.insert(TASK_TABLE_NAME, null, cv);
+                            }
                         }
                     }
 
