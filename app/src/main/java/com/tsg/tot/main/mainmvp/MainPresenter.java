@@ -11,6 +11,7 @@ import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
 import com.tsg.tot.data.remote.model.FileMessageRemote;
 import com.tsg.tot.data.remote.model.MessageRemote;
+import com.tsg.tot.data.remote.model.StudentRemote;
 import com.tsg.tot.main.fragment.CustomProgressDialog;
 
 import java.util.ArrayList;
@@ -48,6 +49,8 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
         if (view != null) {
             new Thread(() -> {
                 Log.d("checkVersions", "Thread Sincronizacion");
+                model.updateMessages(context, token, model.checkMyStudent(context, API_REPOSITORY, token),  model.checkMyPendingMessages(context,API_REPOSITORY,token));
+                //this.notifyRefresh();
                 //Thread for checking versions
                 while (ejecutar) {
                     //Set version No.
@@ -121,6 +124,7 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
         if (view != null) {
             new Thread(() -> {
                 Log.d("checkVersions", "Thread");
+                model.updateMessages(context, token, model.checkMyStudent(context, API_REPOSITORY, token),  model.checkMyPendingMessages(context,API_REPOSITORY,token));
                 //Thread for checking versions
                 while (ejecutar) {
                     //Set version No.

@@ -89,11 +89,6 @@ public class TaskDetailActivity extends AppCompatActivity
         idTarea =  getIntent().getExtras().getInt("idTarea");
         registroTarea =getIntent().getExtras().getInt("registroTarea");
 
-
-
-
-
-
         ((App) getApplication()).getComponent().injectTask(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
@@ -116,9 +111,12 @@ public class TaskDetailActivity extends AppCompatActivity
 
         //Init Fragment
         listFileKioscoFragment = new ListFileKioscoFragment(presenter,idMateria,tareakiosco ,idEstudiante);
-        listSubmissionDisplayFragment = new ListSubmissionDisplayFragment(presenter,idMateria,idTarea,idEstudiante);
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.contentMaterialTareaList, listFileKioscoFragment);
+        fragmentTransaction.commit();
+
+        listSubmissionDisplayFragment = new ListSubmissionDisplayFragment(presenter,idMateria,idTarea,idEstudiante);
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.contentEntregasList,listSubmissionDisplayFragment);
         fragmentTransaction.commit();
 

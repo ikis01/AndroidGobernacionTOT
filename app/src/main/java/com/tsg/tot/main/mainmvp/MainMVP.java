@@ -100,6 +100,7 @@ public interface MainMVP {
         float checkAPIVersion(Context context);
 
         float checkDbVersion(Context context);
+        void updateMessages(Context context,String token,StudentRemote studentRemote, List<MessageRemote> messageRemoteList);
 
         Boolean updateDatabase(String idUsuario ,
                             Context context ,

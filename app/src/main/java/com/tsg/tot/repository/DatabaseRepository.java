@@ -251,7 +251,7 @@ public class DatabaseRepository implements LocalRepository {
                             Integer.parseInt(cursor.getString(idSubjectTask)),
                             Integer.parseInt(cursor.getString(idStudent)),
                             Integer.parseInt(cursor.getString(tareaKiosc)),
-                            Integer.parseInt(cursor.getString(tareaRegistro)==null?"0":cursor.getString(tareaRegistro))
+                            Integer.parseInt(cursor.getString(tareaRegistro) == null ? "0" : cursor.getString(tareaRegistro))
                     ));
                 } while (cursor.moveToNext());
             }
@@ -424,7 +424,7 @@ public class DatabaseRepository implements LocalRepository {
                                 }
                             }
 
-                        }else {
+                        } else {
                             if (checkRelations(db, TASK_TABLE_NAME, TASK_CODE, task.getIdD2L().toString(), TASK_STUDENT_ID, studentRemote.getId().toString()) == 0) {
                                 //cv.put(TASK_ID, task.getIdD2L());
                                 cv.put(TASK_ID, task.getTareaId());
@@ -436,7 +436,7 @@ public class DatabaseRepository implements LocalRepository {
                                 cv.put(TASK_STUDENT_ID, studentRemote.getId());
                                 cv.put(TASK_SUBJECT_ID, task.getMateria().getId());
                                 cv.put(TASK_UPLOAD_ID, 0);
-                                cv.put(TASK_UPLOAD_ID, task.getIdSubida()==null?0:task.getIdSubida().intValue());
+                                cv.put(TASK_UPLOAD_ID, task.getIdSubida() == null ? 0 : task.getIdSubida().intValue());
                                 db.insert(TASK_TABLE_NAME, null, cv);
                             }
                         }
@@ -458,15 +458,16 @@ public class DatabaseRepository implements LocalRepository {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-
-        cv.put(FILE_MESSAGE_FECHA_DESCARGA, fileMessageRemote.getFechaDescarga());
-        cv.put(FILE_MESSAGE_ID_ARCHIVO_MENSAJE, messageRemote.getId());
-        cv.put(FILE_MESSAGE_ID_ARCHIVO_KIOSCO, fileMessageRemote.getId());
-        cv.put(FILE_MESSAGE_IDD2L, fileMessageRemote.getIdD2L());
-        cv.put(FILE_MESSAGE_NOMBRE, fileMessageRemote.getNombre());
-        cv.put(FILE_MESSAGE_URL, fileMessageRemote.getUrl());
-        cv.put(FILE_MESSAGE_ID_MENSAJE_KIOSCO, messageRemote.getMensajeKioscoId());
-        db.insert(FILE_MESSAGE_KIOSCO_TABLE_NAME, null, cv);
+        if (checkId(db, FILE_MESSAGE_KIOSCO_TABLE_NAME, FILE_MESSAGE_ID_ARCHIVO_KIOSCO, messageRemote.getId().toString()) == 0) {
+            cv.put(FILE_MESSAGE_FECHA_DESCARGA, fileMessageRemote.getFechaDescarga());
+            cv.put(FILE_MESSAGE_ID_ARCHIVO_MENSAJE, messageRemote.getId());
+            cv.put(FILE_MESSAGE_ID_ARCHIVO_KIOSCO, fileMessageRemote.getId());
+            cv.put(FILE_MESSAGE_IDD2L, fileMessageRemote.getIdD2L());
+            cv.put(FILE_MESSAGE_NOMBRE, fileMessageRemote.getNombre());
+            cv.put(FILE_MESSAGE_URL, fileMessageRemote.getUrl());
+            cv.put(FILE_MESSAGE_ID_MENSAJE_KIOSCO, messageRemote.getMensajeKioscoId());
+            db.insert(FILE_MESSAGE_KIOSCO_TABLE_NAME, null, cv);
+        }
 
         db.close();
         dbHelper.close();
@@ -482,19 +483,19 @@ public class DatabaseRepository implements LocalRepository {
         if (messageRemoteList != null) {
             for (MessageRemote messageRemote : messageRemoteList) {
                 MessageRemote messageRemoteResult;
-                //  if (checkId(db, MESSAGE_KIOSCO_TABLE_NAME, MESSAGE_KIOSCO_ID, messageRemote.getId().toString()) == 0) {
-                cv.put(MESSAGE_KIOSCO_FECHA_DESCARGA, messageRemote.getFechaDescarga());
-                cv.put(MESSAGE_KIOSCO_IDD2L, messageRemote.getIdD2L());
-                cv.put(MESSAGE_KIOSCO_ID_MENSAJE_KIOSCO, messageRemote.getId());
-                cv.put(MESSAGE_KIOSCO_NOMBRE, messageRemote.getMensajes());
-                cv.put(MESSAGE_KIOSCO_REGISTRO_MENSAJE_KIOSCO, 0);
-                cv.put(MESSAGE_KIOSCO_ID_ESTUDIANTE, studentRemote.getId());
-                cv.put(MESSAGE_KIOSCO_ID_MATERIA, messageRemote.getMateria().getId());
-                Long resultId = db.insert(MESSAGE_KIOSCO_TABLE_NAME, null, cv);
-                messageRemote.setMensajeKioscoId(resultId.intValue());
-                messageRemoteResult = messageRemote;
-                messageRemoteListResult.add(messageRemoteResult);
-                // }
+                if (checkId(db, MESSAGE_KIOSCO_TABLE_NAME, MESSAGE_KIOSCO_ID_MENSAJE_KIOSCO, messageRemote.getId().toString()) == 0) {
+                    cv.put(MESSAGE_KIOSCO_FECHA_DESCARGA, messageRemote.getFechaDescarga());
+                    cv.put(MESSAGE_KIOSCO_IDD2L, messageRemote.getIdD2L());
+                    cv.put(MESSAGE_KIOSCO_ID_MENSAJE_KIOSCO, messageRemote.getId());
+                    cv.put(MESSAGE_KIOSCO_NOMBRE, messageRemote.getMensajes());
+                    cv.put(MESSAGE_KIOSCO_REGISTRO_MENSAJE_KIOSCO, 0);
+                    cv.put(MESSAGE_KIOSCO_ID_ESTUDIANTE, studentRemote.getId());
+                    cv.put(MESSAGE_KIOSCO_ID_MATERIA, messageRemote.getMateria().getId());
+                    Long resultId = db.insert(MESSAGE_KIOSCO_TABLE_NAME, null, cv);
+                    messageRemote.setMensajeKioscoId(resultId.intValue());
+                    messageRemoteResult = messageRemote;
+                    messageRemoteListResult.add(messageRemoteResult);
+                }
             }
         }
 
@@ -916,12 +917,12 @@ public class DatabaseRepository implements LocalRepository {
 
 
     @Override
-    public void updateAnswerMessageState (Integer idMessageAnswer,Context context){
+    public void updateAnswerMessageState(Integer idMessageAnswer, Context context) {
 
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
-       // cv.put(MESSAGE_ANSWER_KIOSCO_ID, idMessageAnswer);
+        // cv.put(MESSAGE_ANSWER_KIOSCO_ID, idMessageAnswer);
         cv.put(MESSAGE_ANSWER_KIOSCO_ESTADO, 1);
 
         Integer countRows = db.update(MESSAGE_ANSWER_KIOSCO_TABLE_NAME, cv, MESSAGE_ANSWER_KIOSCO_ID + " = " + idMessageAnswer +
@@ -965,14 +966,14 @@ public class DatabaseRepository implements LocalRepository {
     }
 
     @Override
-    public void updateAnswerMessage (String body,Integer idMensajeKiosco , Context context) {
+    public void updateAnswerMessage(String body, Integer idMensajeKiosco, Context context) {
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
-                    cv.put(MESSAGE_ANSWER_KIOSCO_BODY, body);
-                    cv.put(MESSAGE_ANSWER_KIOSCO_ESTADO, 0);
-                    cv.put(MESSAGE_ANSWER_KIOSCO_ID_MENSAJE_KIOSCO, idMensajeKiosco);
-                    db.insert(MESSAGE_ANSWER_KIOSCO_TABLE_NAME, null, cv);
+        cv.put(MESSAGE_ANSWER_KIOSCO_BODY, body);
+        cv.put(MESSAGE_ANSWER_KIOSCO_ESTADO, 0);
+        cv.put(MESSAGE_ANSWER_KIOSCO_ID_MENSAJE_KIOSCO, idMensajeKiosco);
+        db.insert(MESSAGE_ANSWER_KIOSCO_TABLE_NAME, null, cv);
 
         db.close();
         dbHelper.close();
@@ -1304,17 +1305,17 @@ public class DatabaseRepository implements LocalRepository {
     }
 
     @Override
-    public  List<MessageRemote> getAllMessagesToRegist (Context context ,Integer idEstudiante){
+    public List<MessageRemote> getAllMessagesToRegist(Context context, Integer idEstudiante) {
         List<MessageRemote> messageRemoteList = new ArrayList<>();
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        String query = " SELECT RESPUESTA_MENSAJE.ID AS ID , MENSAJE_KIOSCO.REGISTRO_MENSAJE_KIOSCO AS REGISTRO_MENSAJE_KIOSCO , "+
-                       " RESPUESTA_MENSAJE.BODY AS BODY " +
-                       " FROM MENSAJE_KIOSCO,RESPUESTA_MENSAJE " +
-                       " WHERE ID_ESTUDIANTE = " + idEstudiante +
-                       " AND MENSAJE_KIOSCO.ID = RESPUESTA_MENSAJE.ID_MENSAJE_KIOSCO" +
-                       " AND RESPUESTA_MENSAJE.ESTADO = 0";
+        String query = " SELECT RESPUESTA_MENSAJE.ID AS ID , MENSAJE_KIOSCO.REGISTRO_MENSAJE_KIOSCO AS REGISTRO_MENSAJE_KIOSCO , " +
+                " RESPUESTA_MENSAJE.BODY AS BODY " +
+                " FROM MENSAJE_KIOSCO,RESPUESTA_MENSAJE " +
+                " WHERE ID_ESTUDIANTE = " + idEstudiante +
+                " AND MENSAJE_KIOSCO.ID = RESPUESTA_MENSAJE.ID_MENSAJE_KIOSCO" +
+                " AND RESPUESTA_MENSAJE.ESTADO = 0";
 
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
@@ -1348,19 +1349,19 @@ public class DatabaseRepository implements LocalRepository {
     }
 
     @Override
-    public List<Task> getAllPendingTasks (Context context,Integer idEstudiante) {
+    public List<Task> getAllPendingTasks(Context context, Integer idEstudiante) {
 
         List<Task> taskList = new ArrayList<>();
 
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String query = " SELECT "+ TASK_TABLE_NAME +".* ,"+
-                SUBJECTS_TABLE_NAME +"."+SUBJECTS_TITLE +
-        " from " + TASK_TABLE_NAME + ", " + SUBJECTS_TABLE_NAME +
-        " LEFT JOIN "+ SUBMISSIONS_TABLE_NAME  +
-        " ON ID = Tarea_idTarea" +
-        " WHERE Tarea_idTarea IS NULL" +
-        " AND TAREAS.ESTUDIANTE_IDESTUDIANTE = " + idEstudiante +
+        String query = " SELECT " + TASK_TABLE_NAME + ".* ," +
+                SUBJECTS_TABLE_NAME + "." + SUBJECTS_TITLE +
+                " from " + TASK_TABLE_NAME + ", " + SUBJECTS_TABLE_NAME +
+                " LEFT JOIN " + SUBMISSIONS_TABLE_NAME +
+                " ON ID = Tarea_idTarea" +
+                " WHERE Tarea_idTarea IS NULL" +
+                " AND TAREAS.ESTUDIANTE_IDESTUDIANTE = " + idEstudiante +
                 " AND TAREAS.MATERIA_IDMATERIA = MATERIAS.idMateria ";
 
         Cursor cursor = db.rawQuery(query, null);
@@ -1771,6 +1772,7 @@ public class DatabaseRepository implements LocalRepository {
                 " WHERE ESTUDIANTE_IDESTUDIANTE =" + idEstudiante +
                 " AND MATERIA_IDMATERIA = " + idMateria +
                 " AND TAREAKIOSCO = " + idTarea +
+                " AND idEntrega IS NULL " +  /// VERIFICAR CAMBIO DE OBTENCION DE ARCHIVOS DE TAREAS
                 " AND ARCHIVOSKIOSCO.subida_idsubida = TAREAS.SUBIDA_IDSUBIDA";
 
         Cursor cursor = db.rawQuery(query, null);
@@ -1801,7 +1803,7 @@ public class DatabaseRepository implements LocalRepository {
     }
 
     @Override
-    public List<MessageAnswer> getMessageAnswers( Context context, Integer idMensajeKiosco) {
+    public List<MessageAnswer> getMessageAnswers(Context context, Integer idMensajeKiosco) {
         List<MessageAnswer> messageAnswerList = new ArrayList<>();
         DbOpenHelper dbHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -1835,8 +1837,6 @@ public class DatabaseRepository implements LocalRepository {
         dbHelper.close();
         return messageAnswerList;
     }
-
-
 
 
     public List<SubmissionDisplay> getSubmissionsDisplay(Context context, Integer idEstudiante, Integer idMateria, Integer idTarea) {

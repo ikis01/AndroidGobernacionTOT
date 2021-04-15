@@ -100,6 +100,139 @@ public class MainModel implements MainMVP.Model {
     }
 
     @Override
+    public void updateMessages(Context context,String token,StudentRemote studentRemote, List<MessageRemote> messageRemoteList){
+        File storageDirectoryStudent = null;
+        File storageDirectoryMessage = null;
+
+        if (studentRemote != null) {
+            List<MessageRemote> messageRemoteListResult = databaseRepository.updateMyMessages(messageRemoteList,context,studentRemote);
+
+            Log.d("messageRemoteListResult size : ", String.valueOf(messageRemoteListResult.size()));
+            if (messageRemoteListResult !=null){
+
+                if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+                    //RUNTIME PERMISSION Android M
+                    if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        storageDirectoryStudent = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Mensajes", studentRemote.getNombre().replace(" ", "") + "_"+studentRemote.getIdD2L());
+                        if (!storageDirectoryStudent.exists()) {
+                            storageDirectoryStudent.mkdir();
+                        }
+                    } else {
+                        // requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
+                    }
+
+                }
+
+                if (messageRemoteListResult.size()>0){
+                    for (MessageRemote messageRemote : messageRemoteListResult){
+
+
+
+                        List<FileMessageRemote> fileMessageRemoteList = messageRemote.getFilesMensajes();
+                        if (fileMessageRemoteList!=null){
+                            if (fileMessageRemoteList.size()>0){
+                                for(FileMessageRemote fileMessageRemote: fileMessageRemoteList) {
+
+
+                                    if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+                                        //RUNTIME PERMISSION Android M
+                                        if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                                            storageDirectoryMessage = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Mensajes/"+studentRemote.getNombre().replace(" ", "") + "_"+studentRemote.getIdD2L(), messageRemote.getMateria().getTitulo());
+                                            if (!storageDirectoryMessage.exists()) {
+                                                storageDirectoryMessage.mkdir();
+                                            }
+                                        } else {
+                                            // requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
+                                        }
+
+                                    }
+
+                                    if (storageDirectoryMessage.exists()){
+                                        String pathMensaje = null;
+                                        pathMensaje = Download(fileMessageRemote.getUrl(), storageDirectoryMessage, fileMessageRemote.getNombre(), fileMessageRemote.getIdD2L()+"_");
+
+                                        if(pathMensaje!=null) {
+                                            Log.d("Archivo Mensaje - fecha Descarga ", fileMessageRemote.getFechaDescarga());
+                                            Log.d("Archivo Mensaje - ArchivoMensajeId", fileMessageRemote.getMensajeId().toString());
+                                            Log.d("Archivo Mensaje - idArchivoKiosco", fileMessageRemote.getId().toString());
+                                            Log.d("Archivo Mensaje - IdD2L", fileMessageRemote.getIdD2L());
+                                            Log.d("Archivo Mensaje - nombreArchivo", fileMessageRemote.getNombre());
+                                            Log.d("Archivo Mensaje - ruta guardado ", pathMensaje);
+                                            Log.d("Archivo Mensaje - mensajeKiosco Id ", messageRemote.getMensajeKioscoId().toString());
+
+                                            fileMessageRemote.setUrl(pathMensaje);
+                                            databaseRepository.updateMyFileMessage(messageRemote, fileMessageRemote, context);
+                                        }
+                                    }
+
+
+
+                                }
+
+                            }
+                        }
+                    }
+
+
+                    ///// registrar los mensajes descargados para no duplicarse
+
+                    List <MessageRemote> messageRemoteListToRegist = databaseRepository.getMyMessagesPendingRegist(context,studentRemote.getId());
+
+                    for(MessageRemote messageRemote:messageRemoteListToRegist){
+
+
+                        try {
+                            ///Se obtiene Login remoto  token  en caso de no obtenerlo no se procede a sincronizar
+
+                            String macAddress = ApiUtils.getMacAddress();
+                            JsonObject jsonObject = new JsonObject();
+                            jsonObject.addProperty("mensajeId", messageRemote.getMensajeKioscoId());
+                            jsonObject.addProperty("mac",macAddress);
+
+
+
+                            Call<MessageRegisterRemote> taskRegisterCall = ApiUtils.getAPIServiceTaskRegister().postRegisterMessage(token, jsonObject);
+
+                            taskRegisterCall.enqueue(new Callback<MessageRegisterRemote>() {
+                                @Override
+                                public void onResponse(Call<MessageRegisterRemote> call, Response<MessageRegisterRemote> response) {
+                                    messageRegisterRemote = response.body();
+                                    if (response.code() == 201) {
+                                        MessageRemote messageRemotes = new MessageRemote();
+                                        DatabaseRepository dbR = new DatabaseRepository();
+                                        messageRemotes.setIdEstudiante(messageRegisterRemote.getEstudianteId());
+                                        messageRemotes.setMensajeKioscoId(messageRegisterRemote.getMensajeId());
+                                        messageRemotes.setRegistroMensajeKiosco(messageRegisterRemote.getId());
+                                        dbR.updateMessageKiosco(messageRemotes, context);
+                                    } else {
+                                        return;
+                                    }
+
+
+                                }
+
+                                @Override
+                                public void onFailure(Call<MessageRegisterRemote> call, Throwable t) {
+
+                                }
+                            });
+
+
+                        } catch (Exception e) {
+
+                        }
+
+                    }
+
+                    ///// mandar a llamar actualizar
+                }
+            }
+
+
+        }
+    }
+
+    @Override
     public Boolean updateDatabase(String idUsusario, Context context,
                                float version,
                                GradeRemote gradeRemote,

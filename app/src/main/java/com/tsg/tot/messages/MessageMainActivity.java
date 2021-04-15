@@ -93,14 +93,7 @@ public class MessageMainActivity extends AppCompatActivity
 
         List<Student> studentList = dbR.getStudent(MessageMainActivity.this, Integer.parseInt(idUsuario==null?"0":idUsuario.equals("")?"0":idUsuario));
         this.setInfoStudent(studentList);
-/*
-       List<MessageRemote> messageRemoteList =  dbR.getMyMessages(MessageMainActivity.this,Integer.parseInt(idUsuario==null?"0":idUsuario.equals("")?"0":idUsuario));
 
-           for(MessageRemote messageRemote : messageRemoteList){
-                   Log.d("message remote materia  =  " ,messageRemote.getMateriaTitulo());
-                   Log.d("message remote mensaje   =  " ,messageRemote.getMensajes());
-
-               }*/
 
         informationMessageFragment = new InformationMessageFragment(presenter);
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
