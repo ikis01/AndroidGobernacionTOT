@@ -594,11 +594,11 @@ public class DatabaseRepository implements LocalRepository {
         ContentValues cv = new ContentValues();
         if (gradesList != null) {
             for (Grade grade : gradesList) {
-                if (checkId(db, GRADE_TABLE_NAME, GRADE_ID, grade.getId().toString()) == 0) {
+             //   if (checkId(db, GRADE_TABLE_NAME, GRADE_ID, grade.getId().toString()) == 0) {
                     cv.put(GRADE_ID, grade.getId());
                     cv.put(GRADE_TITLE, grade.getNombre());
                     db.insert(GRADE_TABLE_NAME, null, cv);
-                }
+              //  }
             }
         }
 

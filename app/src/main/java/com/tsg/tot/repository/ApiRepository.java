@@ -69,10 +69,10 @@ public class ApiRepository implements RemoteRepository {
     //List<Task> taskListFinal;
     List<TaskRemote> taskListFinal;
 
-    GradeRemote gradeRemote;
+    GradeRemote gradeRemote = null;
     List<StudyMaterialRemote> studyMaterialRemoteList;
     List<MessageRemote> messagePendintRemoteList;
-    StudentRemote studentRemote;
+    StudentRemote studentRemote = null;
     List<LessonsRemote> lessonsRemoteList;
 
     //GET calls to API

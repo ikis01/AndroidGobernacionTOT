@@ -255,6 +255,15 @@
                 android:layout_marginBottom="0dp"
                 android:layout_weight="1"
                 android:gravity="center" /-->
+            <!--ImageView
+                android:layout_width="match_parent"
+                android:id="@+id/imageGrado"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/grado_materias1" /-->
             <ImageView
                 android:layout_width="match_parent"
                 android:id="@+id/imageGrado"
@@ -263,7 +272,7 @@
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:src="@drawable/grado_materias1" />
+                android:src="@drawable/grado_materias1"/>
 
             <FrameLayout
                 android:id="@+id/contentList"

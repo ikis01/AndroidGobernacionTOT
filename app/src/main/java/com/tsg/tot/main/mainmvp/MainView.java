@@ -68,7 +68,7 @@ public class MainView extends AppCompatActivity
     InformationFragment informationFragment;
     InformationAllTaskFragment informationAllTaskFragment;
     FragmentTransaction fragmentTransaction;
-    ImageView imageGrado ;
+    ImageView imageGrado;
 
     public TextView tv_studentCode, tv_studentName, tv_institutionName,
             tv_location, tv_pendingTask;
@@ -80,7 +80,8 @@ public class MainView extends AppCompatActivity
     //ProgressDialog dialog;
     CustomProgressDialog dialog;
     String token, idUsuario = "";
-    Boolean actionSync = false ;
+    Boolean actionSync = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +91,7 @@ public class MainView extends AppCompatActivity
         setContentView(R.layout.activity_main);
         initViewElements();
         ((App) getApplication()).getComponent().inject(this);
-        tareasPendientes =  TOTPreferences.getInstance(this).getTareasPendientes();
+        tareasPendientes = TOTPreferences.getInstance(this).getTareasPendientes();
         //Permissions
         //        requestPermissions(new String[]{READ_EXTERNAL_STORAGE, READ_PHONE_STATE}, 1);
 
@@ -104,41 +105,60 @@ public class MainView extends AppCompatActivity
         // Toast.makeText(this, "el token es : \n" + token, Toast.LENGTH_SHORT).show();
         DatabaseRepository dbR = new DatabaseRepository();
 
-        List<Student> studentList = dbR.getStudent(MainView.this, Integer.parseInt(idUsuario==null?"0":idUsuario.equals("")?"0":idUsuario));
+        List<Student> studentList = dbR.getStudent(MainView.this, Integer.parseInt(idUsuario == null ? "0" : idUsuario.equals("") ? "0" : idUsuario));
 
         if (studentList.size() > 0) {
             TOTPreferences.getInstance(MainView.this).setIdEstudiante(studentList.get(0).getId().toString());
-            TOTPreferences.getInstance(MainView.this).setNombreEstudiante(studentList.get(0).getNombres()+" "+studentList.get(0).getApellidos());
-           Grade  grade =  dbR.getGradeByStudent(this,studentList.get(0).getId());
+            TOTPreferences.getInstance(MainView.this).setNombreEstudiante(studentList.get(0).getNombres() + " " + studentList.get(0).getApellidos());
+/*
+            Grade grade = dbR.getGradeByStudent(this, studentList.get(0).getId());
 
-           if (grade!=null){
-               if (grade.getNombre()!=null) {
-                   switch (Integer.parseInt(grade.getNombre())) {
-                       case 1: imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias1));
-                       case 2: imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias2));
-                       case 3: imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias3));
-                       case 4: imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias4));
-                       case 5: imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias5));
-                       case 6: imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias6));
-                       case 7: imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias7));
-                       case 8: imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias8));
-                       case 9:  imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias9));
-                       case 10: imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias10));
-                       case 11: imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias11));
-                       default : imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias1));
-                   }
-               }
+            if (grade != null) {
+                if (grade.getNombre() != null) {
+                    switch (Integer.parseInt(grade.getNombre())) {
+                        case 1:
+                            imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias1));
+                            break;
+                        case 2:
+                            imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias2));
+                            break;
+                        case 3:
+                            imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias3));
+                            break;
+                        case 4:
+                            imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias4));
+                            break;
+                        case 5:
+                            imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias5));
+                            break;
+                        case 6:
+                            imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias6));
+                            break;
+                        case 7:
+                            imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias7));
+                            break;
+                        case 8:
+                            imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias8));
+                            break;
+                        case 9:
+                            imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias9));
+                            break;
+                        case 10:
+                            imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias10));
+                            break;
+                        case 11:
+                            imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias11));
+                            break;
+                    }
+                }
 
             }
 
-
-
+*/
 
         } else {
             TOTPreferences.getInstance(MainView.this).setIdEstudiante("0");
         }
-
-
 
 
         //Init Fragment
@@ -150,9 +170,9 @@ public class MainView extends AppCompatActivity
 
         informationAllTaskFragment = new InformationAllTaskFragment(presenter);
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.contentFragment,informationAllTaskFragment);
+        fragmentTransaction.replace(R.id.contentFragment, informationAllTaskFragment);
         fragmentTransaction.commit();
-
+        presenter.notifyRefresh();
 
 
     }
@@ -171,38 +191,40 @@ public class MainView extends AppCompatActivity
                 getResources().getString(R.string.message_load_db));
         dialog.setIcon(R.drawable.tot_icon);
         dialog.show();
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         presenter.setView(this);
+
+
         showLoadingDialog();
 
-        if (actionSync){
+        if (actionSync) {
             TOTPreferences.getInstance(this).setActionSync(true);
             showLoadingDialog();
         }
 
 
-        if (!token.equals("sinConexion")&& !actionSync) {
+        if (!token.equals("sinConexion") && !actionSync) {
             presenter.checkVersions(this, dialog, token, idUsuario);
         } else {
-                dialog.setProgress(dialog.getProgress() + 35);
+            dialog.setProgress(dialog.getProgress() + 35);
         }
 
 
-        if (!token.equals("sinConexion")&& actionSync) {
+        if (!token.equals("sinConexion") && actionSync) {
             showLoadingDialog();
-            presenter.checkVersionsSync(this,dialog,token,idUsuario);
+            presenter.checkVersionsSync(this, dialog, token, idUsuario);
             //presenter.checkVersions(this, dialog, token, idUsuario);
         }
 
-        if (!token.equals("sinConexion")){
-            presenter.checkMessages(this,token);
+        if (!token.equals("sinConexion")) {
+            presenter.checkMessages(this, token);
         }
-
-
 
 
         dialog.setProgress(dialog.getProgress() + 5);
@@ -215,6 +237,51 @@ public class MainView extends AppCompatActivity
         } else {
             dismissLoadingDialog();
         }
+        DatabaseRepository dbR = new DatabaseRepository();
+        Grade grade = dbR.getGradeByStudent(this, Integer.parseInt(TOTPreferences.getInstance(this).getIdEstudiante()));
+
+        if (grade != null) {
+            if (grade.getNombre() != null) {
+                switch (Integer.parseInt(grade.getNombre())) {
+                    case 1:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias1));
+                        break;
+                    case 2:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias2));
+                        break;
+                    case 3:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias3));
+                        break;
+                    case 4:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias4));
+                        break;
+                    case 5:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias5));
+                        break;
+                    case 6:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias6));
+                        break;
+                    case 7:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias7));
+                        break;
+                    case 8:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias8));
+                        break;
+                    case 9:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias9));
+                        break;
+                    case 10:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias10));
+                        break;
+                    case 11:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias11));
+                        break;
+                }
+            }
+
+        }
+
+        //presenter.notifyRefresh();
     }
 
     @Override
@@ -244,6 +311,44 @@ public class MainView extends AppCompatActivity
         }
 
         tv_pendingTask.setText(getResources().getString(R.string.main_view_PendingTasks) + ": ");
+
+        DatabaseRepository dbR = new DatabaseRepository();
+
+        String idEstudiante = TOTPreferences.getInstance(MainView.this).getIdEstudiante();
+        Grade grade = dbR.getGradeByStudent(this, Integer.parseInt(idEstudiante));
+
+        if (grade != null) {
+            if (grade.getNombre() != null) {
+                switch (Integer.parseInt(grade.getNombre())) {
+                    case 1:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias1));
+                    case 2:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias2));
+                    case 3:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias3));
+                    case 4:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias4));
+                    case 5:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias5));
+                    case 6:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias6));
+                    case 7:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias7));
+                    case 8:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias8));
+                    case 9:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias9));
+                    case 10:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias10));
+                    case 11:
+                        imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias11));
+
+                }
+            }
+
+        }
+
+
     }
 
 
@@ -253,7 +358,7 @@ public class MainView extends AppCompatActivity
         Object informationFragmentIOF = this.getSupportFragmentManager().
                 findFragmentById(R.id.contentFragment);
 
-        if (informationFragmentIOF.getClass().isInstance(informationFragment)){
+        if (informationFragmentIOF.getClass().isInstance(informationFragment)) {
 
             informationFragment = (InformationFragment) this.getSupportFragmentManager().
                     findFragmentById(R.id.contentFragment);
@@ -264,15 +369,15 @@ public class MainView extends AppCompatActivity
                 Integer idEstudianteI = Integer.parseInt(TOTPreferences.getInstance(MainView.this).getIdEstudiante() == "" ? "0" : TOTPreferences.getInstance(MainView.this).getIdEstudiante());
 
                 informationFragment.setTaskSubjects(presenter.getTaskSubject(this, subjects.getId(), "", idEstudianteI), this, presenter);
-                tareasPendientes =  TOTPreferences.getInstance(this).getTareasPendientes().equals("")?0:TOTPreferences.getInstance(this).getTareasPendientes();
-                tv_pendingTask.setText(getResources().getString(R.string.main_view_PendingTasks) + ": " +tareasPendientes);
+                tareasPendientes = TOTPreferences.getInstance(this).getTareasPendientes().equals("") ? 0 : TOTPreferences.getInstance(this).getTareasPendientes();
+                tv_pendingTask.setText(getResources().getString(R.string.main_view_PendingTasks) + ": " + tareasPendientes);
             } else {
                 informationFragment = new InformationFragment(presenter);
                 Bundle bundleEnvio = new Bundle();
                 bundleEnvio.putSerializable("subject", subjects);
                 informationFragment.setArguments(bundleEnvio);
-                tareasPendientes =  TOTPreferences.getInstance(this).getTareasPendientes();
-                tv_pendingTask.setText(getResources().getString(R.string.main_view_PendingTasks) + ": " +tareasPendientes);
+                tareasPendientes = TOTPreferences.getInstance(this).getTareasPendientes();
+                tv_pendingTask.setText(getResources().getString(R.string.main_view_PendingTasks) + ": " + tareasPendientes);
 
 
                 //Carga el fragment en el Activity
@@ -281,14 +386,14 @@ public class MainView extends AppCompatActivity
                         addToBackStack(null).commit();
             }
 
-        }else {
+        } else {
 
             informationFragment = new InformationFragment(presenter);
             Bundle bundleEnvio = new Bundle();
             bundleEnvio.putSerializable("subject", subjects);
             informationFragment.setArguments(bundleEnvio);
-            tareasPendientes =  TOTPreferences.getInstance(this).getTareasPendientes();
-            tv_pendingTask.setText(getResources().getString(R.string.main_view_PendingTasks) + ": " +tareasPendientes);
+            tareasPendientes = TOTPreferences.getInstance(this).getTareasPendientes();
+            tv_pendingTask.setText(getResources().getString(R.string.main_view_PendingTasks) + ": " + tareasPendientes);
 
 
             //Carga el fragment en el Activity
@@ -345,13 +450,13 @@ public class MainView extends AppCompatActivity
                 getResources().getString(R.string.message_load_db));
         dialog.setIcon(R.drawable.tot_icon);
         dialog.show();
-        presenter.updateEverything(this, dialog, token,Integer.parseInt(idUsuario.equals("")?"0":idUsuario));
+        presenter.updateEverything(this, dialog, token, Integer.parseInt(idUsuario.equals("") ? "0" : idUsuario));
         dialog.setProgress(dialog.getProgress() + 5);
         presenter.setInfoStudent(this, Integer.parseInt(idUsuario));
         dialog.setProgress(dialog.getProgress() + 5);
     }
 
-    public void viewMessages(View view){
+    public void viewMessages(View view) {
         Intent intent = new Intent(view.getContext(), MessageMainActivity.class);
         intent.putExtra("idUsuario", idUsuario);
         intent.putExtra("token", token);
@@ -407,10 +512,10 @@ public class MainView extends AppCompatActivity
     public void aceptarCerrarSesion(View view) {
         Intent mStartActivity = new Intent(this, MainView.class);
         int mPendingIntentId = 1;
-        PendingIntent mPendingIntent = PendingIntent.getActivity(this, mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
-        AlarmManager mgr = (AlarmManager)this.getSystemService(ALARM_SERVICE);
+        PendingIntent mPendingIntent = PendingIntent.getActivity(this, mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager mgr = (AlarmManager) this.getSystemService(ALARM_SERVICE);
         mgr.set(AlarmManager.RTC, //System.currentTimeMillis() +
-                 60, mPendingIntent);
+                60, mPendingIntent);
         TOTPreferences.getInstance(view.getContext()).setIdUsuario("0");
         TOTPreferences.getInstance(view.getContext()).setIdEstudiante("0");
         TOTPreferences.getInstance(view.getContext()).setIdClase("0");
@@ -438,7 +543,6 @@ public class MainView extends AppCompatActivity
     }
 
 
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -447,7 +551,7 @@ public class MainView extends AppCompatActivity
                         getResources().getString(R.string.message_load_db));
                 dialog.setIcon(R.drawable.tot_icon);
                 dialog.show();
-                presenter.updateEverything(this, dialog, token,Integer.parseInt(idUsuario.equals("")?"0":idUsuario));
+                presenter.updateEverything(this, dialog, token, Integer.parseInt(idUsuario.equals("") ? "0" : idUsuario));
                 dialog.setProgress(dialog.getProgress() + 5);
                 presenter.setInfoStudent(this, Integer.parseInt(idUsuario));
                 dialog.setProgress(dialog.getProgress() + 5);
@@ -475,17 +579,17 @@ public class MainView extends AppCompatActivity
 
     }
 
-    public void registrarRespuestasPendientes(){
+    public void registrarRespuestasPendientes() {
         DatabaseRepository dbr = new DatabaseRepository();
         List<MessageRemote> messageRemoteList = dbr.getAllMessagesToRegist(MainView.this, TOTPreferences.getInstance(MainView.this).getIdEstudiante() == "" ? 0 : Integer.parseInt(TOTPreferences.getInstance(MainView.this).getIdEstudiante()));
 
-        if(messageRemoteList.size()>0){
-            for (MessageRemote messageRemote : messageRemoteList){
+        if (messageRemoteList.size() > 0) {
+            for (MessageRemote messageRemote : messageRemoteList) {
                 Integer idRegisterMessage = messageRemote.getRegistroMensajeKiosco();
                 String mensaje = messageRemote.getMensajes();
                 Integer idRespuestaMensaje = messageRemote.getId();
 
-                regsitrarMensaje(token,idRegisterMessage,mensaje,idRespuestaMensaje);
+                regsitrarMensaje(token, idRegisterMessage, mensaje, idRespuestaMensaje);
 
             }
         }
@@ -497,27 +601,27 @@ public class MainView extends AppCompatActivity
         List<SubmissionPending> submissionsList = dbR.getSubmissionsToUpload(MainView.this, TOTPreferences.getInstance(MainView.this).getIdEstudiante() == "" ? 0 : Integer.parseInt(TOTPreferences.getInstance(MainView.this).getIdEstudiante()));
         if (submissionsList.size() > 0) {
             for (SubmissionPending submissionsAux : submissionsList) {
-                    subirEntrega(token,submissionsAux);
+                subirEntrega(token, submissionsAux);
             }
         }
     }
 
-    private void subirEntrega (String token, SubmissionPending submissionPending){
+    private void subirEntrega(String token, SubmissionPending submissionPending) {
 
         File file = new File(submissionPending.getArchivo());
-        RequestBody requestBody= RequestBody.create(MediaType.parse("application/octet-stream"),file);
-        MultipartBody.Part body =MultipartBody.Part.createFormData("File",file.getName(), requestBody);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/octet-stream"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("File", file.getName(), requestBody);
 
         ApiRepository apiRepository = new ApiRepository();
         String macAddress = ApiUtils.getMacAddress();
 
         Integer registroId = submissionPending.getTareaRegistroId();
-        RequestBody tareaRegistroId = RequestBody.create(MultipartBody.FORM,registroId.toString());
+        RequestBody tareaRegistroId = RequestBody.create(MultipartBody.FORM, registroId.toString());
         RequestBody mac = RequestBody.create(MultipartBody.FORM, macAddress);
 
 
         try {
-            Call<TaskRegristerRemote> submissionUploadTask = ApiUtils.getAPIServiceTaskRegister().postUploadTask(token,body,tareaRegistroId, mac);
+            Call<TaskRegristerRemote> submissionUploadTask = ApiUtils.getAPIServiceTaskRegister().postUploadTask(token, body, tareaRegistroId, mac);
 
             submissionUploadTask.enqueue(new Callback<TaskRegristerRemote>() {
                 @Override
@@ -531,7 +635,7 @@ public class MainView extends AppCompatActivity
                         task.setTareakiosco(taskRegristerRemote.getTareaId());
                         task.setRegistroTarea(taskRegristerRemote.getId());*/
                         taskRegristerRemote.getTareaRegistroId();
-                        dbR.updateSubmissionUpp(taskRegristerRemote.getTareaRegistroId(),MainView.this);
+                        dbR.updateSubmissionUpp(taskRegristerRemote.getTareaRegistroId(), MainView.this);
                     } else {
                         return;
                     }
@@ -547,16 +651,16 @@ public class MainView extends AppCompatActivity
 
 
         } catch (Exception e) {
-                Log.d("Exception --- ", "Exception --- " + e.getMessage());
+            Log.d("Exception --- ", "Exception --- " + e.getMessage());
         }
 
     }
 
-    private void regsitrarMensaje (String token,Integer idMensajeRegistro,String respuesta,Integer idRespuestaMensaje) {
+    private void regsitrarMensaje(String token, Integer idMensajeRegistro, String respuesta, Integer idRespuestaMensaje) {
         ApiRepository apiRepository = new ApiRepository();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("mensajeRegistroId", idMensajeRegistro);
-        jsonObject.addProperty("respuesta",respuesta);
+        jsonObject.addProperty("respuesta", respuesta);
 
 
         try {
@@ -569,7 +673,7 @@ public class MainView extends AppCompatActivity
 
                     if (response.code() == 204) {
                         DatabaseRepository dbR = new DatabaseRepository();
-                        dbR.updateAnswerMessageState(idRespuestaMensaje,MainView.this);
+                        dbR.updateAnswerMessageState(idRespuestaMensaje, MainView.this);
 
                     } else {
                         return;
@@ -591,8 +695,6 @@ public class MainView extends AppCompatActivity
         }
 
 
-
-
     }
 
     private void registrarTarea(String token, Integer idTarea) {
@@ -600,8 +702,7 @@ public class MainView extends AppCompatActivity
         ApiRepository apiRepository = new ApiRepository();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("tareaId", idTarea);
-        jsonObject.addProperty("mac",macAddress);
-
+        jsonObject.addProperty("mac", macAddress);
 
 
         try {
@@ -636,8 +737,6 @@ public class MainView extends AppCompatActivity
         } catch (Exception e) {
 
         }
-
-
 
 
     }

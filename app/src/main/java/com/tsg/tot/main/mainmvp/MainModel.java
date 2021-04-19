@@ -256,7 +256,7 @@ public class MainModel implements MainMVP.Model {
         List<FilesKiosco> filesKioscoList = new ArrayList<>();
         dialog.setProgress(dialog.getProgress() + 5);
 
-        if (studentRemote != null) {
+        if (studentRemote != null && gradeRemote != null) {
             databaseRepository.updateMyStudent(studentRemote, context, Integer.parseInt(idUsusario));
             databaseRepository.updateMySubjects(subjectsRemoteList, context);
 
