@@ -168,4 +168,5 @@ public interface LocalRepository {
     List<Task> getAllPendingTasks (Context context,Integer idEstudiante);
     List<MessageRemote> getAllMessagesToRegist (Context context ,Integer idEstudiante);
     void updateAnswerMessageState (Integer idMessageAnswer,Context context);
+    Grade getGradeByStudent(Context context,Integer idEstudiante);
 }

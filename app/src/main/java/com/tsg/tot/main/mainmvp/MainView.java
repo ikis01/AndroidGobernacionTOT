@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.gson.JsonObject;
 import com.tsg.tot.R;
 import com.tsg.tot.data.model.FilesKiosco;
+import com.tsg.tot.data.model.Grade;
 import com.tsg.tot.data.model.Student;
 import com.tsg.tot.data.model.Subjects;
 import com.tsg.tot.data.model.Task;
@@ -66,6 +68,7 @@ public class MainView extends AppCompatActivity
     InformationFragment informationFragment;
     InformationAllTaskFragment informationAllTaskFragment;
     FragmentTransaction fragmentTransaction;
+    ImageView imageGrado ;
 
     public TextView tv_studentCode, tv_studentName, tv_institutionName,
             tv_location, tv_pendingTask;
@@ -106,9 +109,36 @@ public class MainView extends AppCompatActivity
         if (studentList.size() > 0) {
             TOTPreferences.getInstance(MainView.this).setIdEstudiante(studentList.get(0).getId().toString());
             TOTPreferences.getInstance(MainView.this).setNombreEstudiante(studentList.get(0).getNombres()+" "+studentList.get(0).getApellidos());
+           Grade  grade =  dbR.getGradeByStudent(this,studentList.get(0).getId());
+
+           if (grade!=null){
+               if (grade.getNombre()!=null) {
+                   switch (Integer.parseInt(grade.getNombre())) {
+                       case 1: imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias1));
+                       case 2: imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias2));
+                       case 3: imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias3));
+                       case 4: imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias4));
+                       case 5: imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias5));
+                       case 6: imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias6));
+                       case 7: imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias7));
+                       case 8: imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias8));
+                       case 9:  imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias9));
+                       case 10: imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias10));
+                       case 11: imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias11));
+                       default : imageGrado.setImageDrawable(getResources().getDrawable(R.drawable.grado_materias1));
+                   }
+               }
+
+            }
+
+
+
+
         } else {
             TOTPreferences.getInstance(MainView.this).setIdEstudiante("0");
         }
+
+
 
 
         //Init Fragment
@@ -133,6 +163,7 @@ public class MainView extends AppCompatActivity
         tv_studentName = findViewById(R.id.tv_studentName);
         tv_institutionName = findViewById(R.id.tv_institutionName);
         tv_location = findViewById(R.id.tv_location);
+        imageGrado = findViewById(R.id.imageGrado);
 
         tv_pendingTask = findViewById(R.id.tv_pendingTask);
 
@@ -165,6 +196,10 @@ public class MainView extends AppCompatActivity
             showLoadingDialog();
             presenter.checkVersionsSync(this,dialog,token,idUsuario);
             //presenter.checkVersions(this, dialog, token, idUsuario);
+        }
+
+        if (!token.equals("sinConexion")){
+            presenter.checkMessages(this,token);
         }
 
 

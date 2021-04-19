@@ -16,13 +16,13 @@ public class  ApiUtils {
 
 
     //Servidor Ofinica TSG
-    // public  static final String BASE_URL = "http://192.168.0.120:6104/";
+    //public  static final String BASE_URL = "http://192.168.0.120:6104/";
 
     //Local Pruebas Israel
      public static final String BASE_URL = "http://192.168.1.101:6104";
 
    // Local Pruebas Milena
-    // public static final String BASE_URL ="http://192.168.20.34:6104";
+    //public static final String BASE_URL ="http://192.168.20.34:6104";
 
 
     public static final String PORT_URL = "6104";

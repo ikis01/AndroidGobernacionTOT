@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021. 
+ */
+
 package abhishekti7.unicorn.filepicker.utils;
 
 import android.content.Context;
@@ -16,7 +20,7 @@ import abhishekti7.unicorn.filepicker.R;
  */
 public class UnicornSimpleItemDecoration extends RecyclerView.ItemDecoration {
 
-    private Drawable mDivider;
+    private final Drawable mDivider;
 
     public UnicornSimpleItemDecoration(Context context) {
         this.mDivider = ContextCompat.getDrawable(context, R.drawable.unicorn_item_layout_divider);

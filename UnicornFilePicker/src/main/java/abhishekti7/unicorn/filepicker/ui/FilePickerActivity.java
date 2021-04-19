@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021. 
+ */
+
 package abhishekti7.unicorn.filepicker.ui;
 
 import androidx.annotation.NonNull;

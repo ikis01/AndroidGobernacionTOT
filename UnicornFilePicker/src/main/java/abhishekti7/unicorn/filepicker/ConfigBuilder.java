@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021. 
+ */
+
 package abhishekti7.unicorn.filepicker;
 
 import android.app.Activity;
@@ -28,7 +32,7 @@ public final class ConfigBuilder {
 
     private final UnicornFilePicker unicornFilePicker;
     private ArrayList<String> extensionFilters;
-    private Config config;
+    private final Config config;
 
     public ConfigBuilder(UnicornFilePicker unicornFilePicker) {
         this.unicornFilePicker = unicornFilePicker;

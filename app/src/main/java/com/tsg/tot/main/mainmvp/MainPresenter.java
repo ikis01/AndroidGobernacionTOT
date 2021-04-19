@@ -43,13 +43,53 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
     }
 
     @Override
+    public void checkMessages(Context context, String token) {
+        Log.d("checkMessages", "Initialize Check Messages ");
+        if (view != null) {
+
+            new Thread(() -> {
+                try {
+                    //Thread.sleep(25 *1000);
+                    Thread.sleep(25 *1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Log.d("checkVersions", "Thread Checking Messages ");
+                //this.notifyRefresh();
+                //Thread for checking versions
+                while (true) {
+
+                    model.updateMessages(context, token, model.checkMyStudent(context, API_REPOSITORY, token), model.checkMyPendingMessages(context, API_REPOSITORY, token));
+
+
+                    //Waiting time between queries
+                    try {
+                        //Thread.sleep(25 *1000);
+                        Thread.sleep(20 *1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+
+
+
+                        //this.notifyRefresh();
+
+                    }
+            }).start();
+        }
+    }
+
+
+
+
+    @Override
     public void checkVersionsSync(Context context, CustomProgressDialog dialog, String token, String idUsuario) {
 
         Log.d("checkVersions", "checkVersions");
         if (view != null) {
             new Thread(() -> {
                 Log.d("checkVersions", "Thread Sincronizacion");
-                model.updateMessages(context, token, model.checkMyStudent(context, API_REPOSITORY, token),  model.checkMyPendingMessages(context,API_REPOSITORY,token));
                 //this.notifyRefresh();
                 //Thread for checking versions
                 while (ejecutar) {
@@ -122,10 +162,10 @@ public class MainPresenter implements MainMVP.Presenter, MainMVP.Model.OnFinishe
 
         Log.d("checkVersions", "checkVersions");
         if (view != null) {
+
             new Thread(() -> {
                 Log.d("checkVersions", "Thread");
-                model.updateMessages(context, token, model.checkMyStudent(context, API_REPOSITORY, token),  model.checkMyPendingMessages(context,API_REPOSITORY,token));
-                //Thread for checking versions
+                  //Thread for checking versions
                 while (ejecutar) {
                     //Set version No.
                     float apiVersion = model.checkAPIVersion(context);

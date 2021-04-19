@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021.
+ */
+
 package abhishekti7.unicorn.filepicker.adapters;
 
 import android.content.Context;
@@ -23,15 +27,15 @@ import abhishekti7.unicorn.filepicker.models.DirectoryModel;
  */
 public class DirectoryStackAdapter extends RecyclerView.Adapter<DirectoryStackAdapter.ViewHolder> {
 
-    private Context context;
-    private ArrayList<DirectoryModel> directoryList;
-    private onDirectoryStackListener onDirectoryStackListener;
-    private TypedValue typedValue;
+    private final Context context;
+    private final ArrayList<DirectoryModel> directoryList;
+    private final onDirectoryStackListener onDirectoryStackListener;
+    private final TypedValue typedValue;
 
     @ColorInt
-    private int textColor;
+    private final int textColor;
     @ColorInt
-    private int selectedTextColor;
+    private final int selectedTextColor;
 
 
     public interface onDirectoryStackListener{
@@ -80,7 +84,7 @@ public class DirectoryStackAdapter extends RecyclerView.Adapter<DirectoryStackAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tv_dir_name;
+        private final TextView tv_dir_name;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_dir_name = itemView.findViewById(R.id.tv_dir_name);

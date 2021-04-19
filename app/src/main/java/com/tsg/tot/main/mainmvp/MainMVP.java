@@ -63,6 +63,7 @@ public interface MainMVP {
 
         void createDB(Context context);
 
+        void checkMessages(Context context,String token );
         void checkVersions(Context context, CustomProgressDialog dialog,String token,String idUsuario);
         void checkVersionsSync(Context context, CustomProgressDialog dialog,String token,String idUsuario);
 

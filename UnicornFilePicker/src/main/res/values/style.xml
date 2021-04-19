@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021.
+  -->
+
 <resources>
     <!-- Base application theme. -->
     <style name="UnicornFilePicker.Default" parent="Theme.MaterialComponents.DayNight.NoActionBar">

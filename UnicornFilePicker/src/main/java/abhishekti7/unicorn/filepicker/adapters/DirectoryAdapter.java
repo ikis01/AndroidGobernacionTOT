@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021. 
+ */
+
 package abhishekti7.unicorn.filepicker.adapters;
 
 import android.content.Context;
@@ -30,18 +34,18 @@ import abhishekti7.unicorn.filepicker.utils.Utils;
  */
 public class DirectoryAdapter extends RecyclerView.Adapter<DirectoryAdapter.ViewHolder> implements Filterable {
 
-    private Context context;
-    private ArrayList<DirectoryModel> filesList;
+    private final Context context;
+    private final ArrayList<DirectoryModel> filesList;
     private ArrayList<DirectoryModel> filesListFiltered;
-    private onFilesClickListener onFilesClickListener;
+    private final onFilesClickListener onFilesClickListener;
     private ArrayList<String> selected;
-    private Config config;
-    private TypedValue typedValue;
+    private final Config config;
+    private final TypedValue typedValue;
 
     @ColorInt
-    private int selectionTint;
+    private final int selectionTint;
     @ColorInt
-    private int backgroundTint;
+    private final int backgroundTint;
 
 
     @Override
@@ -49,7 +53,7 @@ public class DirectoryAdapter extends RecyclerView.Adapter<DirectoryAdapter.View
         return tempFilter;
     }
 
-    private Filter tempFilter = new Filter() {
+    private final Filter tempFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             ArrayList<DirectoryModel> filteredList = new ArrayList<>();
@@ -206,13 +210,13 @@ public class DirectoryAdapter extends RecyclerView.Adapter<DirectoryAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tv_folder_name;
-        private TextView tv_file_name;
-        private TextView tv_date;
-        private TextView tv_num_files;
-        private RadioButton rg_selected;
-        private RelativeLayout rl_file_root;
-        private ImageView item_icon;
+        private final TextView tv_folder_name;
+        private final TextView tv_file_name;
+        private final TextView tv_date;
+        private final TextView tv_num_files;
+        private final RadioButton rg_selected;
+        private final RelativeLayout rl_file_root;
+        private final ImageView item_icon;
 
 
         public ViewHolder(@NonNull View itemView) {

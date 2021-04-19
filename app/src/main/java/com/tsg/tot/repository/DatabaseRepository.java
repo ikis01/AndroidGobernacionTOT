@@ -156,6 +156,38 @@ public class DatabaseRepository implements LocalRepository {
     }
 
     @Override
+    public  Grade getGradeByStudent (Context context , Integer idEstudiante){
+        Grade grade = null;
+        DbOpenHelper dbHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+
+        String query = "SELECT * FROM " + INFO_GRADE_TABLE_NAME +
+                " WHERE " + INFO_GRADE_ESTUDIANTE_IDESTUDIANTE + " = " + idEstudiante;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        cursor.moveToFirst();
+        try {
+            if (cursor.getCount() > 0) {
+                do {
+                    //get columns
+                    int idGrade = cursor.getColumnIndex(INFO_GRADE_CODIGOGRADO);
+                    int titleGrade = cursor.getColumnIndex(INFO_GRADE_NOMBRE);
+
+                    //add row to object
+                    grade = new Grade(cursor.getInt(idGrade),
+                            cursor.getString(titleGrade));
+
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+        return grade;
+    }
+
+    @Override
     public List<Subjects> getSubjects(Context context, Integer codeGrado) {
         List<Subjects> subjectsList = new ArrayList<>();
 
