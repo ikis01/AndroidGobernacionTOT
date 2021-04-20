@@ -5,7 +5,7 @@ android {
     buildToolsVersion '30.0.1'
 
     defaultConfig {
-        applicationId "com.tsg.tot"
+        applicationId "com.tsg.kot"
         minSdkVersion 25
         targetSdkVersion 30
         versionCode 2
