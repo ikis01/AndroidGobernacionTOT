@@ -65,7 +65,7 @@
 
         <activity
             android:name="com.tsg.kot.messages.MessageDetailActivity"
-            android:label="@string/title_activity_message_main"
+            android:label="@string/title_activity_message_main" 
             android:screenOrientation="landscape">
            </activity>
 
